@@ -4,10 +4,18 @@
  */
 package geral;
 
+import com.ppstudios.footballmanager.api.contracts.match.IMatch;
+import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
+
 /**
  *
  * @author guiba
  */
 public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy{
+
+    @Override
+    public void simulate(IMatch imatch) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
