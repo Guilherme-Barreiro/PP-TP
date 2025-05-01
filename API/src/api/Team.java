@@ -34,7 +34,9 @@ public class Team implements ITeam{
 
     @Override
     public void addPlayer(IPlayer ip) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(ip == null){
+            throw new IllegalArgumentException("The player can't be null");
+        }
     }
 
     @Override
