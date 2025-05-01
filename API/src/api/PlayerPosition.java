@@ -12,10 +12,21 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
  * @author Utilizador
  */
 public class PlayerPosition implements IPlayerPosition{
+    private String description;
 
+    public PlayerPosition(String description) {
+        this.description = description;
+    }
+    
     @Override
     public String getDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.description;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerPosition{" + "description=" + this.getDescription() + '}';
+    }
+    
     
 }
