@@ -18,7 +18,16 @@ public class PlayerSelector implements IPlayerSelector{
 
     @Override
     public IPlayer selectPlayer(IClub iclub, IPlayerPosition ipp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (iclub == null || ipp == null) {
+            throw new IllegalArgumentException("the club or position is null");
+        }
+        if (iclub.getPlayerCount() == 0) {
+            throw new IllegalStateException("the team is empty");
+        }
+        for (int i = 0; i < iclub.getPlayerCount(); i++) {
+            if (iclub.getPlayers()[i].getPosition().equals(ipp)) {
+                throw new IllegalStateException("no player is found for the specified position");
+            }
+        }
     }
-    
 }

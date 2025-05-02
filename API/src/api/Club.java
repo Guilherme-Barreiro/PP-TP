@@ -10,6 +10,7 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  *
@@ -103,11 +104,11 @@ public class Club implements IClub {
             throw new IllegalArgumentException("the player is not a valid player.");
         }
         for (int i = 0; i < this.playerCount; i++) {
-            if (!players[i].equals(ip)) {
-                return false;
+            if (players[i].equals(ip)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -132,17 +133,75 @@ public class Club implements IClub {
 
     @Override
     public IPlayer selectPlayer(IPlayerSelector ips, IPlayerPosition ipp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ipp == null) {
+            throw new IllegalArgumentException("The position can't be null");
+        }
+
+        if (this.players == null || this.players.length == 0) {
+            throw new IllegalStateException("The club is empty");
+        }
+
+        boolean found = false;
+        for (int i = 0; i < this.playerCount; i++) {
+            if (players[i].getPosition().equals(ipp)) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            throw new IllegalStateException("No player found for the specified position");
+        }
+
+        return ips.selectPlayer(this, ipp);
     }
 
     @Override
     public boolean isValid() {
+        if (this.players == null || this.players.length == 0) {
+            throw new IllegalStateException("The club is empty");
+        }
+
         if (this.playerCount == 0) {
-            throw new IllegalStateException("the club has no players");
+            throw new IllegalStateException("The club has no players");
         }
+
         if (this.playerCount < 16) {
-            throw new IllegalStateException("the club dont have at least 16 players");
+            throw new IllegalStateException("The club does not have at least 16 players");
         }
+
+        boolean hasGoalkeeper = false;
+        boolean hasDefender = false;
+        boolean hasMidfielder = false;
+        boolean hasForward = false;
+
+        for (int i = 0; i < this.playerCount; i++) {
+            IPlayerPosition pos = players[i].getPosition();
+            if (pos == null) {
+                continue;
+            }
+
+            String posName = pos.getDescription().toLowerCase();
+
+            if (posName.equals("goalkeeper")) {
+                hasGoalkeeper = true;
+            } else if (posName.equals("defender")) {
+                hasDefender = true;
+            } else if (posName.equals("midfielder")) {
+                hasMidfielder = true;
+            } else if (posName.equals("forward")) {
+                hasForward = true;
+            }
+        }
+
+        if (!hasGoalkeeper) {
+            throw new IllegalStateException("The club has no goalkeeper");
+        }
+
+        if (!hasDefender || !hasMidfielder || !hasForward) {
+            throw new IllegalStateException("The club has no players in a specific position");
+        }
+
         return true;
     }
 
@@ -165,4 +224,31 @@ public class Club implements IClub {
         return "Club{" + "code=" + this.getCode() + ", Country=" + this.getCountry() + ", foundedYear=" + this.getFoundedYear() + ", logo=" + this.getLogo() + ", name=" + this.getName() + ", players=" + this.getPlayers() + ", stadiumName=" + this.getStadiumName() + '}';
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.code);
+        hash = 47 * hash + Objects.hashCode(this.Country);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Club other = (Club) obj;
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
+        return Objects.equals(this.Country, other.Country);
+    }
+
+    
 }
