@@ -1,3 +1,12 @@
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
+ */
 package api;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
@@ -8,8 +17,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *
- * @author guiba
+ * Represents a football player with personal and technical attributes.
+ * Implements the IPlayer interface.
  */
 public class Player implements IPlayer {
 
@@ -28,6 +37,9 @@ public class Player implements IPlayer {
     private float weight;
     private PreferredFoot preferredFoot;
 
+    /**
+     * Constructs a Player with all required attributes.
+     */
     public Player(String name, LocalDate birthDate, int age, String nationality, IPlayerPosition position, String photo, int number, int shooting, int passing, int stamina, int speed, float height, float weight, PreferredFoot preferredFoot) {
         this.name = name;
         this.birthDate = birthDate;
@@ -45,94 +57,155 @@ public class Player implements IPlayer {
         this.preferredFoot = preferredFoot;
     }
 
+    /**
+     * Returns the name of the player.
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the birth date of the player.
+     */
     @Override
     public LocalDate getBirthDate() {
         return this.birthDate;
     }
 
+    /**
+     * Returns the age of the player.
+     */
     @Override
     public int getAge() {
         return this.age;
     }
 
+    /**
+     * Returns the nationality of the player.
+     */
     @Override
     public String getNationality() {
         return this.nationality;
     }
 
+    /**
+     * Sets the player position.
+     *
+     * @param ipp the position to set
+     * @throws IllegalArgumentException if the position is null
+     */
     @Override
     public void setPosition(IPlayerPosition ipp) {
-        if(ipp == null){
+        if (ipp == null) {
             throw new IllegalArgumentException("position can't be null");
         }
         this.position = ipp;
     }
 
+    /**
+     * Returns the photo URL or path of the player.
+     */
     @Override
     public String getPhoto() {
         return this.photo;
     }
 
+    /**
+     * Returns the shirt number of the player.
+     */
     @Override
     public int getNumber() {
         return this.number;
     }
 
+    /**
+     * Returns the shooting skill rating of the player.
+     */
     @Override
     public int getShooting() {
         return this.shooting;
     }
 
+    /**
+     * Returns the passing skill rating of the player.
+     */
     @Override
     public int getPassing() {
         return this.passing;
     }
 
+    /**
+     * Returns the stamina rating of the player.
+     */
     @Override
     public int getStamina() {
         return this.stamina;
     }
 
+    /**
+     * Returns the speed rating of the player.
+     */
     @Override
     public int getSpeed() {
         return this.speed;
     }
 
+    /**
+     * Returns the position the player plays.
+     */
     @Override
     public IPlayerPosition getPosition() {
         return this.position;
     }
 
+    /**
+     * Returns the height of the player.
+     */
     @Override
     public float getHeight() {
         return this.height;
     }
 
+    /**
+     * Returns the weight of the player.
+     */
     @Override
     public float getWeight() {
         return this.weight;
     }
 
+    /**
+     * Returns the preferred foot of the player.
+     */
     @Override
     public PreferredFoot getPreferredFoot() {
         return this.preferredFoot;
     }
 
+    /**
+     * Placeholder method to export the player to JSON.
+     *
+     * @throws UnsupportedOperationException when called
+     */
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * Returns a string representation of the Player object. Useful for
+     * debugging or logging.
+     */
     @Override
     public String toString() {
         return "Player{" + "name=" + this.getName() + ", birthDate=" + this.getBirthDate() + ", age=" + this.getAge() + ", nationality=" + this.getNationality() + ", position=" + this.getPosition() + ", photo=" + this.getPhoto() + ", number=" + this.getNumber() + ", shooting=" + this.getShooting() + ", passing=" + this.getPassing() + ", stamina=" + this.getStamina() + ", speed=" + this.getSpeed() + ", height=" + this.getHeight() + ", weight=" + this.getWeight() + ", preferredFoot=" + this.getPreferredFoot() + '}';
     }
 
+    /**
+     * Generates a hash code for the Player object. Important for hash-based
+     * collections.
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -153,6 +226,10 @@ public class Player implements IPlayer {
         return hash;
     }
 
+    /**
+     * Compares this Player to another object for equality. Two players are
+     * equal if all their attributes are equal.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -206,6 +283,5 @@ public class Player implements IPlayer {
         }
         return this.preferredFoot == other.preferredFoot;
     }
-    
-    
+
 }

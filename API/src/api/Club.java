@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api;
 
@@ -13,8 +17,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- *
- * @author Utilizador
+ * Represents a football club, which can manage up to 25 players. Implements the
+ * IClub interface.
  */
 public class Club implements IClub {
 
@@ -29,6 +33,9 @@ public class Club implements IClub {
     private IPlayer[] players;
     private String stadiumName;
 
+    /**
+     * Constructs a Club with basic club information.
+     */
     public Club(String code, String Country, int foundedYear, String logo, String name, String stadiumName) {
         this.code = code;
         this.Country = Country;
@@ -40,11 +47,17 @@ public class Club implements IClub {
         this.players = new Player[MAX_PLAYERS];
     }
 
+    /**
+     * Returns the name of the club.
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns a copy of the current list of players in the club.
+     */
     @Override
     public IPlayer[] getPlayers() {
         IPlayer[] playersCopy = new IPlayer[this.playerCount];
@@ -54,31 +67,55 @@ public class Club implements IClub {
         return playersCopy;
     }
 
+    /**
+     * Returns the unique club code.
+     */
     @Override
     public String getCode() {
         return this.code;
     }
 
+    /**
+     * Returns the country the club is associated with.
+     */
     @Override
     public String getCountry() {
         return this.Country;
     }
 
+    /**
+     * Returns the year the club was founded.
+     */
     @Override
     public int getFoundedYear() {
         return this.foundedYear;
     }
 
+    /**
+     * Returns the name of the club's stadium.
+     */
     @Override
     public String getStadiumName() {
         return this.stadiumName;
     }
 
+    /**
+     * Returns the logo path or URL of the club.
+     */
     @Override
     public String getLogo() {
         return this.logo;
     }
 
+    /**
+     * Adds a player to the club.
+     *
+     * @param ip Player to be added
+     * @throws IllegalStateException if the club has reached the maximum player
+     * count
+     * @throws IllegalArgumentException if the player is null or already in the
+     * club
+     */
     @Override
     public void addPlayer(IPlayer ip) {
         int index = findIndex(ip);
@@ -95,6 +132,14 @@ public class Club implements IClub {
         this.players[this.playerCount++] = ip;
     }
 
+    /**
+     * Checks whether the given player is part of the club.
+     *
+     * @param ip Player to check
+     * @return true if the player is in the club, false otherwise
+     * @throws IllegalArgumentException if the player is null or not a valid
+     * type
+     */
     @Override
     public boolean isPlayer(IPlayer ip) {
         if (ip == null) {
@@ -111,6 +156,12 @@ public class Club implements IClub {
         return false;
     }
 
+    /**
+     * Removes a player from the club.
+     *
+     * @param ip Player to be removed
+     * @throws IllegalArgumentException if the player is null or not in the club
+     */
     @Override
     public void removePlayer(IPlayer ip) {
         int index = findIndex(ip);
@@ -126,11 +177,24 @@ public class Club implements IClub {
         this.players[--this.playerCount] = null;
     }
 
+    /**
+     * Returns the number of players currently in the club.
+     */
     @Override
     public int getPlayerCount() {
         return this.playerCount;
     }
 
+    /**
+     * Selects a player using a selector for a given position.
+     *
+     * @param ips Player selector
+     * @param ipp Player position
+     * @return Selected player
+     * @throws IllegalArgumentException if position is null
+     * @throws IllegalStateException if no player is available for the specified
+     * position
+     */
     @Override
     public IPlayer selectPlayer(IPlayerSelector ips, IPlayerPosition ipp) {
         if (ipp == null) {
@@ -156,6 +220,13 @@ public class Club implements IClub {
         return ips.selectPlayer(this, ipp);
     }
 
+    /**
+     * Checks if the club is valid. A valid club must have at least 16 players,
+     * and include at least one goalkeeper, defender, midfielder, and forward.
+     *
+     * @return true if the club is valid
+     * @throws IllegalStateException with a reason if the club is invalid
+     */
     @Override
     public boolean isValid() {
         if (this.players == null || this.players.length == 0) {
@@ -205,11 +276,23 @@ public class Club implements IClub {
         return true;
     }
 
+    /**
+     * Exports the club data to a JSON file.
+     *
+     * @throws IOException if an I/O error occurs
+     * @throws UnsupportedOperationException if method is not yet implemented
+     */
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Helper method to find the index of a player in the array.
+     *
+     * @param ip Player to find
+     * @return Index of the player, or -1 if not found
+     */
     private int findIndex(IPlayer ip) {
         for (int i = 0; i < this.playerCount; i++) {
             if (players[i].equals(ip)) {
@@ -219,11 +302,17 @@ public class Club implements IClub {
         return -1;
     }
 
+    /**
+     * Returns a string representation of the club.
+     */
     @Override
     public String toString() {
         return "Club{" + "code=" + this.getCode() + ", Country=" + this.getCountry() + ", foundedYear=" + this.getFoundedYear() + ", logo=" + this.getLogo() + ", name=" + this.getName() + ", players=" + this.getPlayers() + ", stadiumName=" + this.getStadiumName() + '}';
     }
 
+    /**
+     * Computes a hash code for the club based on code and country.
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -232,6 +321,10 @@ public class Club implements IClub {
         return hash;
     }
 
+    /**
+     * Checks equality between this club and another object. Clubs are equal if
+     * they share the same code and country.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -250,5 +343,4 @@ public class Club implements IClub {
         return Objects.equals(this.Country, other.Country);
     }
 
-    
 }
