@@ -12,56 +12,96 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
 
 /**
- *
- * @author guiba
+ * Represents a football team with its club, formation and players.
  */
-public class Team implements ITeam{
+public class Team implements ITeam {
+
+    private IClub club;
+    private IFormation formation;
+    private IPlayer[] players;
+    private int playerCount;
+    private static final int MAX_PLAYERS = 30; // ou outro limite realista para plantel
+
+    public Team(IClub club) {
+        this.club = club;
+        this.players = new IPlayer[MAX_PLAYERS];
+        this.playerCount = 0;
+        this.formation = null;
+    }
+
+    @Override
+    public void addPlayer(IPlayer player) {
+        
+        if (player == null) {
+            throw new IllegalArgumentException("The player can't be null");
+        }
+        
+        if (playerCount >= MAX_PLAYERS){
+            throw new IllegalStateException("Team is full");
+        }
+        
+        players[playerCount++] = player;
+    }
 
     @Override
     public IClub getClub() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.club;
     }
 
     @Override
     public IFormation getFormation() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.formation;
     }
 
     @Override
     public IPlayer[] getPlayers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void addPlayer(IPlayer ip) {
-        if(ip == null){
-            throw new IllegalArgumentException("The player can't be null");
+        IPlayer[] currentPlayers = new IPlayer[playerCount];
+        
+        for (int i = 0; i < playerCount; i++) {
+            currentPlayers[i] = players[i];
         }
+        
+        return currentPlayers;
     }
 
     @Override
-    public int getPositionCount(IPlayerPosition ipp) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isValidPositionForFormation(IPlayerPosition ipp) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int getPositionCount(IPlayerPosition position) {
+        if (position == null) return 0;
+        int count = 0;
+        
+        for (int i = 0; i < playerCount; i++) {
+            if (position.equals(players[i].getPosition())) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
     public int getTeamStrength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int total = 0;
+        
+        for (int i = 0; i < playerCount; i++) {
+            IPlayer p = players[i];
+            total += p.getShooting() + p.getPassing() + p.getSpeed() + p.getStamina();
+        }
+        
+        return total;
     }
 
     @Override
-    public void setFormation(IFormation i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean isValidPositionForFormation(IPlayerPosition ipp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setFormation(IFormation formation) {
+        this.formation = formation;
     }
     
+    @Override
+    public void exportToJson() throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -14,20 +14,25 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
 
-public class PlayerSelector implements IPlayerSelector{
+public class PlayerSelector implements IPlayerSelector {
 
     @Override
     public IPlayer selectPlayer(IClub iclub, IPlayerPosition ipp) {
         if (iclub == null || ipp == null) {
-            throw new IllegalArgumentException("the club or position is null");
+            throw new IllegalArgumentException("The club or position is null");
         }
+
         if (iclub.getPlayerCount() == 0) {
-            throw new IllegalStateException("the team is empty");
+            throw new IllegalStateException("The team is empty");
         }
+
         for (int i = 0; i < iclub.getPlayerCount(); i++) {
-            if (iclub.getPlayers()[i].getPosition().equals(ipp)) {
-                throw new IllegalStateException("no player is found for the specified position");
+            IPlayer player = iclub.getPlayers()[i];
+            if (player != null && ipp.equals(player.getPosition())) {
+                return player;
             }
         }
+        //nao tinhas metido return, tirei a exceçao em cima e meti return e passei a exceçao para baixo
+        throw new IllegalStateException("No player found for the specified position");
     }
 }
