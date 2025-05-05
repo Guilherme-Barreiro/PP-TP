@@ -17,21 +17,60 @@ import java.io.IOException;
  *
  * @author Utilizador
  */
-public class Season implements ISeason{
+public class Season implements ISeason {
+
+    private String name;
+    private int year;
+    private int maxTeams;
+    private final int pointsPerWin = 3;
+    private final int pointsPerDraw = 1;
+    private final int pointsPerLoss = 0;
+    private IClub[] clubs;
+    private int clubCount;
+
+    public Season(String name, int year, int maxTeams) {
+        this.name = name;
+        this.year = year;
+        this.maxTeams = maxTeams;
+        this.clubCount = 0;
+        this.clubs = new IClub[maxTeams];
+    }
 
     @Override
     public int getYear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.year;
     }
 
     @Override
     public boolean addClub(IClub iclub) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = findIndex(iclub);
+        if (iclub == null) {
+            throw new IllegalArgumentException();
+        }
+        if (index != -1) {
+            return false;
+        }
+        if (this.clubCount >= maxTeams) {
+            throw new IllegalStateException();
+        }
+        this.clubs[this.clubCount++] = iclub;
+        return true;
     }
 
     @Override
     public boolean removeClub(IClub iclub) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = findIndex(iclub);
+        if (iclub == null) {
+            throw new IllegalArgumentException("Clube não pode ser null");
+        }
+        if (index == -1) {
+            return false;
+        }
+        for (int i = index; i < this.clubCount - 1; i++) {
+            this.clubs[i] = this.clubs[i + 1];
+        }
+        this.clubs[--this.clubCount] = null;
+        return true;
     }
 
     @Override
@@ -96,27 +135,27 @@ public class Season implements ISeason{
 
     @Override
     public int getPointsPerWin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.pointsPerWin;
     }
 
     @Override
     public int getPointsPerDraw() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.pointsPerDraw;
     }
 
     @Override
     public int getPointsPerLoss() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.pointsPerLoss;
     }
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.name;
     }
 
     @Override
     public int getMaxTeams() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.maxTeams;
     }
 
     @Override
@@ -131,17 +170,30 @@ public class Season implements ISeason{
 
     @Override
     public int getNumberOfCurrentTeams() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.clubCount;
     }
 
     @Override
     public IClub[] getCurrentClubs() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        IClub[] current = new IClub[clubCount];
+        for (int i = 0; i < clubCount; i++) {
+            current[i] = clubs[i];
+        }
+        return current;
+    }
+
+    private int findIndex(IClub club) {
+        for (int i = 0; i < this.clubCount; i++) {
+            if (clubs[i].equals(club)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
