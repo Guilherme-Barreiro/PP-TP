@@ -1,7 +1,7 @@
 /*  
 * Nome: <Diogo Loureiro da Silva>  
 * Número: <8220238>  
-* Turma: <>  
+* Turma: <T2  
 *  
 * Nome: <Guilherme Araujo Barreiro>  
 * Número: <8220849>  

@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api;
 
@@ -27,6 +31,9 @@ public class Season implements ISeason {
     private final int pointsPerLoss = 0;
     private IClub[] clubs;
     private int clubCount;
+    private IMatch[] matches;
+    private int matchCount;
+    private int currentRound;
 
     public Season(String name, int year, int maxTeams) {
         this.name = name;
@@ -34,6 +41,11 @@ public class Season implements ISeason {
         this.maxTeams = maxTeams;
         this.clubCount = 0;
         this.clubs = new IClub[maxTeams];
+        this.matchCount = 0;
+        this.currentRound = 0;
+        int totalMatches = maxTeams * (maxTeams - 1);
+        this.matches = new IMatch[totalMatches];
+
     }
 
     @Override
@@ -160,7 +172,7 @@ public class Season implements ISeason {
 
     @Override
     public int getMaxRounds() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (this.clubCount - 1) * 2;
     }
 
     @Override

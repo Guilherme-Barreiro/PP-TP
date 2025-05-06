@@ -14,17 +14,42 @@ import java.io.IOException;
  *
  * @author guiba
  */
-public class Match implements IMatch{
+public class Match implements IMatch {
+
+    private final int MAX_EVENT = 100;
+
+    private IClub homeClub;
+    private IClub awayClub;
+    private ITeam homeTeam;
+    private ITeam awayTeam;
+    private int round;
+    private IEvent[] events;
+    private int eventCount;
+    private boolean played;
+
+    public Match(IClub homeClub, IClub awayClub, int round) {
+        this.homeClub = homeClub;
+        this.awayClub = awayClub;
+        this.round = round;
+        this.events = new IEvent[MAX_EVENT];
+        this.eventCount = 0;
+        this.played = false;
+    }
 
     @Override
     public IClub getHomeClub() {
-        int i = 0;
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.homeClub == null) {
+            throw new IllegalStateException("the home club is not initialized");
+        }
+        return this.homeClub;
     }
 
     @Override
     public IClub getAwayClub() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.awayClub == null) {
+            throw new IllegalStateException("the away club is not initialized");
+        }
+        return this.awayClub;
     }
 
     @Override
@@ -34,17 +59,23 @@ public class Match implements IMatch{
 
     @Override
     public ITeam getHomeTeam() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.homeTeam == null) {
+            throw new IllegalStateException("the home team is not initialized");
+        }
+        return this.homeTeam;
     }
 
     @Override
     public ITeam getAwayTeam() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.awayTeam == null) {
+            throw new IllegalStateException("the awawy team is not initialized");
+        }
+        return this.awayTeam;
     }
 
     @Override
     public void setPlayed() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.played = true;
     }
 
     @Override
@@ -52,9 +83,13 @@ public class Match implements IMatch{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    //nao ta acabado
     @Override
     public boolean isValid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.getHomeTeam() != null && this.getAwayTeam() != null && !this.getHomeTeam().equals(this.getAwayTeam()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -64,12 +99,15 @@ public class Match implements IMatch{
 
     @Override
     public int getRound() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.round;
     }
 
+    //falta acabar
     @Override
     public void setTeam(ITeam iteam) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (iteam == null) {
+            throw new IllegalArgumentException("team is null");
+        }
     }
 
     @Override
@@ -79,17 +117,36 @@ public class Match implements IMatch{
 
     @Override
     public void addEvent(IEvent ievent) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int index = findIndex(ievent);
+        if (ievent == null) {
+            throw new IllegalArgumentException("the event is null");
+        }
+        if (index != -1) {
+            throw new IllegalStateException("the event is already stored");
+        }
+        this.events[this.eventCount++] = ievent;
     }
 
     @Override
     public IEvent[] getEvents() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        IEvent[] copyEvent = new IEvent[MAX_EVENT];
+        for (int i = 0; i < this.eventCount; i++) {
+            copyEvent[i] = this.events[i];
+        }
+        return copyEvent;
     }
 
     @Override
     public int getEventCount() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.eventCount;
     }
-    
+
+    private int findIndex(IEvent event) {
+        for (int i = 0; i < this.eventCount; i++) {
+            if (this.events[i].equals(event)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
