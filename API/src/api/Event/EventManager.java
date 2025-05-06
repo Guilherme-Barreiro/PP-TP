@@ -3,35 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package api;
+package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
-import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
-import java.io.IOException;
+import com.ppstudios.footballmanager.api.contracts.event.IEvent;
+import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 
 /**
  *
  * @author Utilizador
  */
-public class GoalEvent implements IGoalEvent{
+public class EventManager implements IEventManager{
 
     @Override
-    public IPlayer getPlayer() {
+    public void addEvent(IEvent ievent) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getDescription() {
+    public IEvent[] getEvents() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int getMinute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void exportToJson() throws IOException {
+    public int getEventCount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

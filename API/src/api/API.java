@@ -4,6 +4,10 @@
  */
 package api;
 
+import api.Player.Player;
+import api.Player.PlayerPosition;
+import api.Team.Formation;
+import api.Team.Team;
 import java.time.LocalDate;
 
 public class API {

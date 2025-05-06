@@ -7,7 +7,7 @@
 * Número: <8220849>  
 * Turma: <>  
  */
-package api;
+package api.Player;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;

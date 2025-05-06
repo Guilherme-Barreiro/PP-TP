@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package api;
+package api.Match;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
@@ -52,9 +52,10 @@ public class Match implements IMatch {
         return this.awayClub;
     }
 
+    //ou o javadoc esta mal ou eu nao sei fazer
     @Override
     public boolean isPlayed() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.played;
     }
 
     @Override
@@ -78,20 +79,22 @@ public class Match implements IMatch {
         this.played = true;
     }
 
+    //nao sei implementar
     @Override
     public int getTotalByEvent(Class type, IClub iclub) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    //nao ta acabado
+    //falta validacao para saber se esta na liga os clubs e nao sei se nas 1 validacoes e club ou team
     @Override
     public boolean isValid() {
-        if (this.getHomeTeam() != null && this.getAwayTeam() != null && !this.getHomeTeam().equals(this.getAwayTeam()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {
+        if (this.getHomeClub() != null && this.getAwayClub() != null && !this.getHomeClub().equals(this.getAwayClub()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {
             return true;
         }
         return false;
     }
-
+    
+    //preciso implementar goalEvent
     @Override
     public ITeam getWinner() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -107,6 +110,9 @@ public class Match implements IMatch {
     public void setTeam(ITeam iteam) {
         if (iteam == null) {
             throw new IllegalArgumentException("team is null");
+        }
+        if (this.isPlayed()) {
+            throw new IllegalStateException("Cannot set team after match is played");
         }
     }
 
