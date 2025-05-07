@@ -5,7 +5,9 @@
 package api.Match;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
+import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
+import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
@@ -79,13 +81,55 @@ public class Match implements IMatch {
         this.played = true;
     }
 
-    //nao sei implementar
+    //nao sei implementar copiado do chatgpt nao gosto do metodo no javadoc nao pede excecoes nem nada
+    //secalhar vamos ter de criar classes para eventos novos como FoultEvent e por ai
+    //no package event nao sei se é preciso a classe eventManager que ela é usada como superClasse de outra classe
+    //Temos o package enum com a enumeração penso que podemos tira-la
+    //que eu me lembre é tudo que temos de pensar por agora
     @Override
     public int getTotalByEvent(Class type, IClub iclub) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (type == null || iclub == null) {
+            throw new IllegalArgumentException("event class or club is null");
+        }
+
+        if (!iclub.equals(this.homeClub) && !iclub.equals(this.awayClub)) {
+            throw new IllegalStateException("The club does not belong to this match");
+        }
+
+        ITeam relevantTeam = null;
+        if (iclub.equals(this.homeClub)) {
+            relevantTeam = this.homeTeam;
+        } else if (iclub.equals(this.awayClub)) {
+            relevantTeam = this.awayTeam;
+        }
+
+        if (relevantTeam == null) {
+            throw new IllegalStateException("The team for the given club has not been set");
+        }
+
+        int total = 0;
+
+        for (int i = 0; i < this.eventCount; i++) {
+            IEvent event = this.events[i];
+
+            if (type.isInstance(event)) {
+                IPlayer player = null;
+
+                if (event instanceof IGoalEvent) {
+                    player = ((IGoalEvent) event).getPlayer();
+                }
+                // Podes adicionar mais instanceof se tiveres outros eventos com getPlayer()
+
+                if (player != null && playerBelongsToTeam(player, relevantTeam)) {
+                    total++;
+                }
+            }
+        }
+
+        return total;
     }
 
-    //falta validacao para saber se esta na liga os clubs e nao sei se nas 1 validacoes e club ou team
+    //falta validacao para saber se esta na liga os clubs e nao sei se nas 1 validacoes é club ou team
     @Override
     public boolean isValid() {
         if (this.getHomeClub() != null && this.getAwayClub() != null && !this.getHomeClub().equals(this.getAwayClub()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {
@@ -93,11 +137,39 @@ public class Match implements IMatch {
         }
         return false;
     }
-    
-    //preciso implementar goalEvent
+
+    //preciso testar
     @Override
     public ITeam getWinner() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int homeGoals = 0;
+        int awayGoals = 0;
+
+        for (int i = 0; i < this.eventCount; i++) {
+            IEvent event = this.events[i];
+
+            if (event instanceof IGoalEvent) {
+                IGoalEvent goalEvent = (IGoalEvent) event;
+                IPlayer scorer = goalEvent.getPlayer();
+
+                if (scorer == null) {
+                    continue;
+                }
+
+                if (playerBelongsToTeam(scorer, homeTeam)) {
+                    homeGoals++;
+                } else if (playerBelongsToTeam(scorer, awayTeam)) {
+                    awayGoals++;
+                }
+            }
+        }
+
+        if (homeGoals > awayGoals) {
+            return homeTeam;
+        } else if (awayGoals > homeGoals) {
+            return awayTeam;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -105,14 +177,24 @@ public class Match implements IMatch {
         return this.round;
     }
 
-    //falta acabar
     @Override
     public void setTeam(ITeam iteam) {
         if (iteam == null) {
             throw new IllegalArgumentException("team is null");
         }
+
         if (this.isPlayed()) {
             throw new IllegalStateException("Cannot set team after match is played");
+        }
+
+        IClub teamClub = iteam.getClub();
+
+        if (teamClub.equals(this.homeClub)) {
+            this.homeTeam = iteam;
+        } else if (teamClub.equals(this.awayClub)) {
+            this.awayTeam = iteam;
+        } else {
+            throw new IllegalStateException("The club does not belong to this match");
         }
     }
 
@@ -154,5 +236,15 @@ public class Match implements IMatch {
             }
         }
         return -1;
+    }
+
+    private boolean playerBelongsToTeam(IPlayer player, ITeam team) {
+        IPlayer[] teamPlayers = team.getPlayers();
+        for (int i = 0; i < teamPlayers.length; i++) {
+            if (teamPlayers[i].equals(player)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

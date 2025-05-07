@@ -13,26 +13,34 @@ import java.io.IOException;
  *
  * @author Utilizador
  */
-public class GoalEvent implements IGoalEvent{
+public class GoalEvent implements IGoalEvent {
+
+    private IPlayer player;
+    private int minute;
+
+    public GoalEvent(IPlayer player, int minute) {
+        this.player = player;
+        this.minute = minute;
+    }
 
     @Override
     public IPlayer getPlayer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.player;
     }
 
     @Override
     public String getDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "Golo de " + player.getName() + " aos " + minute + " minutos.";
     }
 
     @Override
     public int getMinute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.minute;
     }
 
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

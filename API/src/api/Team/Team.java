@@ -10,6 +10,8 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IFormation;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Represents a football team with its club, formation and players.
@@ -50,6 +52,9 @@ public class Team implements ITeam {
 
     @Override
     public IFormation getFormation() {
+        if(formation == null){
+            throw new IllegalStateException("the formation is not set");
+        }
         return this.formation;
     }
 
@@ -66,7 +71,9 @@ public class Team implements ITeam {
 
     @Override
     public int getPositionCount(IPlayerPosition position) {
-        if (position == null) return 0;
+        if (position == null){
+            throw new IllegalArgumentException("Position is null");
+        }
         int count = 0;
         
         for (int i = 0; i < playerCount; i++) {
@@ -96,6 +103,9 @@ public class Team implements ITeam {
 
     @Override
     public void setFormation(IFormation formation) {
+        if(formation == null){
+            throw new IllegalArgumentException("formation is null");
+        }
         this.formation = formation;
     }
     
@@ -104,4 +114,35 @@ public class Team implements ITeam {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.club);
+        hash = 31 * hash + Objects.hashCode(this.formation);
+        hash = 31 * hash + Arrays.deepHashCode(this.players);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Team other = (Team) obj;
+        if (!Objects.equals(this.club, other.club)) {
+            return false;
+        }
+        if (!Objects.equals(this.formation, other.formation)) {
+            return false;
+        }
+        return Arrays.deepEquals(this.players, other.players);
+    }
+
+    
 }
