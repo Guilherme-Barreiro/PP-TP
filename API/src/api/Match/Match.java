@@ -113,23 +113,32 @@ public class Match implements IMatch {
             IEvent event = this.events[i];
 
             if (type.isInstance(event)) {
-                IPlayer player = null;
-
-                if (event instanceof IGoalEvent) {
-                    player = ((IGoalEvent) event).getPlayer();
-                }
-                // Podes adicionar mais instanceof se tiveres outros eventos com getPlayer()
+                IPlayer player = extractPlayerFromEvent(event);
 
                 if (player != null && playerBelongsToTeam(player, relevantTeam)) {
                     total++;
                 }
             }
         }
-
         return total;
     }
 
-    //falta validacao para saber se esta na liga os clubs e nao sei se nas 1 validacoes é club ou team
+    private IPlayer extractPlayerFromEvent(IEvent event) {
+        if (event instanceof IGoalEvent) {
+            return ((IGoalEvent) event).getPlayer();
+        }
+
+        // Aqui podes adicionar suporte a outros tipos de eventos:
+        // if (event instanceof IAssistEvent) {
+        //     return ((IAssistEvent) event).getPlayer();
+        // }
+        // if (event instanceof ICardEvent) {
+        //     return ((ICardEvent) event).getPlayer();
+        // }
+        return null;
+    }
+
+//falta validacao para saber se esta na liga os clubs e nao sei se nas 1 validacoes é club ou team
     @Override
     public boolean isValid() {
         if (this.getHomeClub() != null && this.getAwayClub() != null && !this.getHomeClub().equals(this.getAwayClub()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {

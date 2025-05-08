@@ -24,6 +24,7 @@ public class Team implements ITeam {
     private int playerCount;
     private static final int MAX_PLAYERS = 30; // ou outro limite realista para plantel
 
+    //acho que vai ser preciso mudar o construtor acho que formation vai ter de ser parametro
     public Team(IClub club) {
         this.club = club;
         this.players = new IPlayer[MAX_PLAYERS];
@@ -31,17 +32,33 @@ public class Team implements ITeam {
         this.formation = null;
     }
 
+    private int findIndex(IPlayer player) {
+        for (int i = 0; i < playerCount; i++) {
+            if (players[i].equals(player)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public void addPlayer(IPlayer player) {
-        
+        int index = findIndex(player);
         if (player == null) {
             throw new IllegalArgumentException("The player can't be null");
         }
-        
-        if (playerCount >= MAX_PLAYERS){
+
+        if (playerCount >= MAX_PLAYERS) {
             throw new IllegalStateException("Team is full");
         }
-        
+
+        if (this.formation == null) {
+            throw new IllegalArgumentException("The formation is not set");
+        }
+
+        if (index != -1) {
+            throw new IllegalStateException("The player is already in the team");
+        }
         players[playerCount++] = player;
     }
 
@@ -52,7 +69,7 @@ public class Team implements ITeam {
 
     @Override
     public IFormation getFormation() {
-        if(formation == null){
+        if (formation == null) {
             throw new IllegalStateException("the formation is not set");
         }
         return this.formation;
@@ -61,21 +78,21 @@ public class Team implements ITeam {
     @Override
     public IPlayer[] getPlayers() {
         IPlayer[] currentPlayers = new IPlayer[playerCount];
-        
+
         for (int i = 0; i < playerCount; i++) {
             currentPlayers[i] = players[i];
         }
-        
+
         return currentPlayers;
     }
 
     @Override
     public int getPositionCount(IPlayerPosition position) {
-        if (position == null){
+        if (position == null) {
             throw new IllegalArgumentException("Position is null");
         }
         int count = 0;
-        
+
         for (int i = 0; i < playerCount; i++) {
             if (position.equals(players[i].getPosition())) {
                 count++;
@@ -87,28 +104,54 @@ public class Team implements ITeam {
     @Override
     public int getTeamStrength() {
         int total = 0;
-        
+
         for (int i = 0; i < playerCount; i++) {
             IPlayer p = players[i];
             total += p.getShooting() + p.getPassing() + p.getSpeed() + p.getStamina();
         }
-        
+
         return total;
     }
 
+    //nao esta correto
     @Override
     public boolean isValidPositionForFormation(IPlayerPosition ipp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ipp == null) {
+            throw new IllegalArgumentException("Position is null");
+        }
+
+        if (formation == null) {
+            throw new IllegalStateException("Formation is not set");
+        }
+
+        String[] parts = formation.getDisplayName().split("-");
+        int defenders = Integer.parseInt(parts[0]);
+        int midfielders = Integer.parseInt(parts[1]);
+        int forwards = Integer.parseInt(parts[2]);
+
+        switch (ipp.getDescription()) {
+            case "Defender":
+                return defenders > 0;
+            case "Midfielder":
+                return midfielders > 0;
+            case "Forward":
+                return forwards > 0;
+            case "Goalkeeper":
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public void setFormation(IFormation formation) {
-        if(formation == null){
+    public void setFormation(IFormation formation
+    ) {
+        if (formation == null) {
             throw new IllegalArgumentException("formation is null");
         }
         this.formation = formation;
     }
-    
+
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -124,7 +167,8 @@ public class Team implements ITeam {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj
+    ) {
         if (this == obj) {
             return true;
         }
@@ -144,5 +188,4 @@ public class Team implements ITeam {
         return Arrays.deepEquals(this.players, other.players);
     }
 
-    
 }

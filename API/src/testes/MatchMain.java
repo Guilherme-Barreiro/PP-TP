@@ -66,6 +66,27 @@ public class MatchMain {
             System.out.println("O jogo terminou empatado.");
         }
 
+        System.out.println("Jornada: " + jogo.getRound());
+
+        System.out.println("Equipa da casa: " + jogo.getHomeTeam().getClub().getName());
+        System.out.println("Equipa visitante: " + jogo.getAwayTeam().getClub().getName());
+
+        System.out.println("Match válido? " + jogo.isValid());
+
+        System.out.println("Match foi jogado? " + jogo.isPlayed());
+
+        System.out.println("Total de golos do SLB: "
+                + jogo.getTotalByEvent(GoalEvent.class, Cslb));
+
+        System.out.println("Total de golos do FCP: "
+                + jogo.getTotalByEvent(GoalEvent.class, Cfcp));
+
+        System.out.println("Lista de eventos:");
+        for (var e : jogo.getEvents()) {
+            if (e != null) {
+                System.out.println(" -> " + e.getDescription());
+            }
+        }
     }
 
 }

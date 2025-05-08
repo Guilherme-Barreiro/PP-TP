@@ -18,8 +18,8 @@ public class FormationMain {
      */
     public static void main(String[] args) {
 
-        Formation f1 = new Formation("0-10-0");
-        Formation f2 = new Formation("4-3-3");
+        Formation f1 = new Formation("4-4-2");
+        Formation f2 = new Formation("5-2-3");
 
         System.out.println("Formação 1: " + f1.getDisplayName());
         System.out.println("Formação 2: " + f2.getDisplayName());

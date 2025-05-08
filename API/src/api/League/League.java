@@ -12,6 +12,7 @@ package api.League;
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Represents a football league that can hold up to 200 seasons. Implements the
@@ -159,4 +160,25 @@ public class League implements ILeague {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final League other = (League) obj;
+        return Objects.equals(this.name, other.name);
+    }
 }

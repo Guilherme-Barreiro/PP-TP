@@ -10,6 +10,7 @@
 package api.Player;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
+import java.util.Objects;
 
 public class PlayerPosition implements IPlayerPosition{
     private String description;
@@ -27,4 +28,28 @@ public class PlayerPosition implements IPlayerPosition{
     public String toString() {
         return "PlayerPosition{" + "description=" + this.getDescription() + '}';
     } 
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PlayerPosition other = (PlayerPosition) obj;
+        return Objects.equals(this.description, other.description);
+    }
+    
+    
 }

@@ -37,16 +37,19 @@ public class Formation implements IFormation {
         if (i == null || !(i instanceof Formation)) {
             throw new IllegalStateException("Both formations must be set and valid");
         }
+
         String[] thisParts = this.getDisplayName().split("-");
         String[] otherParts = ((Formation) i).getDisplayName().split("-");
 
+        int thisDef = Integer.parseInt(thisParts[0]);
         int thisMid = Integer.parseInt(thisParts[1]);
         int thisFor = Integer.parseInt(thisParts[2]);
 
+        int otherDef = Integer.parseInt(otherParts[0]);
         int otherMid = Integer.parseInt(otherParts[1]);
         int otherFor = Integer.parseInt(otherParts[2]);
 
-        return (thisMid - otherMid) * 2 + (thisFor - otherFor);
+        return (thisMid - otherMid) * 2 + (thisFor - otherFor) + (thisDef - otherDef);
     }
 
     @Override
