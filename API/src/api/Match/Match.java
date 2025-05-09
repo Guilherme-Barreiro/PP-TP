@@ -256,4 +256,26 @@ public class Match implements IMatch {
         }
         return false;
     }
+    
+    public String getScore() {
+    int homeGoals = 0;
+    int awayGoals = 0;
+
+    for (int i = 0; i < this.eventCount; i++) {
+        IEvent event = this.events[i];
+
+        if (event instanceof IGoalEvent) {
+            IPlayer scorer = ((IGoalEvent) event).getPlayer();
+
+            if (playerBelongsToTeam(scorer, this.homeTeam)) {
+                homeGoals++;
+            } else if (playerBelongsToTeam(scorer, this.awayTeam)) {
+                awayGoals++;
+            }
+        }
+    }
+
+    return homeClub.getName() + " " + homeGoals + " - " + awayGoals + " " + awayClub.getName();
+}
+
 }

@@ -5,21 +5,20 @@
  */
 package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
+import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import java.io.IOException;
 
 /**
  *
- * @author guiba
+ * @author Utilizador
  */
-
-public class GoalEvent implements IGoalEvent {
+public class YellowCardEvent implements IEvent {
 
     private final IPlayer player;
     private final int minute;
 
-    public GoalEvent(IPlayer player, int minute) {
+    public YellowCardEvent(IPlayer player, int minute) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
         }
@@ -31,13 +30,8 @@ public class GoalEvent implements IGoalEvent {
     }
 
     @Override
-    public IPlayer getPlayer() {
-        return this.player;
-    }
-
-    @Override
     public String getDescription() {
-        return minute + "' Golo de " + player.getName();
+        return minute + "' Cartão amarelo para " + player.getName();
     }
 
     @Override

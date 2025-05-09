@@ -32,7 +32,7 @@ public class PlayerSelector implements IPlayerSelector {
                 return player;
             }
         }
-        //nao tinhas metido return, tirei a exceçao em cima e meti return e passei a exceçao para baixo
+
         throw new IllegalStateException("No player found for the specified position");
     }
 }

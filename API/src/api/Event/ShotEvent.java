@@ -5,7 +5,7 @@
  */
 package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
+import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import java.io.IOException;
 
@@ -14,12 +14,13 @@ import java.io.IOException;
  * @author guiba
  */
 
-public class GoalEvent implements IGoalEvent {
+public class ShotEvent implements IEvent {
 
     private final IPlayer player;
     private final int minute;
+    private final boolean onTarget;
 
-    public GoalEvent(IPlayer player, int minute) {
+    public ShotEvent(IPlayer player, int minute, boolean onTarget) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
         }
@@ -28,16 +29,13 @@ public class GoalEvent implements IGoalEvent {
         }
         this.player = player;
         this.minute = minute;
-    }
-
-    @Override
-    public IPlayer getPlayer() {
-        return this.player;
+        this.onTarget = onTarget;
     }
 
     @Override
     public String getDescription() {
-        return minute + "' Golo de " + player.getName();
+        String resultado = onTarget ? "Remate à baliza" : "Remate para fora";
+        return minute + "' " + resultado + " de " + player.getName();
     }
 
     @Override
@@ -50,3 +48,4 @@ public class GoalEvent implements IGoalEvent {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 }
+

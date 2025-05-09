@@ -10,23 +10,22 @@ import java.io.IOException;
 
 /**
  *
- * @author Utilizador
+ * @author guiba
  */
-public class Event implements IEvent{
+public abstract class Event implements IEvent {
+    protected int minute;
 
-    @Override
-    public String getDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Event(int minute) {
+        this.minute = minute;
     }
 
     @Override
     public int getMinute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return minute;
     }
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet");
     }
-    
 }

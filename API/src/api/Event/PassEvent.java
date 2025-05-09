@@ -5,7 +5,7 @@
  */
 package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
+import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import java.io.IOException;
 
@@ -14,30 +14,33 @@ import java.io.IOException;
  * @author guiba
  */
 
-public class GoalEvent implements IGoalEvent {
+public class PassEvent implements IEvent {
 
-    private final IPlayer player;
+    private final IPlayer fromPlayer;
+    private final IPlayer toPlayer;
     private final int minute;
+    private final boolean successful;
 
-    public GoalEvent(IPlayer player, int minute) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
+    public PassEvent(IPlayer fromPlayer, IPlayer toPlayer, int minute, boolean successful) {
+        if (fromPlayer == null || toPlayer == null) {
+            throw new IllegalArgumentException("Both players must be defined");
         }
         if (minute < 0 || minute > 120) {
             throw new IllegalArgumentException("Invalid minute: " + minute);
         }
-        this.player = player;
+        this.fromPlayer = fromPlayer;
+        this.toPlayer = toPlayer;
         this.minute = minute;
-    }
-
-    @Override
-    public IPlayer getPlayer() {
-        return this.player;
+        this.successful = successful;
     }
 
     @Override
     public String getDescription() {
-        return minute + "' Golo de " + player.getName();
+        if (successful) {
+            return minute + "' Passe de " + fromPlayer.getName() + " para " + toPlayer.getName();
+        } else {
+            return minute + "' Passe falhado de " + fromPlayer.getName();
+        }
     }
 
     @Override
