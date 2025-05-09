@@ -9,6 +9,7 @@
  */
 package api.League;
 
+import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
@@ -34,6 +35,7 @@ public class Season implements ISeason {
     private IMatch[] matches;
     private int matchCount;
     private int currentRound;
+    private int totalMatches;
 
     public Season(String name, int year, int maxTeams) {
         this.name = name;
@@ -43,7 +45,7 @@ public class Season implements ISeason {
         this.clubs = new IClub[maxTeams];
         this.matchCount = 0;
         this.currentRound = 0;
-        int totalMatches = maxTeams * (maxTeams - 1);
+        this.totalMatches = maxTeams * (maxTeams - 1);
         this.matches = new IMatch[totalMatches];
 
     }
@@ -92,42 +94,105 @@ public class Season implements ISeason {
 
     @Override
     public IMatch[] getMatches() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        IMatch[] copyMatches = new IMatch[matchCount];
+        for (int i = 0; i < this.matchCount; i++) {
+            copyMatches[i] = this.matches[i];
+        }
+        return copyMatches;
     }
 
     @Override
     public IMatch[] getMatches(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (i < 0 || i >= getMaxRounds()) {
+            throw new IllegalArgumentException("Invalid round number");
+        }
+
+        int count = 0;
+        for (int j = 0; j < matchCount; j++) {
+            if (matches[j].getRound() == i) {
+                count++;
+            }
+        }
+
+        IMatch[] roundMatches = new IMatch[count];
+        int index = 0;
+        for (int k = 0; k < matchCount; k++) {
+            if (matches[k].getRound() == i) {
+                roundMatches[index++] = matches[k];
+            }
+        }
+
+        return roundMatches;
     }
 
     @Override
     public void simulateRound() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (clubCount == 0) {
+            throw new IllegalStateException("The league is empty");
+        }
+
+        if (matchCount == 0) {
+            throw new IllegalStateException("The league is not scheduled");
+        }
+
+        for (int i = 0; i < matchCount; i++) {
+            if (matches[i].getRound() == currentRound && !matches[i].isPlayed()) {
+                matches[i].setPlayed();
+            }
+        }
+        currentRound++;
     }
 
     @Override
     public void simulateSeason() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (clubCount == 0) {
+            throw new IllegalStateException("The league is empty");
+        }
+
+        if (matchCount == 0) {
+            throw new IllegalStateException("The league is not scheduled");
+        }
+
+        while (!isSeasonComplete()) {
+            simulateRound();
+        }
     }
 
     @Override
     public int getCurrentRound() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.currentRound;
     }
 
     @Override
     public boolean isSeasonComplete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.matchCount == this.totalMatches) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void resetSeason() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (int i = 0; i < matchCount; i++) {
+            matches[i] = null;
+        }
+        matchCount = 0;
+        currentRound = 0;
     }
 
     @Override
     public String displayMatchResult(IMatch imatch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (imatch == null) {
+            throw new IllegalArgumentException("Match cannot be null");
+        }
+
+        IClub home = imatch.getHomeClub();
+        IClub away = imatch.getAwayClub();
+
+        int homeGoals = imatch.getTotalByEvent(IGoalEvent.class, home);
+        int awayGoals = imatch.getTotalByEvent(IGoalEvent.class, away);
+
+        return home.getName() + " " + homeGoals + " - " + awayGoals + " " + away.getName();
     }
 
     @Override
@@ -177,7 +242,13 @@ public class Season implements ISeason {
 
     @Override
     public int getCurrentMatches() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int count = 0;
+        for (int i = 0; i < this.matchCount; i++) {
+            if (this.matches[i].isPlayed()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
