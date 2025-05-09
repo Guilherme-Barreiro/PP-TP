@@ -152,6 +152,24 @@ public class Team implements ITeam {
         this.formation = formation;
     }
 
+
+    public void removePlayer(IPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        for (int i = 0; i < playerCount; i++) {
+            if (players[i].equals(player)) {
+                for (int j = i; j < playerCount - 1; j++) {
+                    players[j] = players[j + 1];
+                }
+                players[playerCount - 1] = null;
+                playerCount--;
+                return;
+            }
+        }
+    }
+
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");

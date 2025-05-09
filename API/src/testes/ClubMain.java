@@ -78,26 +78,23 @@ public class ClubMain {
             }
         }
 
-        // Testar isValid()
         System.out.println("\nClube é válido? " + slb.isValid());
 
-        // Testar removePlayer()
         System.out.println("\nRemovendo jogador arkturkoglu...");
         slb.removePlayer(p2);
         System.out.println("Número de jogadores após remoção: " + slb.getPlayerCount());
         System.out.println("Contém arkturkoglu? " + slb.isPlayer(p2));
 
-        // Testar selectPlayer() do Club
-        PlayerSelector selector = new PlayerSelector();  // Criamos uma instância do PlayerSelector
+        PlayerSelector selector = new PlayerSelector();
         try {
-            var selecionado = slb.selectPlayer(selector, fwd);  // Agora chamamos o método do clube
+            var selecionado = slb.selectPlayer(selector, fwd);
             System.out.println("\nJogador selecionado com posição 'forward': " + selecionado.getName());
         } catch (Exception e) {
             System.out.println("\nErro ao selecionar jogador: " + e.getMessage());
         }
 
         try {
-            var selecionado = slb.selectPlayer(selector, mid);  // Teste para midfielder
+            var selecionado = slb.selectPlayer(selector, mid);
             System.out.println("Jogador selecionado com posição 'midfielder': " + selecionado.getName());
         } catch (Exception e) {
             System.out.println("Erro ao selecionar jogador: " + e.getMessage());

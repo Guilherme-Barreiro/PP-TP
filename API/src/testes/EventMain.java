@@ -38,22 +38,22 @@ public class EventMain {
         PlayerPosition def = new PlayerPosition("defender");
         PlayerPosition gk = new PlayerPosition("goalkeeper");
 
-        Player p1 = new Player("Jogador1", LocalDate.of(2000, 1, 1), 24, "Portugal", fwd, "", 80, 70, 65, 75, 60, 1.80f, 75f, null);
-        Player p2 = new Player("Jogador2", LocalDate.of(1999, 2, 2), 25, "Portugal", mid, "", 82, 72, 67, 77, 62, 1.81f, 76f, null);
-        Player p3 = new Player("Jogador3", LocalDate.of(1998, 3, 3), 26, "Portugal", def, "", 83, 73, 68, 78, 63, 1.82f, 77f, null);
-        Player p4 = new Player("Jogador4", LocalDate.of(1997, 4, 4), 27, "Portugal", gk, "", 84, 74, 69, 79, 64, 1.83f, 78f, null);
-        Player p5 = new Player("Jogador5", LocalDate.of(2001, 5, 5), 23, "Portugal", fwd, "", 85, 75, 70, 80, 65, 1.84f, 79f, null);
-        Player p6 = new Player("Jogador6", LocalDate.of(2002, 6, 6), 22, "Portugal", mid, "", 86, 76, 71, 81, 66, 1.85f, 80f, null);
-        Player p7 = new Player("Jogador7", LocalDate.of(2003, 7, 7), 21, "Portugal", def, "", 87, 77, 72, 82, 67, 1.86f, 81f, null);
-        Player p8 = new Player("Jogador8", LocalDate.of(2000, 8, 8), 24, "Portugal", gk, "", 88, 78, 73, 83, 68, 1.87f, 82f, null);
-        Player p9 = new Player("Jogador9", LocalDate.of(1999, 9, 9), 25, "Portugal", fwd, "", 89, 79, 74, 84, 69, 1.88f, 83f, null);
-        Player p10 = new Player("Jogador10", LocalDate.of(1998, 10, 10), 26, "Portugal", mid, "", 90, 80, 75, 85, 70, 1.89f, 84f, null);
-        Player p11 = new Player("Jogador11", LocalDate.of(1997, 11, 11), 27, "Portugal", def, "", 91, 81, 76, 86, 71, 1.90f, 85f, null);
-        Player p12 = new Player("Jogador12", LocalDate.of(2001, 12, 12), 23, "Portugal", gk, "", 92, 82, 77, 87, 72, 1.91f, 86f, null);
-        Player p13 = new Player("Jogador13", LocalDate.of(2002, 1, 13), 22, "Portugal", fwd, "", 93, 83, 78, 88, 73, 1.92f, 87f, null);
-        Player p14 = new Player("Jogador14", LocalDate.of(2003, 2, 14), 21, "Portugal", mid, "", 94, 84, 79, 89, 74, 1.93f, 88f, null);
-        Player p15 = new Player("Jogador15", LocalDate.of(2000, 3, 15), 24, "Portugal", def, "", 95, 85, 80, 90, 75, 1.94f, 89f, null);
-        Player p16 = new Player("Jogador16", LocalDate.of(1999, 4, 16), 25, "Portugal", gk, "", 96, 86, 81, 91, 76, 1.95f, 90f, null);
+        Player p1 = new Player("Jbenfica1", LocalDate.of(2000, 1, 1), 24, "Portugal", fwd, "", 80, 70, 65, 75, 60, 1.80f, 75f, null);
+        Player p2 = new Player("Jbenfica2", LocalDate.of(1999, 2, 2), 25, "Portugal", mid, "", 82, 72, 67, 77, 62, 1.81f, 76f, null);
+        Player p3 = new Player("Jbenfica3", LocalDate.of(1998, 3, 3), 26, "Portugal", def, "", 83, 73, 68, 78, 63, 1.82f, 77f, null);
+        Player p4 = new Player("Jbenfica4", LocalDate.of(1997, 4, 4), 27, "Portugal", gk, "", 84, 74, 69, 79, 64, 1.83f, 78f, null);
+        Player p5 = new Player("Jbenfica5", LocalDate.of(2001, 5, 5), 23, "Portugal", fwd, "", 85, 75, 70, 80, 65, 1.84f, 79f, null);
+        Player p6 = new Player("Jbenfica6", LocalDate.of(2002, 6, 6), 22, "Portugal", mid, "", 86, 76, 71, 81, 66, 1.85f, 80f, null);
+        Player p7 = new Player("Jbenfica7", LocalDate.of(2003, 7, 7), 21, "Portugal", def, "", 87, 77, 72, 82, 67, 1.86f, 81f, null);
+        Player p8 = new Player("Jbenfica8", LocalDate.of(2000, 8, 8), 24, "Portugal", gk, "", 88, 78, 73, 83, 68, 1.87f, 82f, null);
+        Player p9 = new Player("Jbenfica9", LocalDate.of(1999, 9, 9), 25, "Portugal", fwd, "", 89, 79, 74, 84, 69, 1.88f, 83f, null);
+        Player p10 = new Player("Jbenfica10", LocalDate.of(1998, 10, 10), 26, "Portugal", mid, "", 90, 80, 75, 85, 70, 1.89f, 84f, null);
+        Player p11 = new Player("Jbenfica11", LocalDate.of(1997, 11, 11), 27, "Portugal", def, "", 91, 81, 76, 86, 71, 1.90f, 85f, null);
+        Player p12 = new Player("Jbenfica12", LocalDate.of(2001, 12, 12), 23, "Portugal", gk, "", 92, 82, 77, 87, 72, 1.91f, 86f, null);
+        Player p13 = new Player("Jbenfica13", LocalDate.of(2002, 1, 13), 22, "Portugal", fwd, "", 93, 83, 78, 88, 73, 1.92f, 87f, null);
+        Player p14 = new Player("Jbenfica14", LocalDate.of(2003, 2, 14), 21, "Portugal", mid, "", 94, 84, 79, 89, 74, 1.93f, 88f, null);
+        Player p15 = new Player("Jbenfica15", LocalDate.of(2000, 3, 15), 24, "Portugal", def, "", 95, 85, 80, 90, 75, 1.94f, 89f, null);
+        Player p16 = new Player("Jbenfica16", LocalDate.of(1999, 4, 16), 25, "Portugal", gk, "", 96, 86, 81, 91, 76, 1.95f, 90f, null);
 
         Cslb.addPlayer(p1);
         Cslb.addPlayer(p2);
@@ -74,22 +74,22 @@ public class EventMain {
       
 
 
-        Player q1 = new Player("Jogador17", LocalDate.of(2001, 6, 17), 23, "Portugal", fwd, "", 17, 87, 82, 92, 77, 1.85f, 75f, null);
-        Player q2 = new Player("Jogador18", LocalDate.of(2002, 7, 18), 22, "Portugal", mid, "", 18, 88, 83, 93, 78, 1.84f, 76f, null);
-        Player q3 = new Player("Jogador19", LocalDate.of(2003, 8, 19), 21, "Portugal", def, "", 19, 89, 84, 94, 79, 1.83f, 77f, null);
-        Player q4 = new Player("Jogador20", LocalDate.of(2000, 9, 20), 24, "Portugal", gk, "", 20, 90, 85, 95, 80, 1.82f, 78f, null);
-        Player q5 = new Player("Jogador21", LocalDate.of(1999, 10, 21), 25, "Portugal", fwd, "", 21, 91, 86, 96, 81, 1.81f, 79f, null);
-        Player q6 = new Player("Jogador22", LocalDate.of(1998, 11, 22), 26, "Portugal", mid, "", 22, 92, 87, 97, 82, 1.80f, 80f, null);
-        Player q7 = new Player("Jogador23", LocalDate.of(1997, 12, 23), 27, "Portugal", def, "", 23, 93, 88, 98, 83, 1.79f, 81f, null);
-        Player q8 = new Player("Jogador24", LocalDate.of(2001, 1, 24), 23, "Portugal", gk, "", 24, 94, 89, 99, 84, 1.78f, 82f, null);
-        Player q9 = new Player("Jogador25", LocalDate.of(2002, 2, 25), 22, "Portugal", fwd, "", 25, 95, 90, 100, 85, 1.77f, 83f, null);
-        Player q10 = new Player("Jogador26", LocalDate.of(2003, 3, 26), 21, "Portugal", mid, "", 26, 96, 91, 100, 86, 1.76f, 84f, null);
-        Player q11 = new Player("Jogador27", LocalDate.of(2000, 4, 27), 24, "Portugal", def, "", 27, 97, 92, 100, 87, 1.75f, 85f, null);
-        Player q12 = new Player("Jogador28", LocalDate.of(1999, 5, 28), 25, "Portugal", gk, "", 28, 98, 93, 100, 88, 1.74f, 86f, null);
-        Player q13 = new Player("Jogador29", LocalDate.of(1998, 6, 29), 26, "Portugal", fwd, "", 29, 99, 94, 100, 89, 1.73f, 87f, null);
-        Player q14 = new Player("Jogador30", LocalDate.of(1997, 7, 30), 27, "Portugal", mid, "", 30, 100, 95, 100, 90, 1.72f, 88f, null);
-        Player q15 = new Player("Jogador31", LocalDate.of(2001, 8, 31), 23, "Portugal", def, "", 31, 98, 96, 100, 91, 1.71f, 89f, null);
-        Player q16 = new Player("Jogador32", LocalDate.of(2002, 9, 1), 22, "Portugal", gk, "", 32, 97, 97, 100, 92, 1.70f, 90f, null);
+        Player q1 = new Player("Jporto1", LocalDate.of(2001, 6, 17), 23, "Portugal", fwd, "", 17, 87, 82, 92, 77, 1.85f, 75f, null);
+        Player q2 = new Player("Jporto2", LocalDate.of(2002, 7, 18), 22, "Portugal", mid, "", 18, 88, 83, 93, 78, 1.84f, 76f, null);
+        Player q3 = new Player("Jporto3", LocalDate.of(2003, 8, 19), 21, "Portugal", def, "", 19, 89, 84, 94, 79, 1.83f, 77f, null);
+        Player q4 = new Player("Jporto4", LocalDate.of(2000, 9, 20), 24, "Portugal", gk, "", 20, 90, 85, 95, 80, 1.82f, 78f, null);
+        Player q5 = new Player("Jporto5", LocalDate.of(1999, 10, 21), 25, "Portugal", fwd, "", 21, 91, 86, 96, 81, 1.81f, 79f, null);
+        Player q6 = new Player("Jporto6", LocalDate.of(1998, 11, 22), 26, "Portugal", mid, "", 22, 92, 87, 97, 82, 1.80f, 80f, null);
+        Player q7 = new Player("Jporto7", LocalDate.of(1997, 12, 23), 27, "Portugal", def, "", 23, 93, 88, 98, 83, 1.79f, 81f, null);
+        Player q8 = new Player("Jporto8", LocalDate.of(2001, 1, 24), 23, "Portugal", gk, "", 24, 94, 89, 99, 84, 1.78f, 82f, null);
+        Player q9 = new Player("Jporto9", LocalDate.of(2002, 2, 25), 22, "Portugal", fwd, "", 25, 95, 90, 100, 85, 1.77f, 83f, null);
+        Player q10 = new Player("Jporto10", LocalDate.of(2003, 3, 26), 21, "Portugal", mid, "", 26, 96, 91, 100, 86, 1.76f, 84f, null);
+        Player q11 = new Player("Jporto11", LocalDate.of(2000, 4, 27), 24, "Portugal", def, "", 27, 97, 92, 100, 87, 1.75f, 85f, null);
+        Player q12 = new Player("Jporto12", LocalDate.of(1999, 5, 28), 25, "Portugal", gk, "", 28, 98, 93, 100, 88, 1.74f, 86f, null);
+        Player q13 = new Player("Jporto13", LocalDate.of(1998, 6, 29), 26, "Portugal", fwd, "", 29, 99, 94, 100, 89, 1.73f, 87f, null);
+        Player q14 = new Player("Jporto14", LocalDate.of(1997, 7, 30), 27, "Portugal", mid, "", 30, 100, 95, 100, 90, 1.72f, 88f, null);
+        Player q15 = new Player("Jporto15", LocalDate.of(2001, 8, 31), 23, "Portugal", def, "", 31, 98, 96, 100, 91, 1.71f, 89f, null);
+        Player q16 = new Player("Jporto16", LocalDate.of(2002, 9, 1), 22, "Portugal", gk, "", 32, 97, 97, 100, 92, 1.70f, 90f, null);
 
         Cfcp.addPlayer(q1);
         Cfcp.addPlayer(q2);
@@ -146,30 +146,22 @@ public class EventMain {
         jogo.setTeam(Tslb);
         jogo.setTeam(Tfcp);
 
-        // Simular o jogo
         MatchSimulatorStrategyImpl simulador = new MatchSimulatorStrategyImpl();
         simulador.simulate(jogo);
 
-        // Marcar como jogado
         jogo.setPlayed();
 
-        // Mostrar eventos
-        System.out.println("\nEventos gerados:");
+        //System.out.println("\nEventos gerados:");
         IEvent[] eventos = jogo.getEvents();
         for (int i = 0; i < jogo.getEventCount(); i++) {
-            System.out.println(eventos[i].getDescription());
+            //System.out.println(eventos[i].getDescription());
         }
 
-        // Verificar resultado
         if (jogo.getWinner() != null) {
             System.out.println("\nEquipa vencedora: " + jogo.getWinner().getClub().getName());
         } else {
             System.out.println("\nEmpate!");
         }
-        
-        System.out.println("Jogadores equipa SLB: " + jogo.getHomeTeam().getPlayers().length);
-        System.out.println("Jogadores equipa FCP: " + jogo.getAwayTeam().getPlayers().length);
-
         
         System.out.println("\nResultado final:");
         System.out.println(((Match) jogo).getScore());
