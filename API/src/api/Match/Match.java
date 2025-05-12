@@ -54,7 +54,6 @@ public class Match implements IMatch {
         return this.awayClub;
     }
 
-    //ou o javadoc esta mal ou eu nao sei fazer
     @Override
     public boolean isPlayed() {
         return this.played;
@@ -81,11 +80,6 @@ public class Match implements IMatch {
         this.played = true;
     }
 
-    //nao sei implementar copiado do chatgpt nao gosto do metodo no javadoc nao pede excecoes nem nada
-    //secalhar vamos ter de criar classes para eventos novos como FoultEvent e por ai
-    //no package event nao sei se é preciso a classe eventManager que ela é usada como superClasse de outra classe
-    //Temos o package enum com a enumeração penso que podemos tira-la
-    //que eu me lembre é tudo que temos de pensar por agora
     @Override
     public int getTotalByEvent(Class type, IClub iclub) {
         if (type == null || iclub == null) {
@@ -128,17 +122,9 @@ public class Match implements IMatch {
             return ((IGoalEvent) event).getPlayer();
         }
 
-        // Aqui podes adicionar suporte a outros tipos de eventos:
-        // if (event instanceof IAssistEvent) {
-        //     return ((IAssistEvent) event).getPlayer();
-        // }
-        // if (event instanceof ICardEvent) {
-        //     return ((ICardEvent) event).getPlayer();
-        // }
         return null;
     }
 
-//falta validacao para saber se esta na liga os clubs e nao sei se nas 1 validacoes é club ou team
     @Override
     public boolean isValid() {
         if (this.getHomeClub() != null && this.getAwayClub() != null && !this.getHomeClub().equals(this.getAwayClub()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {
@@ -147,7 +133,6 @@ public class Match implements IMatch {
         return false;
     }
 
-    //preciso testar
     @Override
     public ITeam getWinner() {
         int homeGoals = 0;

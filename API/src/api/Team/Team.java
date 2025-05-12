@@ -24,7 +24,6 @@ public class Team implements ITeam {
     private int playerCount;
     private static final int MAX_PLAYERS = 30; // ou outro limite realista para plantel
 
-    //acho que vai ser preciso mudar o construtor acho que formation vai ter de ser parametro
     public Team(IClub club) {
         this.club = club;
         this.players = new IPlayer[MAX_PLAYERS];
@@ -113,7 +112,6 @@ public class Team implements ITeam {
         return total;
     }
 
-    //nao esta correto
     @Override
     public boolean isValidPositionForFormation(IPlayerPosition ipp) {
         if (ipp == null) {
