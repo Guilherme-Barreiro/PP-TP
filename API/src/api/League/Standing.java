@@ -12,71 +12,141 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
  *
  * @author Utilizador
  */
-public class Standing implements IStanding{
+public class Standing implements IStanding {
 
-    @Override
-    public ITeam getTeam() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private ITeam team;
+    private int wins;
+    private int draws;
+    private int losses;
+    private int goalsScored;
+    private int goalsConceded;
+    private int points;
+
+    public Standing(ITeam team) {
+        if (team == null) {
+            throw new IllegalArgumentException("Team cannot be null");
+        }
+        this.team = team;
+        this.wins = 0;
+        this.draws = 0;
+        this.losses = 0;
+        this.goalsConceded = 0;
+        this.goalsScored = 0;
+        this.points = 0;
     }
 
     @Override
+    public ITeam getTeam() {
+        if (this.team == null) {
+            throw new IllegalStateException("Team is not initialized");
+        }
+        return this.team;
+    }
+    //falta fazer estes throw para os metodos de baixo sem excecoes
+    @Override
     public int getPoints() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.points == null) {
+            throw new IllegalStateException("points is not initialized");
+        }
+        return this.points;
     }
 
     @Override
     public void addPoints(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (i < 0) {
+            throw new IllegalArgumentException("Points cannot be negative");
+        }
+        this.points += i;
     }
 
     @Override
     public void addWin(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (i < 0) {
+            throw new IllegalArgumentException("Points per win cannot be negative");
+        }
+        this.wins++;
+        this.points += i;
     }
 
     @Override
     public void addDraw(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (i < 0) {
+            throw new IllegalArgumentException("Points per draw cannot be negative");
+        }
+        this.draws++;
+        this.points += i;
     }
 
     @Override
     public void addLoss(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (i < 0) {
+            throw new IllegalArgumentException("Points per loss cannot be negative");
+        }
+        this.losses++;
+        this.points += i;
     }
 
     @Override
     public int getWins() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.wins;
     }
 
     @Override
     public int getDraws() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.draws;
     }
 
     @Override
     public int getLosses() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.losses;
     }
 
     @Override
     public int getTotalMatches() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.wins + this.draws + this.losses;
     }
 
     @Override
     public int getGoalScored() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.goalsScored;
     }
 
     @Override
     public int getGoalsConceded() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.goalsConceded;
     }
 
     @Override
     public int getGoalDifference() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.goalsScored - this.goalsConceded;
     }
-    
+
+    public void addGoalsScored(int goals) {
+        if (goals < 0) {
+            throw new IllegalArgumentException("Goals cannot be negative");
+        }
+        this.goalsScored += goals;
+    }
+
+    public void addGoalsConceded(int goals) {
+        if (goals < 0) {
+            throw new IllegalArgumentException("Goals cannot be negative");
+        }
+        this.goalsConceded += goals;
+    }
+
+    @Override
+    public String toString() {
+        return "Standing{"
+                + "team=" + this.getTeam().getClub().getName()
+                + ", points=" + this.getPoints()
+                + ", wins=" + this.getWins()
+                + ", draws=" + this.getDraws()
+                + ", losses=" + this.getLosses()
+                + ", goalsScored=" + this.getGoalScored()
+                + ", goalsConceded=" + this.getGoalsConceded()
+                + ", goalDifference=" + this.getGoalDifference()
+                + ", totalMatches=" + this.getTotalMatches()
+                + '}';
+    }
 }
