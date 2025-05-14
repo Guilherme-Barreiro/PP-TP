@@ -15,12 +15,12 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 public class Standing implements IStanding {
 
     private ITeam team;
-    private int wins;
-    private int draws;
-    private int losses;
-    private int goalsScored;
-    private int goalsConceded;
-    private int points;
+    private Integer wins;
+    private Integer draws;
+    private Integer losses;
+    private Integer goalsScored;
+    private Integer goalsConceded;
+    private Integer points;
 
     public Standing(ITeam team) {
         if (team == null) {
@@ -42,7 +42,7 @@ public class Standing implements IStanding {
         }
         return this.team;
     }
-    //falta fazer estes throw para os metodos de baixo sem excecoes
+
     @Override
     public int getPoints() {
         if (this.points == null) {
@@ -88,36 +88,57 @@ public class Standing implements IStanding {
 
     @Override
     public int getWins() {
+        if (this.wins == null) {
+            throw new IllegalStateException("wins is not initialized");
+        }
         return this.wins;
     }
 
     @Override
     public int getDraws() {
+        if (this.draws == null) {
+            throw new IllegalStateException("draws is not initialized");
+        }
         return this.draws;
     }
 
     @Override
     public int getLosses() {
+        if (this.losses == null) {
+            throw new IllegalStateException("losses is not initialized");
+        }
         return this.losses;
     }
 
     @Override
     public int getTotalMatches() {
+        if (this.wins == null && this.draws == null && this.losses == null) {
+            throw new IllegalStateException("the matches is not initialized");
+        }
         return this.wins + this.draws + this.losses;
     }
 
     @Override
     public int getGoalScored() {
+        if (this.goalsScored == null) {
+            throw new IllegalStateException("goals Scored is not initialized");
+        }
         return this.goalsScored;
     }
 
     @Override
     public int getGoalsConceded() {
+        if (this.goalsConceded == null) {
+            throw new IllegalStateException("goals Conceded is not initialized");
+        }
         return this.goalsConceded;
     }
 
     @Override
     public int getGoalDifference() {
+        if (this.goalsScored == null && this.goalsConceded == null) {
+            throw new IllegalStateException("goal difference is not initialized");
+        }
         return this.goalsScored - this.goalsConceded;
     }
 
