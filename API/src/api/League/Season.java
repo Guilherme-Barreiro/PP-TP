@@ -16,6 +16,7 @@ import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
+import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
 
 /**
@@ -36,6 +37,9 @@ public class Season implements ISeason {
     private int matchCount;
     private int currentRound;
     private int totalMatches;
+    private MatchSimulatorStrategy matchSimulator;
+    private ITeam[] teams;
+    private ISchedule schedule;
 
     public Season(String name, int year, int maxTeams) {
         this.name = name;
@@ -47,7 +51,7 @@ public class Season implements ISeason {
         this.currentRound = 0;
         this.totalMatches = maxTeams * (maxTeams - 1);
         this.matches = new IMatch[totalMatches];
-
+        this.teams = new ITeam[maxTeams];
     }
 
     @Override
@@ -197,17 +201,87 @@ public class Season implements ISeason {
 
     @Override
     public void setMatchSimulator(MatchSimulatorStrategy mss) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (mss == null) {
+            throw new IllegalArgumentException("Simulator cannot be null");
+        }
+        this.matchSimulator = mss;
     }
 
+    //chatgpt deve estar mal
     @Override
     public IStanding[] getLeagueStandings() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (clubCount == 0) {
+            throw new IllegalStateException("No clubs in the league");
+        }
+
+        IStanding[] standings = new IStanding[clubCount];
+
+        // Inicializar standings
+        for (int i = 0; i < clubCount; i++) {
+            standings[i] = new Standing(teams[i]);
+        }
+
+        // Atualizar standings com base nos jogos
+        for (int i = 0; i < matchCount; i++) {
+            IMatch match = matches[i];
+            if (!match.isPlayed()) {
+                continue;
+            }
+
+            IClub home = match.getHomeClub();
+            IClub away = match.getAwayClub();
+            ITeam homeTeam = match.getHomeTeam();
+            ITeam awayTeam = match.getAwayTeam();
+            ITeam winner = match.getWinner();
+
+            // Golos
+            int homeGoals = match.getTotalByEvent(IGoalEvent.class, home);
+            int awayGoals = match.getTotalByEvent(IGoalEvent.class, away);
+
+            // Encontrar standings respetivos
+            Standing homeStanding = null;
+            Standing awayStanding = null;
+
+            for (IStanding standing : standings) {
+                if (standing.getTeam().equals(homeTeam)) {
+                    homeStanding = (Standing) standing;
+                } else if (standing.getTeam().equals(awayTeam)) {
+                    awayStanding = (Standing) standing;
+                }
+            }
+
+            // Atualizar golos
+            homeStanding.addGoalsScored(homeGoals);
+            homeStanding.addGoalsConceded(awayGoals);
+
+            awayStanding.addGoalsScored(awayGoals);
+            awayStanding.addGoalsConceded(homeGoals);
+
+            // Atualizar pontos e resultados
+            if (winner == null) {
+                homeStanding.addDraw(getPointsPerDraw());
+                awayStanding.addDraw(getPointsPerDraw());
+            } else if (winner.equals(homeTeam)) {
+                homeStanding.addWin(getPointsPerWin());
+                awayStanding.addLoss(getPointsPerLoss());
+            } else {
+                awayStanding.addWin(getPointsPerWin());
+                homeStanding.addLoss(getPointsPerLoss());
+            }
+        }
+
+        return standings;
     }
 
     @Override
     public ISchedule getSchedule() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (matchCount == 0) {
+            throw new IllegalStateException("The schedule is not initialized");
+        }
+        if (schedule == null) {
+            this.schedule = new Schedule(matches, matchCount, this.getMaxRounds());
+        }
+        return schedule;
     }
 
     @Override
@@ -277,6 +351,34 @@ public class Season implements ISeason {
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private IStanding findStandingByTeam(IStanding[] standings, ITeam team) {
+        for (int i = 0; i < standings.length; i++) {
+            if (standings[i].getTeam().equals(team)) {
+                return standings[i];
+            }
+        }
+        throw new IllegalStateException("Standing not found for team: " + team);
+    }
+
+    private ITeam getTeamByClub(IClub club) {
+        for (int i = 0; i < clubCount; i++) {
+            if (clubs[i].equals(club)) {
+                return teams[i];
+            }
+        }
+        return null;
+    }
+
+    public void setTeamForClub(IClub club, ITeam team) {
+        for (int i = 0; i < clubCount; i++) {
+            if (clubs[i].equals(club)) {
+                teams[i] = team;
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Club not found in season");
     }
 
 }
