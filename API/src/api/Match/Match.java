@@ -211,7 +211,7 @@ public class Match implements IMatch {
 
     @Override
     public IEvent[] getEvents() {
-        IEvent[] copyEvent = new IEvent[MAX_EVENT];
+        IEvent[] copyEvent = new IEvent[eventCount];
         for (int i = 0; i < this.eventCount; i++) {
             copyEvent[i] = this.events[i];
         }
