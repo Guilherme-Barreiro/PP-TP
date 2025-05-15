@@ -6,6 +6,7 @@
 package testes;
 
 import api.Match.Match;
+import api.Player.Goalkeeper;
 import api.Player.Player;
 import api.Player.PlayerPosition;
 import api.Simulation.MatchSimulatorStrategyImpl;
@@ -37,7 +38,8 @@ public class EventMain {
         PlayerPosition mid = new PlayerPosition("midfielder");
         PlayerPosition def = new PlayerPosition("defender");
         PlayerPosition gk = new PlayerPosition("goalkeeper");
-
+        
+        Goalkeeper g1 = new Goalkeeper("Jbenfica0", LocalDate.of(1997, 4, 4), 27, "Portugal", gk, "", 84, 74, 69, 79, 64, 1.83f, 78f, null, 85);
         Player p1 = new Player("Jbenfica1", LocalDate.of(2000, 1, 1), 24, "Portugal", fwd, "", 80, 70, 65, 75, 60, 1.80f, 75f, null);
         Player p2 = new Player("Jbenfica2", LocalDate.of(1999, 2, 2), 25, "Portugal", mid, "", 82, 72, 67, 77, 62, 1.81f, 76f, null);
         Player p3 = new Player("Jbenfica3", LocalDate.of(1998, 3, 3), 26, "Portugal", def, "", 83, 73, 68, 78, 63, 1.82f, 77f, null);
@@ -54,7 +56,8 @@ public class EventMain {
         Player p14 = new Player("Jbenfica14", LocalDate.of(2003, 2, 14), 21, "Portugal", mid, "", 94, 84, 79, 89, 74, 1.93f, 88f, null);
         Player p15 = new Player("Jbenfica15", LocalDate.of(2000, 3, 15), 24, "Portugal", def, "", 95, 85, 80, 90, 75, 1.94f, 89f, null);
         Player p16 = new Player("Jbenfica16", LocalDate.of(1999, 4, 16), 25, "Portugal", gk, "", 96, 86, 81, 91, 76, 1.95f, 90f, null);
-
+        
+        Cslb.addPlayer(g1);
         Cslb.addPlayer(p1);
         Cslb.addPlayer(p2);
         Cslb.addPlayer(p3);
@@ -72,8 +75,8 @@ public class EventMain {
         Cslb.addPlayer(p15);
         Cslb.addPlayer(p16);
       
-
-
+        
+        Goalkeeper g2 = new Goalkeeper("Jporto0", LocalDate.of(2000, 9, 20), 24, "Portugal", gk, "", 20, 90, 85, 95, 80, 1.82f, 78f, null, 88);
         Player q1 = new Player("Jporto1", LocalDate.of(2001, 6, 17), 23, "Portugal", fwd, "", 17, 87, 82, 92, 77, 1.85f, 75f, null);
         Player q2 = new Player("Jporto2", LocalDate.of(2002, 7, 18), 22, "Portugal", mid, "", 18, 88, 83, 93, 78, 1.84f, 76f, null);
         Player q3 = new Player("Jporto3", LocalDate.of(2003, 8, 19), 21, "Portugal", def, "", 19, 89, 84, 94, 79, 1.83f, 77f, null);
@@ -91,6 +94,7 @@ public class EventMain {
         Player q15 = new Player("Jporto15", LocalDate.of(2001, 8, 31), 23, "Portugal", def, "", 31, 98, 96, 100, 91, 1.71f, 89f, null);
         Player q16 = new Player("Jporto16", LocalDate.of(2002, 9, 1), 22, "Portugal", gk, "", 32, 97, 97, 100, 92, 1.70f, 90f, null);
 
+        Cfcp.addPlayer(g2);
         Cfcp.addPlayer(q1);
         Cfcp.addPlayer(q2);
         Cfcp.addPlayer(q3);
