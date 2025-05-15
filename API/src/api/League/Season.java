@@ -9,6 +9,7 @@
  */
 package api.League;
 
+import api.Match.Match;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
@@ -93,7 +94,37 @@ public class Season implements ISeason {
 
     @Override
     public void generateSchedule() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (clubCount == 0) {
+            throw new IllegalStateException("The league is empty");
+        }
+
+        for (int i = 0; i < matchCount; i++) {
+            if (matches[i] != null && matches[i].isPlayed()) {
+                throw new IllegalStateException("A match has already been played");
+            }
+        }
+
+        matchCount = 0;
+        int round = 0;
+        int maxRounds = getMaxRounds();
+
+        for (int i = 0; i < clubCount - 1; i++) {
+            for (int j = i + 1; j < clubCount; j++) {
+                IClub home = clubs[i];
+                IClub away = clubs[j];
+
+                // Ida (home vs away)
+                IMatch firstLeg = new Match(home, away, round);
+                matches[matchCount++] = firstLeg;
+
+                // Volta (away vs home)
+                IMatch secondLeg = new Match(away, home, round + 1);
+                matches[matchCount++] = secondLeg;
+
+                // Avança 2 rondas (ida + volta)
+                round = (round + 2) % maxRounds;
+            }
+        }
     }
 
     @Override
@@ -193,8 +224,11 @@ public class Season implements ISeason {
         IClub home = imatch.getHomeClub();
         IClub away = imatch.getAwayClub();
 
-        int homeGoals = imatch.getTotalByEvent(IGoalEvent.class, home);
-        int awayGoals = imatch.getTotalByEvent(IGoalEvent.class, away);
+        int homeGoals = imatch.getTotalByEvent(IGoalEvent.class,
+                home);
+
+        int awayGoals = imatch.getTotalByEvent(IGoalEvent.class,
+                away);
 
         return home.getName() + " " + homeGoals + " - " + awayGoals + " " + away.getName();
     }
@@ -235,8 +269,11 @@ public class Season implements ISeason {
             ITeam winner = match.getWinner();
 
             // Golos
-            int homeGoals = match.getTotalByEvent(IGoalEvent.class, home);
-            int awayGoals = match.getTotalByEvent(IGoalEvent.class, away);
+            int homeGoals = match.getTotalByEvent(IGoalEvent.class,
+                    home);
+
+            int awayGoals = match.getTotalByEvent(IGoalEvent.class,
+                    away);
 
             // Encontrar standings respetivos
             Standing homeStanding = null;
@@ -351,24 +388,6 @@ public class Season implements ISeason {
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private IStanding findStandingByTeam(IStanding[] standings, ITeam team) {
-        for (int i = 0; i < standings.length; i++) {
-            if (standings[i].getTeam().equals(team)) {
-                return standings[i];
-            }
-        }
-        throw new IllegalStateException("Standing not found for team: " + team);
-    }
-
-    private ITeam getTeamByClub(IClub club) {
-        for (int i = 0; i < clubCount; i++) {
-            if (clubs[i].equals(club)) {
-                return teams[i];
-            }
-        }
-        return null;
     }
 
     public void setTeamForClub(IClub club, ITeam team) {
