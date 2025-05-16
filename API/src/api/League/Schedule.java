@@ -7,7 +7,10 @@ package api.League;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -150,7 +153,30 @@ public class Schedule implements ISchedule {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        JSONObject json = new JSONObject();
+        json.put("numberOfRounds", numberOfRounds);
+        json.put("matchCount", matchCount);
+
+        JSONArray matchArray = new JSONArray();
+        for (int i = 0; i < matchCount; i++) {
+            IMatch match = matches[i];
+            JSONObject matchJson = new JSONObject();
+
+            matchJson.put("homeClub", match.getHomeClub().getName());
+            matchJson.put("awayClub", match.getAwayClub().getName());
+            matchJson.put("round", match.getRound());
+            matchJson.put("played", match.isPlayed());
+
+            matchArray.add(matchJson);
+        }
+
+        json.put("matches", matchArray);
+
+        String fileName = "schedule.json";
+        try ( FileWriter file = new FileWriter(fileName)) {
+            file.write(json.toJSONString());
+            file.flush();
+        }
     }
 
 }

@@ -12,9 +12,11 @@ package api.Player;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
+import org.json.simple.JSONObject;
 
 /**
  * Represents a football player with personal and technical attributes.
@@ -190,7 +192,27 @@ public class Player implements IPlayer {
      */
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        JSONObject playerJson = new JSONObject();
+
+        playerJson.put("name", this.name);
+        playerJson.put("birthDate", this.birthDate.toString()); // LocalDate -> String
+        playerJson.put("age", this.age);
+        playerJson.put("nationality", this.nationality);
+        playerJson.put("position", this.position != null ? this.position.getDescription() : null);
+        playerJson.put("photo", this.photo);
+        playerJson.put("number", this.number);
+        playerJson.put("shooting", this.shooting);
+        playerJson.put("passing", this.passing);
+        playerJson.put("stamina", this.stamina);
+        playerJson.put("speed", this.speed);
+        playerJson.put("height", this.height);
+        playerJson.put("weight", this.weight);
+        playerJson.put("preferredFoot", this.preferredFoot != null ? this.preferredFoot.toString() : null);
+
+        try ( FileWriter file = new FileWriter("player_" + this.name.replaceAll("\\s+", "_") + ".json")) {
+            file.write(playerJson.toJSONString());
+            file.flush();
+        }
     }
 
     /**
@@ -209,20 +231,7 @@ public class Player implements IPlayer {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 61 * hash + Objects.hashCode(this.name);
-        hash = 61 * hash + Objects.hashCode(this.birthDate);
-        hash = 61 * hash + this.age;
-        hash = 61 * hash + Objects.hashCode(this.nationality);
-        hash = 61 * hash + Objects.hashCode(this.position);
-        hash = 61 * hash + Objects.hashCode(this.photo);
-        hash = 61 * hash + this.number;
-        hash = 61 * hash + this.shooting;
-        hash = 61 * hash + this.passing;
-        hash = 61 * hash + this.stamina;
-        hash = 61 * hash + this.speed;
-        hash = 61 * hash + Float.floatToIntBits(this.height);
-        hash = 61 * hash + Float.floatToIntBits(this.weight);
-        hash = 61 * hash + Objects.hashCode(this.preferredFoot);
+        hash = 79 * hash + this.number;
         return hash;
     }
 
@@ -242,46 +251,7 @@ public class Player implements IPlayer {
             return false;
         }
         final Player other = (Player) obj;
-        if (this.age != other.age) {
-            return false;
-        }
-        if (this.number != other.number) {
-            return false;
-        }
-        if (this.shooting != other.shooting) {
-            return false;
-        }
-        if (this.passing != other.passing) {
-            return false;
-        }
-        if (this.stamina != other.stamina) {
-            return false;
-        }
-        if (this.speed != other.speed) {
-            return false;
-        }
-        if (Float.floatToIntBits(this.height) != Float.floatToIntBits(other.height)) {
-            return false;
-        }
-        if (Float.floatToIntBits(this.weight) != Float.floatToIntBits(other.weight)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.nationality, other.nationality)) {
-            return false;
-        }
-        if (!Objects.equals(this.photo, other.photo)) {
-            return false;
-        }
-        if (!Objects.equals(this.birthDate, other.birthDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.position, other.position)) {
-            return false;
-        }
-        return this.preferredFoot == other.preferredFoot;
+        return this.number == other.number;
     }
 
 }

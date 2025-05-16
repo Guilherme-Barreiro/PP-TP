@@ -18,7 +18,10 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -387,7 +390,44 @@ public class Season implements ISeason {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JSONObject json = new JSONObject();
+
+        json.put("name", this.name);
+        json.put("year", this.year);
+        json.put("maxTeams", this.maxTeams);
+        json.put("currentRound", this.currentRound);
+        json.put("totalMatches", this.totalMatches);
+        json.put("currentMatchCount", this.matchCount);
+
+        // Exportar os clubes
+        JSONArray clubArray = new JSONArray();
+        for (int i = 0; i < clubCount; i++) {
+            JSONObject clubJson = new JSONObject();
+            clubJson.put("name", clubs[i].getName());
+            clubJson.put("code", clubs[i].getCode());
+            clubArray.add(clubJson);
+        }
+        json.put("clubs", clubArray);
+
+        // Exportar os jogos
+        JSONArray matchArray = new JSONArray();
+        for (int i = 0; i < matchCount; i++) {
+            IMatch m = matches[i];
+            JSONObject matchJson = new JSONObject();
+            matchJson.put("homeClub", m.getHomeClub().getName());
+            matchJson.put("awayClub", m.getAwayClub().getName());
+            matchJson.put("round", m.getRound());
+            matchJson.put("played", m.isPlayed());
+            matchArray.add(matchJson);
+        }
+        json.put("matches", matchArray);
+
+        // Escrever no ficheiro
+        String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
+        try ( FileWriter writer = new FileWriter(fileName)) {
+            writer.write(json.toJSONString());
+            writer.flush();
+        }
     }
 
     public void setTeamForClub(IClub club, ITeam team) {

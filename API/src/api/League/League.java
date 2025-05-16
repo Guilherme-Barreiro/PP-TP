@@ -11,8 +11,11 @@ package api.League;
 
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Represents a football league that can hold up to 200 seasons. Implements the
@@ -157,7 +160,24 @@ public class League implements ILeague {
      */
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        JSONObject leagueJson = new JSONObject();
+        leagueJson.put("name", this.name);
+
+        JSONArray seasonsArray = new JSONArray();
+        for (int i = 0; i < count; i++) {
+            if (seasons[i] != null) {
+                seasonsArray.add(seasons[i].getYear());
+            }
+        }
+
+        leagueJson.put("seasons", seasonsArray);
+
+        // Nome do ficheiro: league_nomeDaLiga.json
+        String safeName = name.replaceAll("\\s+", "_");
+        try ( FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
+            writer.write(leagueJson.toJSONString());
+            writer.flush();
+        }
     }
 
     @Override

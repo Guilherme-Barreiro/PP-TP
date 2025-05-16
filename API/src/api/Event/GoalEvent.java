@@ -7,13 +7,14 @@ package api.Event;
 
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author guiba
  */
-
 public class GoalEvent implements IGoalEvent {
 
     private final IPlayer player;
@@ -47,6 +48,18 @@ public class GoalEvent implements IGoalEvent {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        JSONObject json = new JSONObject();
+
+        json.put("type", "GoalEvent");
+        json.put("player", player.getName());
+        json.put("minute", minute);
+        json.put("description", getDescription());
+
+        String fileName = "goalevent_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + "min.json";
+
+        try ( FileWriter writer = new FileWriter(fileName)) {
+            writer.write(json.toJSONString());
+            writer.flush();
+        }
     }
 }

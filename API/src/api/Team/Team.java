@@ -9,9 +9,12 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IFormation;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Represents a football team with its club, formation and players.
@@ -150,7 +153,6 @@ public class Team implements ITeam {
         this.formation = formation;
     }
 
-
     public void removePlayer(IPlayer player) {
         if (player == null) {
             return;
@@ -170,7 +172,27 @@ public class Team implements ITeam {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        JSONObject json = new JSONObject();
+
+        json.put("club", club != null ? club.getName() : "undefined");
+
+        String formationName = (formation != null) ? formation.getDisplayName() : "not defined";
+        json.put("formation", formationName);
+
+        JSONArray playersArray = new JSONArray();
+        for (int i = 0; i < playerCount; i++) {
+            IPlayer p = players[i];
+            if (p != null) {
+                playersArray.add(p.getName());
+            }
+        }
+        json.put("players", playersArray);
+
+        String fileName = "team_" + (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined") + ".json";
+        try ( FileWriter writer = new FileWriter(fileName)) {
+            writer.write(json.toJSONString());
+            writer.flush();
+        }
     }
 
     @Override

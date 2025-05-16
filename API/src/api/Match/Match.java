@@ -10,7 +10,9 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -194,7 +196,24 @@ public class Match implements IMatch {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        JSONObject json = new JSONObject();
+
+        json.put("homeClub", homeClub != null ? homeClub.getName() : "undefined");
+        json.put("awayClub", awayClub != null ? awayClub.getName() : "undefined");
+        json.put("round", round);
+        json.put("played", played);
+        json.put("homeGoals", getTotalByEvent(IGoalEvent.class, homeClub));
+        json.put("awayGoals", getTotalByEvent(IGoalEvent.class, awayClub));
+        json.put("eventCount", eventCount);
+
+        String fileName = "match_" + homeClub.getName().replaceAll("\\s+", "_")
+                + "_vs_" + awayClub.getName().replaceAll("\\s+", "_")
+                + "_round_" + round + ".json";
+
+        try ( FileWriter writer = new FileWriter(fileName)) {
+            writer.write(json.toJSONString());
+            writer.flush();
+        }
     }
 
     @Override

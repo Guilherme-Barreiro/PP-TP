@@ -14,8 +14,10 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
+import org.json.simple.JSONObject;
 
 /**
  * Represents a football club, which can manage up to 25 players. Implements the
@@ -285,7 +287,20 @@ public class Club implements IClub {
      */
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JSONObject clubJson = new JSONObject();
+
+        clubJson.put("code", this.code);
+        clubJson.put("country", this.Country);
+        clubJson.put("foundedYear", this.foundedYear);
+        clubJson.put("logo", this.logo);
+        clubJson.put("name", this.name);
+        clubJson.put("stadiumName", this.stadiumName);
+        clubJson.put("playerCount", this.playerCount);
+
+        try ( FileWriter file = new FileWriter("club_" + this.code + ".json")) {
+            file.write(clubJson.toJSONString());
+            file.flush();
+        }
     }
 
     /**
