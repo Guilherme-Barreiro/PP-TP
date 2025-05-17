@@ -5,15 +5,15 @@
  */
 package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import contracts.IPlayerEvent;
 import java.io.IOException;
 
 /**
  *
  * @author Utilizador
  */
-public class YellowCardEvent implements IEvent {
+public class YellowCardEvent implements IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
@@ -42,5 +42,10 @@ public class YellowCardEvent implements IEvent {
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not implemented yet.");
+    }
+
+    @Override
+    public IPlayer getPlayer() {
+        return this.player;
     }
 }

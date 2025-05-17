@@ -175,6 +175,7 @@ public class Season implements ISeason {
 
         for (int i = 0; i < matchCount; i++) {
             if (matches[i].getRound() == currentRound && !matches[i].isPlayed()) {
+                matchSimulator.simulate(matches[i]);
                 matches[i].setPlayed();
             }
         }

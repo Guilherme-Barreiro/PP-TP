@@ -5,23 +5,24 @@
  */
 package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import contracts.IPlayerEvent;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author guiba
  */
-
-public class PassEvent implements IEvent {
+public class AssistEvent implements IPlayerEvent {
 
     private final IPlayer fromPlayer;
     private final IPlayer toPlayer;
     private final int minute;
     private final boolean successful;
 
-    public PassEvent(IPlayer fromPlayer, IPlayer toPlayer, int minute, boolean successful) {
+    public AssistEvent(IPlayer fromPlayer, IPlayer toPlayer, int minute, boolean successful) {
         if (fromPlayer == null || toPlayer == null) {
             throw new IllegalArgumentException("Both players must be defined");
         }
@@ -37,7 +38,7 @@ public class PassEvent implements IEvent {
     @Override
     public String getDescription() {
         if (successful) {
-            return minute + "' Passe de " + fromPlayer.getName() + " para " + toPlayer.getName();
+            return minute + "' Assistência de " + fromPlayer.getName() + " para " + toPlayer.getName();
         } else {
             return minute + "' Passe falhado de " + fromPlayer.getName();
         }
@@ -49,7 +50,24 @@ public class PassEvent implements IEvent {
     }
 
     @Override
+    public IPlayer getPlayer() {
+        return this.fromPlayer;
+    }
+
+    @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        JSONObject json = new JSONObject();
+        json.put("type", "AssistEvent");
+        json.put("minute", minute);
+        json.put("fromPlayer", fromPlayer.getName());
+        json.put("toPlayer", toPlayer.getName());
+        json.put("successful", successful);
+
+        String fileName = "assist_" + fromPlayer.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
+
+        try ( FileWriter file = new FileWriter(fileName)) {
+            file.write(json.toJSONString());
+            file.flush();
+        }
     }
 }

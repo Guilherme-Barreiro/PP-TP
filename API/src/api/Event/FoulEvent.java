@@ -5,15 +5,17 @@
  */
 package api.Event;
 
-import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import contracts.IPlayerEvent;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author Utilizador
  */
-public class FoulEvent implements IEvent {
+public class FoulEvent implements IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
@@ -41,6 +43,21 @@ public class FoulEvent implements IEvent {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        JSONObject json = new JSONObject();
+        json.put("type", "FoulEvent");
+        json.put("minute", minute);
+        json.put("player", player.getName());
+
+        String fileName = "foul_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
+
+        try (FileWriter file = new FileWriter(fileName)) {
+            file.write(json.toJSONString());
+            file.flush();
+        }
+    }
+
+    @Override
+    public IPlayer getPlayer() {
+        return this.player;
     }
 }
