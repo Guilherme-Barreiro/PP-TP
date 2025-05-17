@@ -7,7 +7,9 @@ package api.Event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import contracts.IPlayerEvent;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -41,7 +43,17 @@ public class RedCardEvent implements IPlayerEvent {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        JSONObject json = new JSONObject();
+        json.put("type", "RedCardEvent");
+        json.put("minute", minute);
+        json.put("player", player.getName());
+
+        String fileName = "redcard_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
+
+        try ( FileWriter file = new FileWriter(fileName)) {
+            file.write(json.toJSONString());
+            file.flush();
+        }
     }
 
     @Override

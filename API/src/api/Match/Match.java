@@ -10,6 +10,7 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import contracts.IPlayerEvent;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONObject;
@@ -122,9 +123,11 @@ public class Match implements IMatch {
     private IPlayer extractPlayerFromEvent(IEvent event) {
         if (event instanceof IGoalEvent) {
             return ((IGoalEvent) event).getPlayer();
+        } else if (event instanceof IPlayerEvent) {
+            return ((IPlayerEvent) event).getPlayer();
         }
-
         return null;
+
     }
 
     @Override
@@ -202,8 +205,12 @@ public class Match implements IMatch {
         json.put("awayClub", awayClub != null ? awayClub.getName() : "undefined");
         json.put("round", round);
         json.put("played", played);
-        json.put("homeGoals", getTotalByEvent(IGoalEvent.class, homeClub));
-        json.put("awayGoals", getTotalByEvent(IGoalEvent.class, awayClub));
+        json
+                .put("homeGoals", getTotalByEvent(IGoalEvent.class,
+                        homeClub));
+        json
+                .put("awayGoals", getTotalByEvent(IGoalEvent.class,
+                        awayClub));
         json.put("eventCount", eventCount);
 
         String fileName = "match_" + homeClub.getName().replaceAll("\\s+", "_")
