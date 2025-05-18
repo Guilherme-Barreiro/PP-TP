@@ -38,19 +38,22 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         for (int minute = 1; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
+            
+            //if para golo
             if (random.nextInt(100) < goloChance) {
                 IPlayer scorer = pickRandomPlayer(match, expelledPlayers, expelledCount);
                 if (scorer != null) {
-                    IEvent goal = new GoalEvent(scorer, minute);
+                    GoalEvent goal = new GoalEvent(scorer, minute);
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
                 }
             }
-
+            
+            // if para caratao vermelho
             if (random.nextInt(1000) < 5) {
                 IPlayer dismissed = pickRandomPlayer(match, expelledPlayers, expelledCount);
                 if (dismissed != null) {
-                    IEvent redcard = new RedCardEvent(dismissed, minute);
+                    RedCardEvent redcard = new RedCardEvent(dismissed, minute);
                     match.addEvent(redcard);
                     System.out.println(redcard.getDescription());
 
