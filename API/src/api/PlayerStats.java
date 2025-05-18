@@ -65,23 +65,23 @@ public class PlayerStats {
         return yellowCards;
     }
 
-//    public int getRating() {
-//        return rating;
-//    }
-//
-//    // Setters (caso precises modificar diretamente)
-//    public void setMinutesPlayed(int minutes) {
-//        this.minutesPlayed = minutes;
-//    }
-//
-//    public void setRating(int rating) {
-//        this.rating = rating;
-//    }
-//
-//    // Métodos utilitários para atualizar estatísticas
-//    public void addMinutes(int minutes) {
-//        this.minutesPlayed += minutes;
-//    }
+    public int getRating() {
+        return rating;
+    }
+
+    // Setters (caso precises modificar diretamente)
+    public void setMinutesPlayed(int minutes) {
+        this.minutesPlayed = minutes;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    // Métodos utilitários para atualizar estatísticas
+    public void addMinutes(int minutes) {
+        this.minutesPlayed += minutes;
+    }
 
     public void addGoal() {
         this.goals++;
