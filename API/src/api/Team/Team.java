@@ -4,6 +4,7 @@
  */
 package api.Team;
 
+import Exceptions.TeamExceptions;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
@@ -25,7 +26,7 @@ public class Team implements ITeam {
     private IFormation formation;
     private IPlayer[] players;
     private int playerCount;
-    private static final int MAX_PLAYERS = 30; // ou outro limite realista para plantel
+    private static final int MAX_PLAYERS = 11; // ou outro limite realista para plantel
 
     public Team(IClub club) {
         this.club = club;
@@ -46,20 +47,29 @@ public class Team implements ITeam {
     @Override
     public void addPlayer(IPlayer player) {
         int index = findIndex(player);
+
         if (player == null) {
-            throw new IllegalArgumentException("The player can't be null");
+            throw new TeamExceptions.NullPlayerException();
         }
 
         if (playerCount >= MAX_PLAYERS) {
-            throw new IllegalStateException("Team is full");
+            throw new TeamExceptions.TeamFullException();
         }
 
         if (this.formation == null) {
-            throw new IllegalArgumentException("The formation is not set");
+            throw new TeamExceptions.FormationNotSetException();
         }
 
         if (index != -1) {
-            throw new IllegalStateException("The player is already in the team");
+            throw new TeamExceptions.PlayerAlreadyInTeamException();
+        }
+        
+        if (player.getPosition().getDescription().equalsIgnoreCase("Goalkeeper")) {
+            for (int i = 0; i < playerCount; i++) {
+                if (players[i].getPosition().getDescription().equalsIgnoreCase("Goalkeeper")) {
+                    throw new TeamExceptions.GoalkeeperAlreadyExistsException();
+                }
+            }
         }
         players[playerCount++] = player;
     }
@@ -189,7 +199,7 @@ public class Team implements ITeam {
         json.put("players", playersArray);
 
         String fileName = "team_" + (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined") + ".json";
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
