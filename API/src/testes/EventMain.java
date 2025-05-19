@@ -152,11 +152,11 @@ public class EventMain {
 
         jogo.setPlayed();
 
-        System.out.println("\nEventos gerados:");
-        IEvent[] eventos = jogo.getEvents();
-        for (int i = 0; i < jogo.getEventCount(); i++) {
-            System.out.println(eventos[i].getDescription());
-        }
+//        System.out.println("\nEventos gerados:");
+//        IEvent[] eventos = jogo.getEvents();
+//        for (int i = 0; i < jogo.getEventCount(); i++) {
+//            System.out.println(eventos[i].getDescription());
+//        }
 
         if (jogo.getWinner() != null) {
             System.out.println("\nEquipa vencedora: " + jogo.getWinner().getClub().getName());
