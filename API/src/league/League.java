@@ -1,0 +1,200 @@
+package league;
+
+import com.ppstudios.footballmanager.api.contracts.league.ILeague;
+import com.ppstudios.footballmanager.api.contracts.league.ISeason;
+<<<<<<< Updated upstream:API/src/api/League/League.java
+=======
+import customInterfaces.IEmpSeason;
+import java.io.FileWriter;
+>>>>>>> Stashed changes:API/src/league/League.java
+import java.io.IOException;
+import java.util.Objects;
+
+/**
+ * Represents a football league that can hold up to 200 seasons. Implements the
+ * ILeague interface.
+ */
+public class League implements ILeague {
+
+    private static final int MAX_SEASON = 200;
+
+    private String name;
+    private IEmpSeason[] seasons;
+    private int count;
+
+    /**
+     * Constructs a League with the given name and initializes the season list.
+     *
+     * @param name the name of the league
+     */
+    public League(String name) {
+        this.name = name;
+        this.count = 0;
+        this.seasons = new IEmpSeason[MAX_SEASON];
+    }
+
+    /**
+     * Returns the name of the league.
+     *
+     * @return the league name
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns an array of all seasons currently registered in the league.
+     *
+     * @return an array of seasons
+     */
+    @Override
+    public IEmpSeason[] getSeasons() {
+        IEmpSeason[] seasons = new IEmpSeason[count];
+        for (int i = 0; i < count; i++) {
+            seasons[i] = this.seasons[i].clone();
+        }
+        return seasons;
+    }
+
+    /**
+     * Adds a new season to the league if it does not already exist.
+     *
+     * @param is the season to add
+     * @return {@code true} if the season was successfully added
+     * @throws IllegalArgumentException if the season is {@code null} or already
+     * exists
+     */
+    @Override
+    public boolean createSeason(ISeason is) {
+        int index = findIndex(is);
+        if (is == null || index != -1) {
+            throw new IllegalArgumentException("The season already exist or is null");
+        }
+        if (count < seasons.length) {
+            this.seasons[this.count++] = (IEmpSeason) is;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes a season from the league by its year.
+     *
+     * @param i the year of the season to remove
+     * @return the removed season
+     * @throws IllegalArgumentException if the season is not found
+     */
+    @Override
+    public ISeason removeSeason(int i) {
+        int index = findIndex(i);
+        if (index != -1) {
+            ISeason removed = seasons[index];
+            for (int j = index; j < count - 1; j++) {
+                seasons[j] = seasons[j + 1];
+            }
+            seasons[--count] = null;
+            return removed;
+        }
+        throw new IllegalArgumentException("Season not found");
+    }
+
+    /**
+     * Retrieves a season from the league by its year.
+     *
+     * @param i the year of the season
+     * @return the season for the given year, or {@code null} if not found
+     */
+    @Override
+    public ISeason getSeason(int i) {
+        for (int j = 0; j < count; j++) {
+            if (seasons[j].getYear() == i) {
+                return seasons[j];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds the index of a season in the array by season instance.
+     *
+     * @param season the season to look for
+     * @return the index of the season, or -1 if not found
+     */
+    private int findIndex(ISeason season) {
+        for (int i = 0; i < count; i++) {
+            if (seasons[i].getYear() == season.getYear()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Finds the index of a season in the array by year.
+     *
+     * @param year the year of the season
+     * @return the index of the season, or -1 if not found
+     */
+    private int findIndex(int year) {
+        for (int i = 0; i < count; i++) {
+            if (seasons[i].getYear() == year) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Exports the league data to a JSON file.
+     *
+     * @throws IOException
+     * @throws UnsupportedOperationException not yet implemented
+     */
+    @Override
+    public void exportToJson() throws IOException {
+<<<<<<< Updated upstream:API/src/api/League/League.java
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+=======
+        JSONObject leagueJson = new JSONObject();
+        leagueJson.put("name", this.name);
+
+        JSONArray seasonsArray = new JSONArray();
+        for (int i = 0; i < count; i++) {
+            if (seasons[i] != null) {
+                seasonsArray.add(seasons[i].getYear());
+            }
+        }
+
+        leagueJson.put("seasons", seasonsArray);
+
+        String safeName = name.replaceAll("\\s+", "_");
+        try (FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
+            writer.write(leagueJson.toJSONString());
+            writer.flush();
+        }
+>>>>>>> Stashed changes:API/src/league/League.java
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final League other = (League) obj;
+        return Objects.equals(this.name, other.name);
+    }
+}
