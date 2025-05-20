@@ -6,6 +6,9 @@ package api.Simulation;
 
 import api.Event.GoalEvent;
 import api.Event.RedCardEvent;
+import api.Team.Team;
+import contracts.IMatchSimulatorStrategyImpl;
+
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
@@ -18,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author guiba
  */
-public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
+public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
 
     private final java.util.Random random = new java.util.Random();
 
@@ -38,20 +41,21 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         for (int minute = 1; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
-            
-            //if para golo
+
+            // if para golo
             if (random.nextInt(100) < goloChance) {
-                IPlayer scorer = pickRandomPlayer(match, expelledPlayers, expelledCount);
+                IPlayer scorer = pickRandomPlayer(match.getHomeTeam());
                 if (scorer != null) {
                     GoalEvent goal = new GoalEvent(scorer, minute);
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
                 }
             }
-            
-            // if para caratao vermelho
+
+            // if para cartao vermelho
             if (random.nextInt(1000) < 5) {
-                IPlayer dismissed = pickRandomPlayer(match, expelledPlayers, expelledCount);
+                IPlayer dismissed = pickRandomPlayer(filterPlayersByPosition(match.getHomeTeam().getPlayers(), "fwd"));
+                // filterPlayersByPosition(IPlayer[] players, String positionDescription)
                 if (dismissed != null) {
                     RedCardEvent redcard = new RedCardEvent(dismissed, minute);
                     match.addEvent(redcard);
@@ -60,8 +64,14 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
                     expelledPlayers[expelledCount++] = dismissed;
 
                     if (belongsToTeam(dismissed, match.getHomeTeam().getPlayers())) {
+                        if (match.getHomeTeam() instanceof Team) {
+                            ((Team) match.getHomeTeam()).removePlayer(dismissed);
+                        }
                         redCardsHome++;
                     } else if (belongsToTeam(dismissed, match.getAwayTeam().getPlayers())) {
+                        if (match.getAwayTeam() instanceof Team) {
+                            ((Team) match.getAwayTeam()).removePlayer(dismissed);
+                        }
                         redCardsAway++;
                     }
 
@@ -87,37 +97,34 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         return false;
     }
 
-    private IPlayer pickRandomPlayer(IMatch match, IPlayer[] expelledPlayers, int expelledCount) {
-        IPlayer[] homePlayers = match.getHomeTeam().getPlayers();
-        IPlayer[] awayPlayers = match.getAwayTeam().getPlayers();
+    private IPlayer pickRandomPlayer(IPlayer[] players) {
+        if (players == null || players.length == 0) {
+            return null;
+        }
 
-        IPlayer[] combined = new IPlayer[homePlayers.length + awayPlayers.length];
+        return players[random.nextInt(players.length)];
+    }
+
+    private IPlayer[] filterPlayersByPosition(IPlayer[] players, String positionDescription) {
         int count = 0;
 
-        for (IPlayer p : homePlayers) {
-            combined[count++] = p;
-        }
-        for (IPlayer p : awayPlayers) {
-            combined[count++] = p;
-        }
-
-        for (int attempts = 0; attempts < 100; attempts++) {
-            IPlayer candidate = combined[random.nextInt(combined.length)];
-            boolean isExpelled = false;
-
-            for (int i = 0; i < expelledCount; i++) {
-                if (expelledPlayers[i].equals(candidate)) {
-                    isExpelled = true;
-                    break;
-                }
-            }
-
-            if (!isExpelled) {
-                return candidate;
+        // Contar quantos jogadores têm a posição desejada
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getPosition().getDescription().equalsIgnoreCase(positionDescription)) {
+                 count++;
             }
         }
 
-        return null;
+        IPlayer[] filtered = new IPlayer[count];
+        int index = 0;
+
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getPosition().getDescription().equalsIgnoreCase(positionDescription)) {
+                filtered[index++] = players[i];
+            }
+        }
+
+        return filtered;hhh
     }
 
 }

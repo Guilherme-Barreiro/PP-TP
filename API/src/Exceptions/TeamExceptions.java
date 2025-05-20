@@ -56,6 +56,13 @@ public class TeamExceptions {
         }
     }
 
-    
-    
+    /**
+     * Exceção lançada quando o jogador a remover não é encontrado.
+     */
+    public static class PlayerNotFoundException extends IllegalStateException {
+        public PlayerNotFoundException() {
+            super("O jogador não existe na equipa.");
+        }
+    }
+
 }
