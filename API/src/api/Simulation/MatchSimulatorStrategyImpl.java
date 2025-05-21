@@ -6,6 +6,7 @@ package api.Simulation;
 
 import api.Event.GoalEvent;
 import api.Event.RedCardEvent;
+import api.Event.YellowCardEvent;
 import api.Team.Team;
 import contracts.IMatchSimulatorStrategyImpl;
 
@@ -33,7 +34,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
         int redCardsHome = 0;
         int redCardsAway = 0;
 
-        for (int minute = 0; minute <= 90; minute++) {
+        for (int minute = 1; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
 
@@ -45,6 +46,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
                 }
+                System.out.println(scorer);
             }
             // if para golo da awayTeam
             if (random.nextInt(200) < goloChance) {
@@ -66,17 +68,10 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
 
                     expelledPlayers[expelledCount++] = dismissed;
 
-                    if (belongsToTeam(dismissed, match.getHomeTeam().getPlayers())) {
-                        if (match.getHomeTeam() instanceof Team) {
-                            ((Team) match.getHomeTeam()).removePlayer(dismissed);
-                        }
-                        redCardsHome++;
-                    } else if (belongsToTeam(dismissed, match.getAwayTeam().getPlayers())) {
-                        if (match.getAwayTeam() instanceof Team) {
-                            ((Team) match.getAwayTeam()).removePlayer(dismissed);
-                        }
-                        redCardsAway++;
+                    if (match.getHomeTeam() instanceof Team) {
+                        ((Team) match.getHomeTeam()).removePlayer(dismissed);
                     }
+                    redCardsHome++;
                 }
             }
             // if para cartao vermelho na awayTeam
@@ -89,19 +84,37 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
 
                     expelledPlayers[expelledCount++] = dismissed;
 
-                    if (belongsToTeam(dismissed, match.getAwayTeam().getPlayers())) {
-                        if (match.getAwayTeam() instanceof Team) {
-                            ((Team) match.getAwayTeam()).removePlayer(dismissed);
-                        }
-                        redCardsHome++;
-                    } else if (belongsToTeam(dismissed, match.getAwayTeam().getPlayers())) {
-                        if (match.getAwayTeam() instanceof Team) {
-                            ((Team) match.getAwayTeam()).removePlayer(dismissed);
-                        }
-                        redCardsAway++;
+                    if (match.getAwayTeam() instanceof Team) {
+                        ((Team) match.getAwayTeam()).removePlayer(dismissed);
                     }
+                    redCardsAway++;
                 }
             }
+
+            
+            // if para cartao amarelo na homeTeam
+//            if (random.nextInt(1000) < 5) {
+//                IPlayer yellowed = pickRandomPlayer(match.getHomeTeam().getPlayers());
+//                if (yellowed != null) {
+//                    YellowCardEvent yellowcard = new YellowCardEvent(yellowed, minute);
+//                    match.addEvent(yellowcard);
+//                    System.out.println(yellowcard.getDescription());
+//
+//                    expelledPlayers[expelledCount++] = yellowed;
+//
+//                    if (belongsToTeam(yellowed, match.getHomeTeam().getPlayers())) {
+//                        if (match.getHomeTeam() instanceof Team) {
+//                            ((Team) match.getHomeTeam()).removePlayer(yellowed);
+//                        }
+//                        redCardsHome++;
+//                    } else if (belongsToTeam(yellowed, match.getHomeTeam().getPlayers())) {
+//                        if (match.getHomeTeam() instanceof Team) {
+//                            ((Team) match.getHomeTeam()).removePlayer(yellowed);
+//                        }
+//                        redCardsAway++;
+//                    }
+//                }
+//            }
 
             try {
                 Thread.sleep(100);

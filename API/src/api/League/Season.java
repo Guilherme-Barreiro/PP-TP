@@ -32,9 +32,9 @@ public class Season implements ISeason {
     private String name;
     private int year;
     private int maxTeams;
-    private final int pointsPerWin = 3;
-    private final int pointsPerDraw = 1;
-    private final int pointsPerLoss = 0;
+    private static final int pointsPerWin = 3;
+    private static final int pointsPerDraw = 1;
+    private static final int pointsPerLoss = 0;
     private IClub[] clubs;
     private int clubCount;
     private IMatch[] matches;

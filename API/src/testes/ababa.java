@@ -24,7 +24,7 @@ import java.util.Arrays;
  *
  * @author guiba
  */
-public class ababa {
+public class Ababa {
 
     /**
      * @param args the command line arguments
