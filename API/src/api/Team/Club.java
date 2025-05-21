@@ -16,8 +16,10 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import org.json.simple.JSONObject;
+import java.util.Arrays;
 
 /**
  * Represents a football club, which can manage up to 25 players. Implements the
@@ -297,7 +299,7 @@ public class Club implements IClub {
         clubJson.put("stadiumName", this.stadiumName);
         clubJson.put("playerCount", this.playerCount);
 
-        try ( FileWriter file = new FileWriter("club_" + this.code + ".json")) {
+        try (FileWriter file = new FileWriter("club_" + this.code + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -323,7 +325,25 @@ public class Club implements IClub {
      */
     @Override
     public String toString() {
-        return "Club{" + "code=" + this.getCode() + ", Country=" + this.getCountry() + ", foundedYear=" + this.getFoundedYear() + ", logo=" + this.getLogo() + ", name=" + this.getName() + ", players=" + this.getPlayers() + ", stadiumName=" + this.getStadiumName() + '}';
+        String result = "Club{"
+                + "\tcode='" + getCode() + '\n'
+                + "\tcountry='" + getCountry() + '\n'
+                + "\tfoundedYear=" + getFoundedYear() + '\n'
+                + "\tlogo='" + getLogo() + '\n'
+                + "\tname='" + getName() + '\n'
+                + "\tstadiumName='" + getStadiumName() + '\n'
+                + "\tplayers=[";
+
+        IPlayer[] players = getPlayers();
+        for (int i = 0; i < players.length; i++) {
+            result += players[i];
+            if (i < players.length - 1) {
+                result += "\n\t";
+            }
+        }
+
+        result += "]}";
+        return result;
     }
 
     /**

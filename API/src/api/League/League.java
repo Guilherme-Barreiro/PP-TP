@@ -11,6 +11,10 @@ package api.League;
 
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
+
+import api.Team.Club;
+import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
@@ -70,7 +74,7 @@ public class League implements ILeague {
      * @param is the season to add
      * @return {@code true} if the season was successfully added
      * @throws IllegalArgumentException if the season is {@code null} or already
-     * exists
+     *                                  exists
      */
     @Override
     public boolean createSeason(ISeason is) {
@@ -152,6 +156,23 @@ public class League implements ILeague {
         return -1;
     }
 
+//    public boolean containsClub(Club club) {
+//        if (club == null)
+//            return false;
+//        for (int i = 0; i < count; i++) {
+//            ISeason season = seasons[i];
+//            if (season != null) {
+//                ITeam[] teams = season.getTeams();
+//                for (int j = 0; j < teams.length; j++) {
+//                    if (teams[j] != null && teams[j].getClub().equals(club)) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+//    }
+
     /**
      * Exports the league data to a JSON file.
      *
@@ -174,7 +195,7 @@ public class League implements ILeague {
 
         // Nome do ficheiro: league_nomeDaLiga.json
         String safeName = name.replaceAll("\\s+", "_");
-        try ( FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
+        try (FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
             writer.write(leagueJson.toJSONString());
             writer.flush();
         }

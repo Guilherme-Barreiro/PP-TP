@@ -209,7 +209,7 @@ public class Player implements IPlayer {
         playerJson.put("weight", this.weight);
         playerJson.put("preferredFoot", this.preferredFoot != null ? this.preferredFoot.toString() : null);
 
-        try ( FileWriter file = new FileWriter("player_" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        try (FileWriter file = new FileWriter("player_" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(playerJson.toJSONString());
             file.flush();
         }
@@ -221,7 +221,11 @@ public class Player implements IPlayer {
      */
     @Override
     public String toString() {
-        return "Player{" + "name=" + this.getName() + ", birthDate=" + this.getBirthDate() + ", age=" + this.getAge() + ", nationality=" + this.getNationality() + ", position=" + this.getPosition() + ", photo=" + this.getPhoto() + ", number=" + this.getNumber() + ", shooting=" + this.getShooting() + ", passing=" + this.getPassing() + ", stamina=" + this.getStamina() + ", speed=" + this.getSpeed() + ", height=" + this.getHeight() + ", weight=" + this.getWeight() + ", preferredFoot=" + this.getPreferredFoot() + '}';
+        return "Player{"
+                + "name='" + name + '\''
+                + ", position=" + position
+                + ", number=" + number
+                + '}';
     }
 
     /**

@@ -132,7 +132,11 @@ public class Match implements IMatch {
 
     @Override
     public boolean isValid() {
-        if (this.getHomeClub() != null && this.getAwayClub() != null && !this.getHomeClub().equals(this.getAwayClub()) && this.getHomeTeam().getFormation() != null && this.getAwayTeam().getFormation() != null) {
+        if (this.getHomeClub() != null && 
+                this.getAwayClub() != null && 
+                !this.getHomeClub().equals(this.getAwayClub()) 
+                && this.getHomeTeam().getFormation() != null && 
+                this.getAwayTeam().getFormation() != null) {
             return true;
         }
         return false;

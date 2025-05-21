@@ -26,7 +26,7 @@ public class Team implements ITeam {
     private IFormation formation;
     private IPlayer[] players;
     private int playerCount;
-    private static final int MAX_PLAYERS = 11; // ou outro limite realista para plantel
+    private static final int MAX_PLAYERS = 11; // plantel
 
     public Team(IClub club) {
         this.club = club;
@@ -234,6 +234,11 @@ public class Team implements ITeam {
             return false;
         }
         return Arrays.deepEquals(this.players, other.players);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" + "club=" + club + ", formation=" + formation + ", players=" + players + ", playerCount=" + playerCount + '}';
     }
 
 }

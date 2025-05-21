@@ -12,10 +12,6 @@ import contracts.IMatchSimulatorStrategyImpl;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
-import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,20 +27,28 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
             throw new IllegalArgumentException("Match cannot be null");
         }
 
-        // array de jogadores expulsos
         IPlayer[] expelledPlayers = new IPlayer[30];
         int expelledCount = 0;
 
         int redCardsHome = 0;
         int redCardsAway = 0;
 
-        for (int minute = 1; minute <= 90; minute++) {
+        for (int minute = 0; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
 
-            // if para golo
-            if (random.nextInt(100) < goloChance) {
-                IPlayer scorer = pickRandomPlayer(match.getHomeTeam());
+            // if para golo da homeTeam
+            if (random.nextInt(200) < goloChance) {
+                IPlayer scorer = pickRandomPlayer(filterPlayersByPosition(match.getHomeTeam().getPlayers(), "forward"));
+                if (scorer != null) {
+                    GoalEvent goal = new GoalEvent(scorer, minute);
+                    match.addEvent(goal);
+                    System.out.println(goal.getDescription());
+                }
+            }
+            // if para golo da awayTeam
+            if (random.nextInt(200) < goloChance) {
+                IPlayer scorer = pickRandomPlayer(filterPlayersByPosition(match.getAwayTeam().getPlayers(), "forward"));
                 if (scorer != null) {
                     GoalEvent goal = new GoalEvent(scorer, minute);
                     match.addEvent(goal);
@@ -52,10 +56,9 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                 }
             }
 
-            // if para cartao vermelho
+            // if para cartao vermelho na homeTeam
             if (random.nextInt(1000) < 5) {
-                IPlayer dismissed = pickRandomPlayer(filterPlayersByPosition(match.getHomeTeam().getPlayers(), "fwd"));
-                // filterPlayersByPosition(IPlayer[] players, String positionDescription)
+                IPlayer dismissed = pickRandomPlayer(match.getHomeTeam().getPlayers());
                 if (dismissed != null) {
                     RedCardEvent redcard = new RedCardEvent(dismissed, minute);
                     match.addEvent(redcard);
@@ -74,21 +77,43 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                         }
                         redCardsAway++;
                     }
+                }
+            }
+            // if para cartao vermelho na awayTeam
+            if (random.nextInt(1000) < 5) {
+                IPlayer dismissed = pickRandomPlayer(match.getAwayTeam().getPlayers());
+                if (dismissed != null) {
+                    RedCardEvent redcard = new RedCardEvent(dismissed, minute);
+                    match.addEvent(redcard);
+                    System.out.println(redcard.getDescription());
 
+                    expelledPlayers[expelledCount++] = dismissed;
+
+                    if (belongsToTeam(dismissed, match.getAwayTeam().getPlayers())) {
+                        if (match.getAwayTeam() instanceof Team) {
+                            ((Team) match.getAwayTeam()).removePlayer(dismissed);
+                        }
+                        redCardsHome++;
+                    } else if (belongsToTeam(dismissed, match.getAwayTeam().getPlayers())) {
+                        if (match.getAwayTeam() instanceof Team) {
+                            ((Team) match.getAwayTeam()).removePlayer(dismissed);
+                        }
+                        redCardsAway++;
+                    }
                 }
             }
 
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                System.out.println("Simulação interrompida.");
-                break;
-            }
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//                System.out.println("Simulação interrompida.");
+//                break;
+//            }
         }
     }
 
-    private boolean belongsToTeam(IPlayer player, IPlayer[] teamPlayers) {
+    public boolean belongsToTeam(IPlayer player, IPlayer[] teamPlayers) {
         for (int i = 0; i < teamPlayers.length; i++) {
             if (teamPlayers[i].equals(player)) {
                 return true;
@@ -97,7 +122,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
         return false;
     }
 
-    private IPlayer pickRandomPlayer(IPlayer[] players) {
+    public IPlayer pickRandomPlayer(IPlayer[] players) {
         if (players == null || players.length == 0) {
             return null;
         }
@@ -105,13 +130,13 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
         return players[random.nextInt(players.length)];
     }
 
-    private IPlayer[] filterPlayersByPosition(IPlayer[] players, String positionDescription) {
+    public IPlayer[] filterPlayersByPosition(IPlayer[] players, String positionDescription) {
         int count = 0;
 
-        // Contar quantos jogadores têm a posição desejada
+        // Conta quantos jogadores têm x posição 
         for (int i = 0; i < players.length; i++) {
             if (players[i].getPosition().getDescription().equalsIgnoreCase(positionDescription)) {
-                 count++;
+                count++;
             }
         }
 
@@ -124,7 +149,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
             }
         }
 
-        return filtered;hhh
+        return filtered;
     }
 
 }
