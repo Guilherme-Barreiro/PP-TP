@@ -14,12 +14,12 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 import org.json.simple.JSONObject;
-import java.util.Arrays;
+import org.json.simple.parser.JSONParser;
 
 /**
  * Represents a football club, which can manage up to 25 players. Implements the
@@ -299,7 +299,7 @@ public class Club implements IClub {
         clubJson.put("stadiumName", this.stadiumName);
         clubJson.put("playerCount", this.playerCount);
 
-        try (FileWriter file = new FileWriter("club_" + this.code + ".json")) {
+        try ( FileWriter file = new FileWriter("club_" + this.code + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -379,4 +379,22 @@ public class Club implements IClub {
         return Objects.equals(this.Country, other.Country);
     }
 
+    public static Club importFromJson(String fileName) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(fileName)) {
+            JSONObject json = (JSONObject) parser.parse(reader);
+
+            String code = (String) json.get("code");
+            String country = (String) json.get("country");
+            int foundedYear = ((Long) json.get("foundedYear")).intValue();
+            String logo = (String) json.get("logo");
+            String name = (String) json.get("name");
+            String stadiumName = (String) json.get("stadiumName");
+
+            return new Club(code, country, foundedYear, logo, name, stadiumName);
+        } catch (Exception e) {
+            throw new IOException("Erro ao importar ficheiro JSON: " + fileName, e);
+        }
+    }
 }

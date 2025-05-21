@@ -11,10 +11,6 @@ package api.League;
 
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
-
-import api.Team.Club;
-import com.ppstudios.footballmanager.api.contracts.team.ITeam;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;

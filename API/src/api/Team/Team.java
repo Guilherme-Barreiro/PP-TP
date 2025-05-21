@@ -5,17 +5,23 @@
 package api.Team;
 
 import Exceptions.TeamExceptions;
+import api.Player.Player;
+import api.Player.PlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
+import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IFormation;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.Objects;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Represents a football team with its club, formation and players.
@@ -63,7 +69,7 @@ public class Team implements ITeam {
         if (index != -1) {
             throw new TeamExceptions.PlayerAlreadyInTeamException();
         }
-        
+
         if (player.getPosition().getDescription().equalsIgnoreCase("Goalkeeper")) {
             for (int i = 0; i < playerCount; i++) {
                 if (players[i].getPosition().getDescription().equalsIgnoreCase("Goalkeeper")) {
@@ -193,13 +199,29 @@ public class Team implements ITeam {
         for (int i = 0; i < playerCount; i++) {
             IPlayer p = players[i];
             if (p != null) {
-                playersArray.add(p.getName());
+                JSONObject playerJson = new JSONObject();
+                playerJson.put("name", p.getName());
+                playerJson.put("birthDate", p.getBirthDate().toString());
+                playerJson.put("age", p.getAge());
+                playerJson.put("nationality", p.getNationality());
+                playerJson.put("position", p.getPosition().getDescription());
+                playerJson.put("photo", p.getPhoto());
+                playerJson.put("number", p.getNumber());
+                playerJson.put("shooting", p.getShooting());
+                playerJson.put("passing", p.getPassing());
+                playerJson.put("stamina", p.getStamina());
+                playerJson.put("speed", p.getSpeed());
+                playerJson.put("height", p.getHeight());
+                playerJson.put("weight", p.getWeight());
+                playerJson.put("preferredFoot", p.getPreferredFoot().toString());
+
+                playersArray.add(playerJson);
             }
         }
         json.put("players", playersArray);
 
         String fileName = "team_" + (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined") + ".json";
-        try (FileWriter writer = new FileWriter(fileName)) {
+        try ( FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -210,13 +232,11 @@ public class Team implements ITeam {
         int hash = 7;
         hash = 31 * hash + Objects.hashCode(this.club);
         hash = 31 * hash + Objects.hashCode(this.formation);
-        hash = 31 * hash + Arrays.deepHashCode(this.players);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj
-    ) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -230,10 +250,7 @@ public class Team implements ITeam {
         if (!Objects.equals(this.club, other.club)) {
             return false;
         }
-        if (!Objects.equals(this.formation, other.formation)) {
-            return false;
-        }
-        return Arrays.deepEquals(this.players, other.players);
+        return Objects.equals(this.formation, other.formation);
     }
 
     @Override
@@ -241,4 +258,56 @@ public class Team implements ITeam {
         return "Team{" + "club=" + club + ", formation=" + formation + ", players=" + players + ", playerCount=" + playerCount + '}';
     }
 
+    public static Team importFromJson(String filePath) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(filePath)) {
+            JSONObject json = (JSONObject) parser.parse(reader);
+
+            // Club name
+            String clubName = (String) json.get("club");
+            Club club = new Club(clubName, "Portugal", 1900, "", clubName, "Estádio Importado");
+
+            Team team = new Team(club);
+
+            // Formation
+            String formationStr = (String) json.get("formation");
+            team.setFormation(new Formation(formationStr));
+
+            // Players
+            JSONArray playersArray = (JSONArray) json.get("players");
+            for (Object obj : playersArray) {
+                JSONObject p = (JSONObject) obj;
+
+                String name = (String) p.get("name");
+                LocalDate birthDate = LocalDate.parse((String) p.get("birthDate"));
+                int age = ((Long) p.get("age")).intValue();
+                String nationality = (String) p.get("nationality");
+                String photo = (String) p.get("photo");
+                int number = ((Long) p.get("number")).intValue();
+                int shooting = ((Long) p.get("shooting")).intValue();
+                int passing = ((Long) p.get("passing")).intValue();
+                int stamina = ((Long) p.get("stamina")).intValue();
+                int speed = ((Long) p.get("speed")).intValue();
+                float height = ((Double) p.get("height")).floatValue();
+                float weight = ((Double) p.get("weight")).floatValue();
+                String positionDesc = (String) p.get("position");
+                String preferredFootStr = (String) p.get("preferredFoot");
+
+                // Obter posição e preferred foot
+                IPlayerPosition position = new PlayerPosition(positionDesc);
+                PreferredFoot foot = PreferredFoot.valueOf(preferredFootStr);
+
+                Player player = new Player(name, birthDate, age, nationality, position, photo, number,
+                        shooting, passing, stamina, speed, height, weight, foot);
+
+                team.addPlayer(player);
+            }
+
+            return team;
+
+        } catch (ParseException e) {
+            throw new IOException("Erro ao processar o ficheiro JSON: " + e.getMessage());
+        }
+    }
 }
