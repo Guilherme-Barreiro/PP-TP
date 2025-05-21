@@ -56,6 +56,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
                 }
+                System.out.println(scorer);
             }
 
             // if para cartao vermelho na homeTeam
@@ -93,28 +94,35 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
 
             
             // if para cartao amarelo na homeTeam
-//            if (random.nextInt(1000) < 5) {
-//                IPlayer yellowed = pickRandomPlayer(match.getHomeTeam().getPlayers());
-//                if (yellowed != null) {
-//                    YellowCardEvent yellowcard = new YellowCardEvent(yellowed, minute);
-//                    match.addEvent(yellowcard);
-//                    System.out.println(yellowcard.getDescription());
-//
-//                    expelledPlayers[expelledCount++] = yellowed;
-//
-//                    if (belongsToTeam(yellowed, match.getHomeTeam().getPlayers())) {
-//                        if (match.getHomeTeam() instanceof Team) {
-//                            ((Team) match.getHomeTeam()).removePlayer(yellowed);
-//                        }
-//                        redCardsHome++;
-//                    } else if (belongsToTeam(yellowed, match.getHomeTeam().getPlayers())) {
-//                        if (match.getHomeTeam() instanceof Team) {
-//                            ((Team) match.getHomeTeam()).removePlayer(yellowed);
-//                        }
-//                        redCardsAway++;
-//                    }
-//                }
-//            }
+            if (random.nextInt(1000) < 5) {
+                IPlayer yellowed = pickRandomPlayer(match.getHomeTeam().getPlayers());
+                if (yellowed != null) {
+                    YellowCardEvent yellowcard = new YellowCardEvent(yellowed, minute);
+                    match.addEvent(yellowcard);
+                    System.out.println(yellowcard.getDescription());
+
+                    expelledPlayers[expelledCount++] = yellowed;
+
+                    if (match.getHomeTeam() instanceof Team) {
+                        ((Team) match.getHomeTeam()).removePlayer(yellowed);
+                    }
+                }
+            }            
+            // if para cartao amarelo na awayTeam
+            if (random.nextInt(1000) < 5) {
+                IPlayer yellowed = pickRandomPlayer(match.getAwayTeam().getPlayers());
+                if (yellowed != null) {
+                    YellowCardEvent yellowcard = new YellowCardEvent(yellowed, minute);
+                    match.addEvent(yellowcard);
+                    System.out.println(yellowcard.getDescription());
+
+                    expelledPlayers[expelledCount++] = yellowed;
+
+                    if (match.getAwayTeam() instanceof Team) {
+                        ((Team) match.getAwayTeam()).removePlayer(yellowed);
+                    }
+                }
+            }
 
             try {
                 Thread.sleep(100);
