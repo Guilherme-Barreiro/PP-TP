@@ -103,13 +103,13 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                 }
             }
 
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//                System.out.println("Simulação interrompida.");
-//                break;
-//            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Simulação interrompida.");
+                break;
+            }
         }
     }
 
