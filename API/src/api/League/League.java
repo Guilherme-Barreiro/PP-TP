@@ -11,11 +11,13 @@ package api.League;
 
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  * Represents a football league that can hold up to 200 seasons. Implements the
@@ -70,7 +72,7 @@ public class League implements ILeague {
      * @param is the season to add
      * @return {@code true} if the season was successfully added
      * @throws IllegalArgumentException if the season is {@code null} or already
-     *                                  exists
+     * exists
      */
     @Override
     public boolean createSeason(ISeason is) {
@@ -168,7 +170,6 @@ public class League implements ILeague {
 //        }
 //        return false;
 //    }
-
     /**
      * Exports the league data to a JSON file.
      *
@@ -191,7 +192,7 @@ public class League implements ILeague {
 
         // Nome do ficheiro: league_nomeDaLiga.json
         String safeName = name.replaceAll("\\s+", "_");
-        try (FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
+        try ( FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
             writer.write(leagueJson.toJSONString());
             writer.flush();
         }
@@ -217,5 +218,33 @@ public class League implements ILeague {
         }
         final League other = (League) obj;
         return Objects.equals(this.name, other.name);
+    }
+
+    public static League importFromJson(String filename, ISeason[] temporadasDisponiveis) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(filename)) {
+            JSONObject json = (JSONObject) parser.parse(reader);
+
+            String leagueName = (String) json.get("name");
+            League league = new League(leagueName);
+
+            JSONArray seasonYears = (JSONArray) json.get("seasons");
+
+            for (int i = 0; i < seasonYears.size(); i++) {
+                long year = (Long) seasonYears.get(i);
+                for (int j = 0; j < temporadasDisponiveis.length; j++) {
+                    ISeason s = temporadasDisponiveis[j];
+                    if (s != null && s.getYear() == (int) year) {
+                        league.createSeason(s);
+                        break;
+                    }
+                }
+            }
+
+            return league;
+        } catch (Exception e) {
+            throw new IOException("Erro ao importar League: " + e.getMessage(), e);
+        }
     }
 }

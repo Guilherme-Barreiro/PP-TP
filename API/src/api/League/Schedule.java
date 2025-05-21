@@ -4,13 +4,17 @@
  */
 package api.League;
 
+import api.Match.Match;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
+import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -176,6 +180,57 @@ public class Schedule implements ISchedule {
         try ( FileWriter file = new FileWriter(fileName)) {
             file.write(json.toJSONString());
             file.flush();
+        }
+    }
+
+    public static Schedule importFromJson(String filename, IClub[] clubesDisponiveis) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(filename)) {
+            JSONObject json = (JSONObject) parser.parse(reader);
+
+            int numberOfRounds = ((Long) json.get("numberOfRounds")).intValue();
+            int matchCount = ((Long) json.get("matchCount")).intValue();
+
+            JSONArray matchesArray = (JSONArray) json.get("matches");
+            IMatch[] matches = new IMatch[matchesArray.size()];
+
+            for (int i = 0; i < matchesArray.size(); i++) {
+                JSONObject m = (JSONObject) matchesArray.get(i);
+
+                String homeName = (String) m.get("homeClub");
+                String awayName = (String) m.get("awayClub");
+                int round = ((Long) m.get("round")).intValue();
+                boolean played = (Boolean) m.get("played");
+
+                IClub home = null;
+                IClub away = null;
+
+                for (int j = 0; j < clubesDisponiveis.length; j++) {
+                    if (clubesDisponiveis[j] != null) {
+                        if (clubesDisponiveis[j].getName().equals(homeName)) {
+                            home = clubesDisponiveis[j];
+                        }
+                        if (clubesDisponiveis[j].getName().equals(awayName)) {
+                            away = clubesDisponiveis[j];
+                        }
+                    }
+                }
+
+                if (home == null || away == null) {
+                    throw new IllegalStateException("Club not found for match: " + homeName + " vs " + awayName);
+                }
+
+                Match match = new Match(home, away, round);
+                if (played) {
+                    match.setPlayed();
+                }
+                matches[i] = match;
+            }
+
+            return new Schedule(matches, matchCount, numberOfRounds);
+        } catch (Exception e) {
+            throw new IOException("Erro ao importar Schedule: " + e.getMessage(), e);
         }
     }
 

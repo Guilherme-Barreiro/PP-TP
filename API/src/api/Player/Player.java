@@ -12,10 +12,13 @@ package api.Player;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Represents a football player with personal and technical attributes.
@@ -208,7 +211,7 @@ public class Player implements IPlayer {
         playerJson.put("weight", this.weight);
         playerJson.put("preferredFoot", this.preferredFoot != null ? this.preferredFoot.toString() : null);
 
-        try (FileWriter file = new FileWriter("player_" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        try ( FileWriter file = new FileWriter("player_" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(playerJson.toJSONString());
             file.flush();
         }
@@ -257,4 +260,33 @@ public class Player implements IPlayer {
         return this.number == other.number;
     }
 
+    public static Player importFromJson(String filePath) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(filePath)) {
+            JSONObject obj = (JSONObject) parser.parse(reader);
+
+            String name = (String) obj.get("name");
+            LocalDate birthDate = LocalDate.parse((String) obj.get("birthDate"));
+            int age = ((Long) obj.get("age")).intValue();
+            String nationality = (String) obj.get("nationality");
+            String positionStr = (String) obj.get("position");
+            String photo = (String) obj.get("photo");
+            int number = ((Long) obj.get("number")).intValue();
+            int shooting = ((Long) obj.get("shooting")).intValue();
+            int passing = ((Long) obj.get("passing")).intValue();
+            int stamina = ((Long) obj.get("stamina")).intValue();
+            int speed = ((Long) obj.get("speed")).intValue();
+            float height = ((Double) obj.get("height")).floatValue();
+            float weight = ((Double) obj.get("weight")).floatValue();
+            PreferredFoot foot = PreferredFoot.valueOf((String) obj.get("preferredFoot"));
+
+            PlayerPosition position = new PlayerPosition(positionStr);
+
+            return new Player(name, birthDate, age, nationality, position, photo, number,
+                    shooting, passing, stamina, speed, height, weight, foot);
+        } catch (ParseException e) {
+            throw new IOException("Erro ao ler o ficheiro JSON: " + e.getMessage());
+        }
+    }
 }

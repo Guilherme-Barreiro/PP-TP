@@ -11,9 +11,12 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import contracts.IPlayerEvent;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -132,11 +135,11 @@ public class Match implements IMatch {
 
     @Override
     public boolean isValid() {
-        if (this.getHomeClub() != null && 
-                this.getAwayClub() != null && 
-                !this.getHomeClub().equals(this.getAwayClub()) 
-                && this.getHomeTeam().getFormation() != null && 
-                this.getAwayTeam().getFormation() != null) {
+        if (this.getHomeClub() != null
+                && this.getAwayClub() != null
+                && !this.getHomeClub().equals(this.getAwayClub())
+                && this.getHomeTeam().getFormation() != null
+                && this.getAwayTeam().getFormation() != null) {
             return true;
         }
         return false;
@@ -293,4 +296,42 @@ public class Match implements IMatch {
         return homeClub.getName() + " " + homeGoals + " - " + awayGoals + " " + awayClub.getName();
     }
 
+    public static Match importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(fileName)) {
+            JSONObject json = (JSONObject) parser.parse(reader);
+
+            String homeClubName = (String) json.get("homeClub");
+            String awayClubName = (String) json.get("awayClub");
+            int round = ((Long) json.get("round")).intValue();
+            boolean played = (Boolean) json.get("played");
+
+            IClub homeClub = null;
+            IClub awayClub = null;
+
+            for (int i = 0; i < clubesDisponiveis.length; i++) {
+                IClub c = clubesDisponiveis[i];
+                if (c.getName().equals(homeClubName)) {
+                    homeClub = c;
+                }
+                if (c.getName().equals(awayClubName)) {
+                    awayClub = c;
+                }
+            }
+
+            if (homeClub == null || awayClub == null) {
+                throw new IllegalArgumentException("Um ou ambos os clubes não foram encontrados.");
+            }
+
+            Match match = new Match(homeClub, awayClub, round);
+            if (played) {
+                match.setPlayed(); // marca como jogado
+            }
+
+            return match;
+        } catch (Exception e) {
+            throw new IOException("Erro ao importar o Match de JSON: " + e.getMessage(), e);
+        }
+    }
 }

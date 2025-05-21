@@ -18,10 +18,12 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -441,4 +443,77 @@ public class Season implements ISeason {
         throw new IllegalArgumentException("Club not found in season");
     }
 
+    public static Season importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(fileName)) {
+            JSONObject json = (JSONObject) parser.parse(reader);
+
+            String name = (String) json.get("name");
+            int year = ((Long) json.get("year")).intValue();
+            int maxTeams = ((Long) json.get("maxTeams")).intValue();
+            int currentRound = ((Long) json.get("currentRound")).intValue();
+            int totalMatches = ((Long) json.get("totalMatches")).intValue();
+            int currentMatchCount = ((Long) json.get("currentMatchCount")).intValue();
+
+            Season season = new Season(name, year, maxTeams);
+            season.currentRound = currentRound;
+            season.matchCount = currentMatchCount;
+            season.totalMatches = totalMatches;
+
+            // Importar clubes
+            JSONArray clubArray = (JSONArray) json.get("clubs");
+            for (int i = 0; i < clubArray.size(); i++) {
+                JSONObject clubJson = (JSONObject) clubArray.get(i);
+                String clubName = (String) clubJson.get("name");
+
+                for (int j = 0; j < clubesDisponiveis.length; j++) {
+                    if (clubesDisponiveis[j] != null && clubesDisponiveis[j].getName().equals(clubName)) {
+                        season.addClub(clubesDisponiveis[j]);
+                        break;
+                    }
+                }
+            }
+
+            // Importar jogos
+            JSONArray matchArray = (JSONArray) json.get("matches");
+            for (int i = 0; i < matchArray.size(); i++) {
+                JSONObject matchJson = (JSONObject) matchArray.get(i);
+
+                String homeClubName = (String) matchJson.get("homeClub");
+                String awayClubName = (String) matchJson.get("awayClub");
+                int round = ((Long) matchJson.get("round")).intValue();
+                boolean played = (Boolean) matchJson.get("played");
+
+                IClub home = null;
+                IClub away = null;
+
+                for (int j = 0; j < clubesDisponiveis.length; j++) {
+                    if (clubesDisponiveis[j] != null) {
+                        if (clubesDisponiveis[j].getName().equals(homeClubName)) {
+                            home = clubesDisponiveis[j];
+                        } else if (clubesDisponiveis[j].getName().equals(awayClubName)) {
+                            away = clubesDisponiveis[j];
+                        }
+                    }
+                }
+
+                if (home == null || away == null) {
+                    throw new IllegalStateException("Erro ao encontrar clubes para o jogo: " + homeClubName + " vs " + awayClubName);
+                }
+
+                Match match = new Match(home, away, round);
+                if (played) {
+                    match.setPlayed();
+                }
+
+                season.matches[i] = match;
+            }
+
+            return season;
+
+        } catch (Exception e) {
+            throw new IOException("Erro ao importar season: " + e.getMessage(), e);
+        }
+    }
 }
