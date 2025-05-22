@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -291,15 +292,14 @@ public class Club implements IClub {
     public void exportToJson() throws IOException {
         JSONObject clubJson = new JSONObject();
 
+        clubJson.put("name", this.name);
         clubJson.put("code", this.code);
         clubJson.put("country", this.Country);
-        clubJson.put("foundedYear", this.foundedYear);
+        clubJson.put("founded", this.foundedYear);
+        clubJson.put("stadium", this.stadiumName);
         clubJson.put("logo", this.logo);
-        clubJson.put("name", this.name);
-        clubJson.put("stadiumName", this.stadiumName);
-        clubJson.put("playerCount", this.playerCount);
 
-        try ( FileWriter file = new FileWriter("club_" + this.code + ".json")) {
+        try ( FileWriter file = new FileWriter("club_" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -383,18 +383,18 @@ public class Club implements IClub {
         JSONParser parser = new JSONParser();
 
         try ( FileReader reader = new FileReader(fileName)) {
-            JSONObject json = (JSONObject) parser.parse(reader);
+            JSONObject obj = (JSONObject) parser.parse(reader);
 
-            String code = (String) json.get("code");
-            String country = (String) json.get("country");
-            int foundedYear = ((Long) json.get("foundedYear")).intValue();
-            String logo = (String) json.get("logo");
-            String name = (String) json.get("name");
-            String stadiumName = (String) json.get("stadiumName");
+            String name = (String) obj.get("name");
+            String code = (String) obj.get("code");
+            String country = (String) obj.get("country");
+            int founded = ((Long) obj.get("founded")).intValue();
+            String stadium = (String) obj.get("stadium");
+            String logo = (String) obj.get("logo");
 
-            return new Club(code, country, foundedYear, logo, name, stadiumName);
-        } catch (Exception e) {
-            throw new IOException("Erro ao importar ficheiro JSON: " + fileName, e);
+            return new Club(code, country, founded, logo, name, stadium);
+        } catch (org.json.simple.parser.ParseException e) {
+            throw new IOException("Erro ao ler o ficheiro JSON: " + e.getMessage());
         }
     }
 }
