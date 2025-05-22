@@ -258,10 +258,10 @@ public class Team implements ITeam {
         return "Team{" + "club=" + club + ", formation=" + formation + ", players=" + players + ", playerCount=" + playerCount + '}';
     }
 
-    public static Team importFromJson(String filePath) throws IOException {
+    public static Team importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(filePath)) {
+        try ( FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             // Club name
