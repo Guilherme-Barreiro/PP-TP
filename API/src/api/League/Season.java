@@ -176,12 +176,18 @@ public class Season implements ISeason {
         }
 
         for (int i = 0; i < matchCount; i++) {
+            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
             if (matches[i].getRound() == currentRound && !matches[i].isPlayed()) {
+                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
                 matchSimulator.simulate(matches[i]);
                 matches[i].setPlayed();
             }
         }
         currentRound++;
+        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+
     }
 
     @Override
@@ -206,10 +212,12 @@ public class Season implements ISeason {
 
     @Override
     public boolean isSeasonComplete() {
-        if (this.matchCount == this.totalMatches) {
-            return true;
+        for (int i = 0; i < matchCount; i++) {
+            if (!matches[i].isPlayed()) {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -247,7 +255,7 @@ public class Season implements ISeason {
         this.matchSimulator = mss;
     }
 
-    //chatgpt deve estar mal
+    // chatgpt deve estar mal
     @Override
     public IStanding[] getLeagueStandings() {
         if (clubCount == 0) {
@@ -427,7 +435,7 @@ public class Season implements ISeason {
 
         // Escrever no ficheiro
         String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -446,7 +454,7 @@ public class Season implements ISeason {
     public static Season importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(fileName)) {
+        try (FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String name = (String) json.get("name");
@@ -499,7 +507,8 @@ public class Season implements ISeason {
                 }
 
                 if (home == null || away == null) {
-                    throw new IllegalStateException("Erro ao encontrar clubes para o jogo: " + homeClubName + " vs " + awayClubName);
+                    throw new IllegalStateException(
+                            "Erro ao encontrar clubes para o jogo: " + homeClubName + " vs " + awayClubName);
                 }
 
                 Match match = new Match(home, away, round);
