@@ -176,18 +176,13 @@ public class Season implements ISeason {
         }
 
         for (int i = 0; i < matchCount; i++) {
-            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
             if (matches[i].getRound() == currentRound && !matches[i].isPlayed()) {
-                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-
                 matchSimulator.simulate(matches[i]);
                 matches[i].setPlayed();
             }
         }
         currentRound++;
-        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-
     }
 
     @Override
@@ -199,7 +194,12 @@ public class Season implements ISeason {
         if (matchCount == 0) {
             throw new IllegalStateException("The league is not scheduled");
         }
-
+        
+        //ter a certeza que acaba a simulação
+        if (isSeasonComplete()) {
+            return;
+        }
+        
         while (!isSeasonComplete()) {
             simulateRound();
         }

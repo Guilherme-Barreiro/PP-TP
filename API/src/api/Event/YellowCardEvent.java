@@ -33,7 +33,7 @@ public class YellowCardEvent implements IPlayerEvent {
 
     @Override
     public String getDescription() {
-        return minute + "' Cartão amarelo para " + player.getName();
+        return minute + "' Cartao amarelo para " + player.getName();
     }
 
     @Override

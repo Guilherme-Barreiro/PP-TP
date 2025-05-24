@@ -46,7 +46,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
                 }
-                System.out.println(scorer);
+                //System.out.println(scorer);
             }
             // if para golo da awayTeam
             if (random.nextInt(200) < goloChance) {
@@ -56,7 +56,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
                 }
-                System.out.println(scorer);
+                //System.out.println(scorer);
             }
 
             // if para cartao vermelho na homeTeam
@@ -101,11 +101,11 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                     match.addEvent(yellowcard);
                     System.out.println(yellowcard.getDescription());
 
-                    expelledPlayers[expelledCount++] = yellowed;
-
-                    if (match.getHomeTeam() instanceof Team) {
-                        ((Team) match.getHomeTeam()).removePlayer(yellowed);
-                    }
+//                    expelledPlayers[expelledCount++] = yellowed;
+//
+//                    if (match.getHomeTeam() instanceof Team) {
+//                        ((Team) match.getHomeTeam()).removePlayer(yellowed);
+//                    }
                 }
             }            
             // if para cartao amarelo na awayTeam
@@ -116,11 +116,11 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
                     match.addEvent(yellowcard);
                     System.out.println(yellowcard.getDescription());
 
-                    expelledPlayers[expelledCount++] = yellowed;
-
-                    if (match.getAwayTeam() instanceof Team) {
-                        ((Team) match.getAwayTeam()).removePlayer(yellowed);
-                    }
+//                    expelledPlayers[expelledCount++] = yellowed;
+//
+//                    if (match.getAwayTeam() instanceof Team) {
+//                        ((Team) match.getAwayTeam()).removePlayer(yellowed);
+//                    }
                 }
             }
 
