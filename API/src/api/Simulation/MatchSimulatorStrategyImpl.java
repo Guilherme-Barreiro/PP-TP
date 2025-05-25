@@ -27,7 +27,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
         if (match == null) {
             throw new IllegalArgumentException("Match cannot be null");
         }
-
+System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
         IPlayer[] expelledPlayers = new IPlayer[30];
         int expelledCount = 0;
 
@@ -125,8 +125,8 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
             }
 
             try {
-                //Thread.sleep(100);
-                Thread.sleep(1);
+//                Thread.sleep(1000);
+                Thread.sleep(0);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.out.println("Simulação interrompida.");

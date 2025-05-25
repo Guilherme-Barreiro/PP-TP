@@ -39,6 +39,7 @@ public class GoalEvent implements IGoalEvent {
     @Override
     public String getDescription() {
         return minute + "' Golo de " + player.getName();
+//        return minute + "'\u001B[34m" + " Golo de" + "\u001B[0m mostrado a " + player.getName();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class GoalEvent implements IGoalEvent {
 
         String fileName = "goalevent_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + "min.json";
 
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }

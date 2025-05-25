@@ -7,10 +7,6 @@ package contracts;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
-/**
- *
- * @author Diogo
- */
 public interface IPlayerEvent extends IEvent{
     IPlayer getPlayer();
 }

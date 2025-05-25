@@ -220,8 +220,16 @@ public class Team implements ITeam {
         }
         json.put("players", playersArray);
 
-        String fileName = "team_" + (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined") + ".json";
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        String folderPath = "JSON Files/Teams";
+        java.io.File folder = new java.io.File(folderPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        String fileName = (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined").toLowerCase() + ".json";
+        String fullPath = folderPath + "/" + fileName;
+
+        try (FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -261,20 +269,19 @@ public class Team implements ITeam {
     public static Team importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(fileName)) {
+        String fullPath = "JSON Files/Teams/" + fileName;
+
+        try (FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
-            // Club name
             String clubName = (String) json.get("club");
             Club club = new Club(clubName, "Portugal", 1900, "", clubName, "Estádio Importado");
 
             Team team = new Team(club);
 
-            // Formation
             String formationStr = (String) json.get("formation");
             team.setFormation(new Formation(formationStr));
 
-            // Players
             JSONArray playersArray = (JSONArray) json.get("players");
             for (Object obj : playersArray) {
                 JSONObject p = (JSONObject) obj;
@@ -294,7 +301,6 @@ public class Team implements ITeam {
                 String positionDesc = (String) p.get("position");
                 String preferredFootStr = (String) p.get("preferredFoot");
 
-                // Obter posição e preferred foot
                 IPlayerPosition position = new PlayerPosition(positionDesc);
                 PreferredFoot foot = PreferredFoot.valueOf(preferredFootStr);
 
@@ -310,4 +316,5 @@ public class Team implements ITeam {
             throw new IOException("Erro ao processar o ficheiro JSON: " + e.getMessage());
         }
     }
+
 }

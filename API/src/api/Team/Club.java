@@ -299,7 +299,7 @@ public class Club implements IClub {
         clubJson.put("stadium", this.stadiumName);
         clubJson.put("logo", this.logo);
 
-        try ( FileWriter file = new FileWriter("club_" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        try (FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -382,7 +382,7 @@ public class Club implements IClub {
     public static Club importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(fileName)) {
+        try (FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");

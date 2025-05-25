@@ -33,7 +33,7 @@ public class YellowCardEvent implements IPlayerEvent {
 
     @Override
     public String getDescription() {
-        return minute + "' Cartao amarelo para " + player.getName();
+        return minute + "'\u001B[33m" + " Cartao amarelo" + "\u001B[0m mostrado a " + player.getName();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class YellowCardEvent implements IPlayerEvent {
 
         String fileName = "yellowcard_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
 
-        try ( FileWriter file = new FileWriter(fileName)) {
+        try (FileWriter file = new FileWriter(fileName)) {
             file.write(json.toJSONString());
             file.flush();
         }

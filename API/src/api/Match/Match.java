@@ -11,6 +11,8 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import contracts.IPlayerEvent;
+
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,6 +44,10 @@ public class Match implements IMatch {
         this.events = new IEvent[MAX_EVENT];
         this.eventCount = 0;
         this.played = false;
+    }
+
+    public boolean wasPlayed() {
+        return this.played;
     }
 
     @Override
@@ -212,19 +218,16 @@ public class Match implements IMatch {
         json.put("awayClub", awayClub != null ? awayClub.getName() : "undefined");
         json.put("round", round);
         json.put("played", played);
-        json
-                .put("homeGoals", getTotalByEvent(IGoalEvent.class,
-                        homeClub));
-        json
-                .put("awayGoals", getTotalByEvent(IGoalEvent.class,
-                        awayClub));
+        json.put("homeGoals", getTotalByEvent(IGoalEvent.class, homeClub));
+        json.put("awayGoals", getTotalByEvent(IGoalEvent.class, awayClub));
         json.put("eventCount", eventCount);
 
         String fileName = "match_" + homeClub.getName().replaceAll("\\s+", "_")
                 + "_vs_" + awayClub.getName().replaceAll("\\s+", "_")
                 + "_round_" + round + ".json";
+        String fullPath = "JSON Files/Matches/" + fileName;
 
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -299,7 +302,9 @@ public class Match implements IMatch {
     public static Match importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(fileName)) {
+        String fullPath = "JSON Files/Matches/" + fileName;
+
+        try (FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String homeClubName = (String) json.get("homeClub");
@@ -326,7 +331,7 @@ public class Match implements IMatch {
 
             Match match = new Match(homeClub, awayClub, round);
             if (played) {
-                match.setPlayed(); // marca como jogado
+                match.setPlayed();
             }
 
             return match;
@@ -334,4 +339,5 @@ public class Match implements IMatch {
             throw new IOException("Erro ao importar o Match de JSON: " + e.getMessage(), e);
         }
     }
+
 }

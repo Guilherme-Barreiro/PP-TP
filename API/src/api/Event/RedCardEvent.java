@@ -33,7 +33,7 @@ public class RedCardEvent implements IPlayerEvent {
 
     @Override
     public String getDescription() {
-        return minute + "' Cartao vermelho mostrado a " + player.getName();
+        return minute + "'\u001B[31m" + " Cartao vermelho" + "\u001B[0m mostrado a " + player.getName();
     }
 
     @Override

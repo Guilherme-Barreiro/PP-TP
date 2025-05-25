@@ -22,6 +22,7 @@ import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
+import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ import java.time.LocalDate;
 public class TestLeaguePackage {
 
     public static void main(String[] args) {
+        System.out.println("\n\n\n");
 // === Clubes e Equipas ===
         Club Cslb = new Club("slb", "tuga", 1904, "https://logo.com", "benfica", "luz");
         Club Cfcp = new Club("fcp", "tuga", 1893, "https://logo.com", "porto", "dragao");
@@ -172,29 +174,79 @@ public class TestLeaguePackage {
         try {
             Tslb.exportToJson();
             Tfcp.exportToJson();
-            System.out.println("Exportacao JSON concluída com sucesso.");
+            System.out.println("Exportacao de teams  sucesso.");
         } catch (Exception err) {
-            System.out.println("Erro ao exportar para JSON:");
+            System.out.println("Erro ao exporta teams:");
             err.printStackTrace();
         }
-        
+
         try {
-            Tslb.exportToJson();
-            Tfcp.exportToJson();
-            System.out.println("Exportacao JSON concluída com sucesso.");
 
-            Team importedTeamSLB = Team.importFromJson("team_benfica.json");
-            Team importedTeamFCP = Team.importFromJson("team_porto.json");
+            Team importedTeamSLB = Team.importFromJson("benfica.json");
+            Team importedTeamFCP = Team.importFromJson("porto.json");
 
-            System.out.println("\n=== Verificação da importacao ===");
+            System.out.println("\n===importacao check Teams===");
             System.out.println("SLB - Formacao: " + importedTeamSLB.getFormation().getDisplayName());
-            System.out.println("SLB - Nº jogadores importados: " + importedTeamSLB.getPlayers().length);
+            System.out.println("SLB - N jogadores importados: " + importedTeamSLB.getPlayers().length);
 
             System.out.println("FCP - Formacao: " + importedTeamFCP.getFormation().getDisplayName());
-            System.out.println("FCP - Nº jogadores importados: " + importedTeamFCP.getPlayers().length);
+            System.out.println("FCP - N jogadores importados: " + importedTeamFCP.getPlayers().length);
 
         } catch (Exception err) {
-            System.out.println("Erro ao exportar ou importar JSON:");
+            System.out.println("Erro ao importar teams:");
+            err.printStackTrace();
+        }
+
+        try {
+            Cslb.exportToJson();
+            Cfcp.exportToJson();
+            System.out.println("Exportacao de clubs sucesso.");
+        } catch (Exception err) {
+            System.out.println("Erro ao exportar clubs:");
+            err.printStackTrace();
+        }
+
+        try {
+            Club importedClubSLB = Club.importFromJson("benfica.json");
+            Club importedClubFCP = Club.importFromJson("porto.json");
+
+            System.out.println("\n=== import clubes  Check===");
+            System.out.println("SLB - Nome: " + importedClubSLB.getName());
+            System.out.println("SLB - Estadio: " + importedClubSLB.getStadiumName());
+            System.out.println("SLB - Ano fundacao: " + importedClubSLB.getFoundedYear());
+
+            System.out.println("FCP - Nome: " + importedClubFCP.getName());
+            System.out.println("FCP - Estadio: " + importedClubFCP.getStadiumName());
+            System.out.println("FCP - Ano fundacao: " + importedClubFCP.getFoundedYear());
+
+        } catch (Exception err) {
+            System.out.println("Erro ao importar clubs:");
+            err.printStackTrace();
+        }
+
+        try {
+            IMatch firstMatch = season.getSchedule().getMatchesForRound(0)[0];
+            ((Match) firstMatch).exportToJson();
+            System.out.println("Exportação do match realizada com sucesso.");
+        } catch (Exception err) {
+            System.out.println("Erro ao exportar match:");
+            err.printStackTrace();
+        }
+
+        try {
+            IClub[] clubesDisponiveis = ((Season) season).getCurrentClubs();
+            Match importedMatch = Match.importFromJson("match_benfica_vs_porto_round_0.json", clubesDisponiveis);
+
+            System.out.println("\n=== Match importado com sucesso ===");
+            System.out.println("Home: " + importedMatch.getHomeClub().getName());
+            System.out.println("Away: " + importedMatch.getAwayClub().getName());
+            System.out.println("Ronda: " + importedMatch.getRound());
+            System.out.println("Jogado: " + importedMatch.wasPlayed());
+System.out.println("Resultado: " + importedMatch.getHomeClub().getName()
+                   + " " + homeGoals + " - " + awayGoals + " " + importedMatch.getAwayClub().getName());
+
+        } catch (Exception err) {
+            System.out.println("Erro ao importar match:");
             err.printStackTrace();
         }
 
