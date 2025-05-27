@@ -242,8 +242,7 @@ public class TestLeaguePackage {
             System.out.println("Away: " + importedMatch.getAwayClub().getName());
             System.out.println("Ronda: " + importedMatch.getRound());
             System.out.println("Jogado: " + importedMatch.wasPlayed());
-System.out.println("Resultado: " + importedMatch.getHomeClub().getName()
-                   + " " + homeGoals + " - " + awayGoals + " " + importedMatch.getAwayClub().getName());
+            //System.out.println("Resultado: " + importedMatch.getHomeClub().getName() + " " + homeGoals + " - " + awayGoals + " " + importedMatch.getAwayClub().getName());
 
         } catch (Exception err) {
             System.out.println("Erro ao importar match:");

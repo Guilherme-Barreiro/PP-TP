@@ -27,7 +27,7 @@ public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
         if (match == null) {
             throw new IllegalArgumentException("Match cannot be null");
         }
-System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
+        System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
         IPlayer[] expelledPlayers = new IPlayer[30];
         int expelledCount = 0;
 
@@ -92,7 +92,6 @@ System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs
                 }
             }
 
-            
             // if para cartao amarelo na homeTeam
             if (random.nextInt(1000) < 5) {
                 IPlayer yellowed = pickRandomPlayer(match.getHomeTeam().getPlayers());
@@ -107,7 +106,7 @@ System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs
 //                        ((Team) match.getHomeTeam()).removePlayer(yellowed);
 //                    }
                 }
-            }            
+            }
             // if para cartao amarelo na awayTeam
             if (random.nextInt(1000) < 5) {
                 IPlayer yellowed = pickRandomPlayer(match.getAwayTeam().getPlayers());
