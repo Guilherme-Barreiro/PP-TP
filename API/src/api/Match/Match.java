@@ -284,7 +284,7 @@ public class Match implements IMatch {
 
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try ( FileWriter writer = new FileWriter(fullPath)) {
+        try (FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -329,7 +329,7 @@ public class Match implements IMatch {
     private boolean playerBelongsToTeam(IPlayer player, ITeam team) {
         IPlayer[] teamPlayers = team.getPlayers();
         for (int i = 0; i < teamPlayers.length; i++) {
-            if (teamPlayers[i].equals(player)) {
+            if (teamPlayers[i] != null && teamPlayers[i].equals(player)) {
                 return true;
             }
         }
@@ -357,10 +357,7 @@ public class Match implements IMatch {
         return homeClub.getName() + " " + homeGoals + " - " + awayGoals + " " + awayClub.getName();
     }
 
-    public static Match importFromJson(String fileName) throws IOException {
-        Season season = Season.importFromJson("JSON Files/season.json");
-        IClub[] clubesDisponiveis = season.getCurrentClubs();
-
+    public static Match importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
         JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
 
@@ -379,11 +376,11 @@ public class Match implements IMatch {
                 if (clubesDisponiveis[i] != null) {
                     if (clubesDisponiveis[i].getName().equals(homeClubName)) {
                         homeClub = clubesDisponiveis[i];
-                    }
+                }
                     if (clubesDisponiveis[i].getName().equals(awayClubName)) {
                         awayClub = clubesDisponiveis[i];
-                    }
                 }
+            }
             }
 
             if (homeClub == null || awayClub == null) {
@@ -507,7 +504,7 @@ public class Match implements IMatch {
     private static IPlayer findPlayerByName(IPlayer[] jogadoresDisponiveis, String name) {
         if (name == null) {
             return null;
-        }
+}
         for (int k = 0; k < jogadoresDisponiveis.length; k++) {
             if (jogadoresDisponiveis[k].getName().equals(name)) {
                 return jogadoresDisponiveis[k];

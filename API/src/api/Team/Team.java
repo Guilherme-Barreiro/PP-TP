@@ -400,7 +400,7 @@ public class Team implements ITeam {
 
         String fullPath = "JSON Files/Teams/" + fileName;
 
-        try ( FileReader reader = new FileReader(fullPath)) {
+        try (FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             JSONObject clubJson = (JSONObject) json.get("club");
@@ -485,6 +485,15 @@ public class Team implements ITeam {
                 return;
             }
         }
+    }
+
+    public Goalkeeper getGoalkeeper() {
+        for (int i = 0; i < playerCount; i++) {
+            if (players[i] instanceof Goalkeeper) {
+                return (Goalkeeper) players[i];
+            }
+        }
+        throw new IllegalStateException("Nenhum guarda-redes encontrado na equipa.");
     }
 
 }

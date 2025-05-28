@@ -249,7 +249,7 @@ public class League implements ILeague {
                 ISeason season = Season.importFromJson(seasonFile);
                 if (season != null) {
                     league.createSeason(season);
-                }
+}
             }
 
             return league;
