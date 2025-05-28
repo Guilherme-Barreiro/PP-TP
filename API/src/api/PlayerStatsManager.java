@@ -1,9 +1,21 @@
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
+ */
 package api;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
+/**
+ * Manages and tracks player statistics throughout a football match.
+ */
 public class PlayerStatsManager {
 
     private IPlayer[] players;
@@ -12,12 +24,21 @@ public class PlayerStatsManager {
 
     private static final int MAX_PLAYERS = 500;
 
+    /**
+     * Initializes the manager with default capacity.
+     */
     public PlayerStatsManager() {
         this.players = new IPlayer[MAX_PLAYERS];
         this.statistics = new PlayerStats[MAX_PLAYERS];
         this.count = 0;
     }
 
+    /**
+     * Updates all player statistics from a given match. Adds default minutes
+     * played and processes events such as goals and cards.
+     *
+     * @param match the match containing players and events
+     */
     public void updateStatistics(IMatch match) {
         IPlayer[] allPlayers = mergePlayers(match.getHomeTeam().getPlayers(), match.getAwayTeam().getPlayers());
 
@@ -53,6 +74,12 @@ public class PlayerStatsManager {
         }
     }
 
+    /**
+     * Retrieves an existing PlayerStats or creates a new one.
+     *
+     * @param player the player whose stats are needed
+     * @return the PlayerStats instance for that player
+     */
     private PlayerStats getOrCreate(IPlayer player) {
         for (int i = 0; i < count; i++) {
             if (players[i].equals(player)) {
@@ -64,6 +91,13 @@ public class PlayerStatsManager {
         return statistics[count++];
     }
 
+    /**
+     * Merges two player arrays (from home and away teams).
+     *
+     * @param teamA players from team A
+     * @param teamB players from team B
+     * @return a merged array of all players
+     */
     private IPlayer[] mergePlayers(IPlayer[] teamA, IPlayer[] teamB) {
         IPlayer[] result = new IPlayer[teamA.length + teamB.length];
         int index = 0;
@@ -76,6 +110,12 @@ public class PlayerStatsManager {
         return result;
     }
 
+    /**
+     * Attempts to extract a player from an event using reflection.
+     *
+     * @param event the event to extract the player from
+     * @return the associated player or null if not applicable
+     */
     private IPlayer extractPlayer(IEvent event) {
         try {
             return (IPlayer) event.getClass().getMethod("getPlayer").invoke(event);
@@ -84,6 +124,11 @@ public class PlayerStatsManager {
         }
     }
 
+    /**
+     * Returns a copy of the current statistics for all tracked players.
+     *
+     * @return an array of PlayerStats
+     */
     public PlayerStats[] getStatistics() {
         PlayerStats[] copy = new PlayerStats[count];
         for (int i = 0; i < count; i++) {

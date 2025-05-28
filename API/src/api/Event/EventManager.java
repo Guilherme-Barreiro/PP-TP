@@ -324,6 +324,19 @@ public class EventManager implements IEventManager {
         return false;
     }
 
+    /**
+     * Calculates a result based on the difference between a player's shooting
+     * skill and a goalkeeper's reflexes, producing a value that reflects the
+     * difficulty or success of a shot attempt against the goalkeeper.
+     *
+     * The final result is adjusted to be within a realistic probability range
+     * of 5 to 95.
+     *
+     * @param shooting the shooting skill of the attacking player
+     * @param reflexes the reflex attribute of the goalkeeper
+     * @return an integer value between 5 and 95 representing the adjusted
+     * outcome of the duel
+     */
     private int reflexesVSShooting(int shooting, int reflexes) {
         int base = 50;
         int diff = Math.abs(shooting - reflexes);

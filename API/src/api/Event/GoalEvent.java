@@ -45,6 +45,19 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
     }
 
+    /**
+     * Constructs a new GoalEvent instance representing a goal scored by a
+     * player at a specific minute, along with the attributes involved in
+     * determining the success of the goal (shooting and goalkeeper's reflexes).
+     *
+     * @param player the player who scored the goal (cannot be null)
+     * @param minute the minute when the goal occurred (must be between 0 and
+     * 90)
+     * @param shooting the shooting skill level of the player
+     * @param reflexes the reflex skill level of the opposing goalkeeper
+     * @throws IllegalArgumentException if player is null or minute is outside
+     * the 0–90 range
+     */
     public GoalEvent(IPlayer player, int minute, int shooting, int reflexes) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
