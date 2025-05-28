@@ -25,7 +25,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Represents a football team with its club, formation and players.
+ * Represents a football team that consists of a club, formation, and players.
+ * Implements the ITeam interface.
  */
 public class Team implements ITeam {
 
@@ -35,6 +36,11 @@ public class Team implements ITeam {
     private int playerCount;
     private static final int MAX_PLAYERS = 11; // plantel
 
+    /**
+     * Constructs a new Team with the specified club.
+     *
+     * @param club The club associated with the team.
+     */
     public Team(IClub club) {
         this.club = club;
         this.players = new IPlayer[MAX_PLAYERS];
@@ -42,6 +48,12 @@ public class Team implements ITeam {
         this.formation = null;
     }
 
+    /**
+     * Finds the index of a given player in the team.
+     *
+     * @param player The player to find.
+     * @return Index of the player, or -1 if not found.
+     */
     private int findIndex(IPlayer player) {
         for (int i = 0; i < playerCount; i++) {
             if (players[i].equals(player)) {
@@ -51,6 +63,14 @@ public class Team implements ITeam {
         return -1;
     }
 
+    /**
+     * Adds a player to the team if constraints are satisfied.
+     *
+     * @param player The player to add.
+     * @throws TeamExceptions If the player is null, the team is full, the
+     * formation is not set, player already exists in the team, or a goalkeeper
+     * already exists.
+     */
     @Override
     public void addPlayer(IPlayer player) {
         int index = findIndex(player);
@@ -81,11 +101,22 @@ public class Team implements ITeam {
         players[playerCount++] = player;
     }
 
+    /**
+     * Returns the club associated with the team.
+     *
+     * @return The club.
+     */
     @Override
     public IClub getClub() {
         return this.club;
     }
 
+    /**
+     * Returns the current formation of the team.
+     *
+     * @return The formation.
+     * @throws IllegalStateException if the formation is not set.
+     */
     @Override
     public IFormation getFormation() {
         if (formation == null) {
@@ -94,6 +125,11 @@ public class Team implements ITeam {
         return this.formation;
     }
 
+    /**
+     * Returns an array of current players in the team.
+     *
+     * @return Array of players.
+     */
     @Override
     public IPlayer[] getPlayers() {
         IPlayer[] currentPlayers = new IPlayer[playerCount];
@@ -105,6 +141,22 @@ public class Team implements ITeam {
         return currentPlayers;
     }
 
+    /**
+     * Returns the current number of players in the team.
+     *
+     * @return The number of players currently added to the team.
+     */
+    public int getPlayerCount() {
+        return playerCount;
+    }
+
+    /**
+     * Counts how many players are assigned to a specific position.
+     *
+     * @param position The player position to count.
+     * @return Number of players in the specified position.
+     * @throws IllegalArgumentException if the position is null.
+     */
     @Override
     public int getPositionCount(IPlayerPosition position) {
         if (position == null) {
@@ -120,6 +172,11 @@ public class Team implements ITeam {
         return count;
     }
 
+    /**
+     * Calculates the overall team strength based on player attributes.
+     *
+     * @return The total strength of the team.
+     */
     @Override
     public int getTeamStrength() {
         int total = 0;
@@ -132,6 +189,14 @@ public class Team implements ITeam {
         return total;
     }
 
+    /**
+     * Checks if a given position is valid for the current formation.
+     *
+     * @param ipp The position to validate.
+     * @return True if the position is valid for the formation; false otherwise.
+     * @throws IllegalArgumentException or IllegalStateException if invalid
+     * inputs.
+     */
     @Override
     public boolean isValidPositionForFormation(IPlayerPosition ipp) {
         if (ipp == null) {
@@ -161,6 +226,12 @@ public class Team implements ITeam {
         }
     }
 
+    /**
+     * Sets the team formation.
+     *
+     * @param formation The formation to set.
+     * @throws IllegalArgumentException If the formation is null.
+     */
     @Override
     public void setFormation(IFormation formation
     ) {
@@ -170,6 +241,11 @@ public class Team implements ITeam {
         this.formation = formation;
     }
 
+    /**
+     * Removes a player from the team.
+     *
+     * @param player The player to remove.
+     */
     public void removePlayer(IPlayer player) {
         if (player == null) {
             return;
@@ -187,6 +263,11 @@ public class Team implements ITeam {
         }
     }
 
+    /**
+     * Exports the team data to a JSON file.
+     *
+     * @throws IOException If an error occurs during file writing.
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -247,6 +328,11 @@ public class Team implements ITeam {
         }
     }
 
+    /**
+     * Calculates the hash code based on club and formation.
+     *
+     * @return The hash code.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -255,6 +341,12 @@ public class Team implements ITeam {
         return hash;
     }
 
+    /**
+     * Checks if another object is equal to this team.
+     *
+     * @param obj The object to compare with.
+     * @return True if equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -273,11 +365,36 @@ public class Team implements ITeam {
         return Objects.equals(this.formation, other.formation);
     }
 
+    /**
+     * Returns a string representation of the team.
+     *
+     * @return The string representation.
+     */
     @Override
     public String toString() {
-        return "Team{" + "club=" + club + ", formation=" + formation + ", players=" + players + ", playerCount=" + playerCount + '}';
+        String str = "Team{"
+                + "club=" + this.getClub()
+                + ", formation=" + this.getFormation()
+                + ", players=[";
+
+        for (int i = 0; i < this.getPlayerCount(); i++) {
+            str += this.getPlayers()[i];
+            if (i < this.getPlayerCount() - 1) {
+                str += ", ";
+            }
+        }
+
+        str += "], playerCount=" + this.getPlayerCount() + '}';
+        return str;
     }
 
+    /**
+     * Imports a Team object from a JSON file.
+     *
+     * @param fileName The name of the JSON file.
+     * @return The imported Team object.
+     * @throws IOException If an error occurs during file reading or parsing.
+     */
     public static Team importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
@@ -337,6 +454,9 @@ public class Team implements ITeam {
         }
     }
 
+    /**
+     * Activates all players in the team (sets them as active).
+     */
     public void activateAllPlayers() {
         for (int i = 0; i < playerCount; i++) {
             if (players[i] instanceof Player) {
@@ -345,6 +465,11 @@ public class Team implements ITeam {
         }
     }
 
+    /**
+     * Disables a specific player (sets them as inactive).
+     *
+     * @param player The player to disable.
+     */
     public void disablePlayer(IPlayer player) {
         if (player == null) {
             return;
