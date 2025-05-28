@@ -55,7 +55,7 @@ public class TestLeaguePackage {
         Player p8 = new Player("J_Benfica_midfielder_88", LocalDate.of(2000, 8, 8), 24, "Portugal", mid, "", 88, 78, 73, 83, 68, 1.87f, 82f, PreferredFoot.Right);
         Player p9 = new Player("J_Benfica_forward_89", LocalDate.of(1999, 9, 9), 25, "Portugal", fwd, "", 89, 79, 74, 84, 69, 1.88f, 83f, PreferredFoot.Right);
         Player p10 = new Player("J_Benfica_midfielder_90", LocalDate.of(1998, 10, 10), 26, "Portugal", mid, "", 90, 80, 75, 85, 70, 1.89f, 84f, PreferredFoot.Right);
-        Player p11 = new Player("J_Benfica_defender_91", LocalDate.of(1997, 11, 11), 27, "Portugal", def, "", 91, 81, 76, 86, 71, 1.90f, 85f, PreferredFoot.Right);
+        //Player p11 = new Player("J_Benfica_defender_91", LocalDate.of(1997, 11, 11), 27, "Portugal", def, "", 91, 81, 76, 86, 71, 1.90f, 85f, PreferredFoot.Right);
 
         Cslb.addPlayer(g1);
         Cslb.addPlayer(p1);
@@ -68,7 +68,7 @@ public class TestLeaguePackage {
         Cslb.addPlayer(p8);
         Cslb.addPlayer(p9);
         Cslb.addPlayer(p10);
-        Cslb.addPlayer(p11);
+        //Cslb.addPlayer(p11);
 
         Goalkeeper g2 = new Goalkeeper("J_Porto_goalkeeper_1", LocalDate.of(2000, 9, 20), 24, "Portugal", gk, "", 20, 90, 85, 95, 80, 1.82f, 78f, PreferredFoot.Right, 88);
         Player q1 = new Player("J_Porto_forward_17", LocalDate.of(2001, 6, 17), 23, "Portugal", fwd, "", 17, 87, 82, 92, 77, 1.85f, 75f, PreferredFoot.Right);
@@ -81,7 +81,7 @@ public class TestLeaguePackage {
         Player q8 = new Player("J_Porto_midfielder_24", LocalDate.of(2001, 1, 24), 23, "Portugal", mid, "", 24, 94, 89, 99, 84, 1.78f, 82f, PreferredFoot.Right);
         Player q9 = new Player("J_Porto_forward_25", LocalDate.of(2002, 2, 25), 22, "Portugal", fwd, "", 25, 95, 90, 100, 85, 1.77f, 83f, PreferredFoot.Right);
         Player q10 = new Player("J_Porto_midfielder_26", LocalDate.of(2003, 3, 26), 21, "Portugal", mid, "", 26, 96, 91, 100, 86, 1.76f, 84f, PreferredFoot.Right);
-        Player q11 = new Player("J_Porto_defender_27", LocalDate.of(2000, 4, 27), 24, "Portugal", def, "", 27, 97, 92, 100, 87, 1.75f, 85f, PreferredFoot.Right);
+        //Player q11 = new Player("J_Porto_defender_27", LocalDate.of(2000, 4, 27), 24, "Portugal", def, "", 27, 97, 92, 100, 87, 1.75f, 85f, PreferredFoot.Right);
  
         Cfcp.addPlayer(g2);
         Cfcp.addPlayer(q1);
@@ -94,7 +94,7 @@ public class TestLeaguePackage {
         Cfcp.addPlayer(q8);
         Cfcp.addPlayer(q9);
         Cfcp.addPlayer(q10);
-        Cfcp.addPlayer(q11);
+        //Cfcp.addPlayer(q11);
 
         Tslb.setFormation(new Formation("4-3-3"));
         Tfcp.setFormation(new Formation("4-3-3"));
@@ -110,8 +110,9 @@ public class TestLeaguePackage {
             Tslb.addPlayer(p8);
             Tslb.addPlayer(p9);
             Tslb.addPlayer(p10);
-            Tslb.addPlayer(p11);
+            Tslb.addPlayer(g1);
 
+            Tfcp.addPlayer(g2);           
             Tfcp.addPlayer(q1);
             Tfcp.addPlayer(q2);
             Tfcp.addPlayer(q3);
@@ -122,11 +123,10 @@ public class TestLeaguePackage {
             Tfcp.addPlayer(q8);
             Tfcp.addPlayer(q9);
             Tfcp.addPlayer(q10);
-            Tfcp.addPlayer(q11);
         } catch (Exception err) {
             System.out.println(err.getMessage());
         }
-
+                
         // === Season, League e Simulação ===
         ISeason season = new Season("SuperLiga", 2025, 10);
         season.addClub(Cslb);

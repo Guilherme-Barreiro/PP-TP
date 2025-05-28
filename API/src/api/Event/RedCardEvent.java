@@ -16,7 +16,7 @@ import org.json.simple.JSONObject;
  *
  * @author Utilizador
  */
-public class RedCardEvent implements IGoalEvent {
+public class RedCardEvent implements IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;

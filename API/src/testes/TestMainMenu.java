@@ -8,9 +8,9 @@ import java.text.ParseException;
 public class TestMainMenu {
 
     public static void main(String[] args) throws IOException, ParseException {
-        MainMenu mainMenu = new MainMenu();
-
-        mainMenu.MenuPrincipal();
+//        MainMenu mainMenu = new MainMenu();
+//
+//        mainMenu.MenuPrincipal();
     }
 
 }

@@ -20,16 +20,32 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
+    private int shooting;
+    private int reflexes;
 
     public GoalEvent(IPlayer player, int minute) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
         }
-        if (minute < 0 || minute > 120) {
+        if (minute < 0 || minute > 90) {
             throw new IllegalArgumentException("Invalid minute: " + minute);
         }
         this.player = player;
         this.minute = minute;
+
+    }
+
+    public GoalEvent(IPlayer player, int minute, int shooting, int reflexes) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+        if (minute < 0 || minute > 90) {
+            throw new IllegalArgumentException("Invalid minute: " + minute);
+        }
+        this.player = player;
+        this.minute = minute;
+        this.shooting = shooting;
+        this.reflexes = reflexes;
     }
 
     @Override
@@ -39,8 +55,10 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
     @Override
     public String getDescription() {
-        return minute + "' Golo de " + player.getName();
-//        return minute + "'\u001B[34m" + " Golo de" + "\u001B[0m mostrado a " + player.getName();
+        return minute + "' Golo de " + player.getName()
+                + ", shooting vs reflexos : " + shooting + " vs " + reflexes;
+        //return minute + "'\u001B[34m" + " Golo de" + "\u001B[0m mostrado a " + player.getName();
+
     }
 
     @Override

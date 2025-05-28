@@ -25,7 +25,9 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
     @Override
     public void simulate(IMatch match) {
-        if (match == null) throw new IllegalArgumentException("Match cannot be null");
+        if (match == null) {
+            throw new IllegalArgumentException("Match cannot be null");
+        }
 
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
@@ -72,6 +74,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         }
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
+        
     }
 
 }

@@ -121,36 +121,39 @@ public class EventManager implements IEventManager {
 
             String position;
             int chance = random.nextInt(10000);
-            if (chance < 8000) {         // 80%
+            if (chance < 8000) {        // 80%
                 position = "forward";
-            } else if (chance < 9800) {  // 18%
+            } else if (chance < 9800) { // 19%
                 position = "midfielder";
-            } else {                     // 2%
+            } else if (chance < 9899) { // 0.99%
                 position = "defender";
+            } else {                    // 0.01%
+                position = "goalkeeper";
             }
 
             IPlayer[] filtered = filterPlayersByPosition(players, position);
             IPlayer scorer = pickRandomPlayer(filtered);
+            System.out.println("Tentativa de golo por: " + (scorer != null ? scorer.getName() : "null"));
+
+            if (scorer == null) {
+                System.out.println("scorer é null no minuto " + minute);
+            } else if (!(scorer instanceof Player)) {
+                System.out.println("scorer não é Player: " + scorer.getClass().getSimpleName());
+            }
 
             if (scorer != null && scorer instanceof Player) {
                 int shooting = ((Player) scorer).getShooting();
 
-                IPlayer[] gks = filterPlayersByPosition(defendingTeam.getPlayers(), "goalkeeper");
-                if (gks.length == 0 || !(gks[0] instanceof Goalkeeper)) {
-                    return;
-                }
-
-                Goalkeeper goalkeeper = (Goalkeeper) gks[0];
+                Goalkeeper goalkeeper = ((Team) defendingTeam).getGoalkeeper();
                 int reflexes = goalkeeper.getReflexes();
 
-                // Calcular probabilidade de sucesso do remate
-                int probabilidadeDeGolo = shooting - reflexes + 50;
-                probabilidadeDeGolo = Math.max(5, Math.min(95, probabilidadeDeGolo));
+                int probabilidadeDeGolo = reflexesVSShooting(shooting, reflexes);
 
                 if (random.nextInt(100) < probabilidadeDeGolo) {
-                    GoalEvent goal = new GoalEvent(scorer, minute);
+                    GoalEvent goal = new GoalEvent(scorer, minute, shooting, reflexes);
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
+
                 }
             }
         }
@@ -192,7 +195,6 @@ public class EventManager implements IEventManager {
 
             teamPlayers = team.getPlayers();
 
-            // Escolher posição
             String position;
             int chance = random.nextInt(10000);
             if (chance < 6000) {
@@ -236,6 +238,21 @@ public class EventManager implements IEventManager {
             }
         }
         return false;
+    }
+
+    private int reflexesVSShooting(int shooting, int reflexes) {
+        int base = 50;
+        int diff = Math.abs(shooting - reflexes);
+
+        int resultado;
+        if (shooting >= reflexes) {
+            resultado = base + diff;
+        } else {
+            resultado = base - diff;
+        }
+
+        // Limitar entre 5 e 95
+        return Math.max(5, Math.min(95, resultado));
     }
 
 }
