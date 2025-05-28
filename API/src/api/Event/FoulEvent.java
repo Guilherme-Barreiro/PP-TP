@@ -15,7 +15,7 @@ import org.json.simple.JSONObject;
  *
  * @author Utilizador
  */
-public class FoulEvent implements IPlayerEvent {
+public class FoulEvent implements IPlayerEvent{
 
     private final IPlayer player;
     private final int minute;

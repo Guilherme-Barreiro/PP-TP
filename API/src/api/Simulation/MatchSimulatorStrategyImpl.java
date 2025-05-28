@@ -4,124 +4,61 @@
  */
 package api.Simulation;
 
+import api.Event.EventManager;
 import api.Event.GoalEvent;
 import api.Event.RedCardEvent;
 import api.Event.YellowCardEvent;
 import api.Team.Team;
-import contracts.IMatchSimulatorStrategyImpl;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 
 /**
  *
  * @author guiba
  */
-public class MatchSimulatorStrategyImpl implements IMatchSimulatorStrategyImpl {
+public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
     private final java.util.Random random = new java.util.Random();
 
     @Override
     public void simulate(IMatch match) {
-        if (match == null) {
-            throw new IllegalArgumentException("Match cannot be null");
-        }
-System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
-        IPlayer[] expelledPlayers = new IPlayer[30];
-        int expelledCount = 0;
+        if (match == null) throw new IllegalArgumentException("Match cannot be null");
 
+        ((Team) match.getHomeTeam()).activateAllPlayers();
+        ((Team) match.getAwayTeam()).activateAllPlayers();
+
+        System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
+
+        IPlayer[] yellowedPlayers = new IPlayer[30];
+        IPlayer[] expelledPlayers = new IPlayer[30];
+        int[] yellowedCount = new int[1];
+        int expelledCount = 0;
         int redCardsHome = 0;
         int redCardsAway = 0;
+
+        EventManager em = new EventManager();
 
         for (int minute = 1; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
 
-            // if para golo da homeTeam
-            if (random.nextInt(200) < goloChance) {
-                IPlayer scorer = pickRandomPlayer(filterPlayersByPosition(match.getHomeTeam().getPlayers(), "forward"));
-                if (scorer != null) {
-                    GoalEvent goal = new GoalEvent(scorer, minute);
-                    match.addEvent(goal);
-                    System.out.println(goal.getDescription());
-                }
-                //System.out.println(scorer);
-            }
-            // if para golo da awayTeam
-            if (random.nextInt(200) < goloChance) {
-                IPlayer scorer = pickRandomPlayer(filterPlayersByPosition(match.getAwayTeam().getPlayers(), "forward"));
-                if (scorer != null) {
-                    GoalEvent goal = new GoalEvent(scorer, minute);
-                    match.addEvent(goal);
-                    System.out.println(goal.getDescription());
-                }
-                //System.out.println(scorer);
+            em.chanceForGoal(goloChance, minute, match);
+
+            if (em.chanceRedCard(match.getHomeTeam(), minute, match, expelledPlayers, expelledCount)) {
+                redCardsHome++;
+                expelledCount++;
             }
 
-            // if para cartao vermelho na homeTeam
-            if (random.nextInt(1000) < 5) {
-                IPlayer dismissed = pickRandomPlayer(match.getHomeTeam().getPlayers());
-                if (dismissed != null) {
-                    RedCardEvent redcard = new RedCardEvent(dismissed, minute);
-                    match.addEvent(redcard);
-                    System.out.println(redcard.getDescription());
-
-                    expelledPlayers[expelledCount++] = dismissed;
-
-                    if (match.getHomeTeam() instanceof Team) {
-                        ((Team) match.getHomeTeam()).removePlayer(dismissed);
-                    }
-                    redCardsHome++;
-                }
-            }
-            // if para cartao vermelho na awayTeam
-            if (random.nextInt(1000) < 5) {
-                IPlayer dismissed = pickRandomPlayer(match.getAwayTeam().getPlayers());
-                if (dismissed != null) {
-                    RedCardEvent redcard = new RedCardEvent(dismissed, minute);
-                    match.addEvent(redcard);
-                    System.out.println(redcard.getDescription());
-
-                    expelledPlayers[expelledCount++] = dismissed;
-
-                    if (match.getAwayTeam() instanceof Team) {
-                        ((Team) match.getAwayTeam()).removePlayer(dismissed);
-                    }
-                    redCardsAway++;
-                }
+            if (em.chanceRedCard(match.getAwayTeam(), minute, match, expelledPlayers, expelledCount)) {
+                redCardsAway++;
+                expelledCount++;
             }
 
-            
-            // if para cartao amarelo na homeTeam
-            if (random.nextInt(1000) < 5) {
-                IPlayer yellowed = pickRandomPlayer(match.getHomeTeam().getPlayers());
-                if (yellowed != null) {
-                    YellowCardEvent yellowcard = new YellowCardEvent(yellowed, minute);
-                    match.addEvent(yellowcard);
-                    System.out.println(yellowcard.getDescription());
-
-//                    expelledPlayers[expelledCount++] = yellowed;
-//
-//                    if (match.getHomeTeam() instanceof Team) {
-//                        ((Team) match.getHomeTeam()).removePlayer(yellowed);
-//                    }
-                }
-            }            
-            // if para cartao amarelo na awayTeam
-            if (random.nextInt(1000) < 5) {
-                IPlayer yellowed = pickRandomPlayer(match.getAwayTeam().getPlayers());
-                if (yellowed != null) {
-                    YellowCardEvent yellowcard = new YellowCardEvent(yellowed, minute);
-                    match.addEvent(yellowcard);
-                    System.out.println(yellowcard.getDescription());
-
-//                    expelledPlayers[expelledCount++] = yellowed;
-//
-//                    if (match.getAwayTeam() instanceof Team) {
-//                        ((Team) match.getAwayTeam()).removePlayer(yellowed);
-//                    }
-                }
+            if (em.chanceYellowCard(match, minute, expelledPlayers, expelledCount, yellowedPlayers, yellowedCount)) {
+                expelledCount++;
             }
 
             try {
@@ -133,45 +70,8 @@ System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs
                 break;
             }
         }
-    }
-
-    public boolean belongsToTeam(IPlayer player, IPlayer[] teamPlayers) {
-        for (int i = 0; i < teamPlayers.length; i++) {
-            if (teamPlayers[i].equals(player)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public IPlayer pickRandomPlayer(IPlayer[] players) {
-        if (players == null || players.length == 0) {
-            return null;
-        }
-
-        return players[random.nextInt(players.length)];
-    }
-
-    public IPlayer[] filterPlayersByPosition(IPlayer[] players, String positionDescription) {
-        int count = 0;
-
-        // Conta quantos jogadores têm x posição 
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].getPosition().getDescription().equalsIgnoreCase(positionDescription)) {
-                count++;
-            }
-        }
-
-        IPlayer[] filtered = new IPlayer[count];
-        int index = 0;
-
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].getPosition().getDescription().equalsIgnoreCase(positionDescription)) {
-                filtered[index++] = players[i];
-            }
-        }
-
-        return filtered;
+        ((Team) match.getHomeTeam()).activateAllPlayers();
+        ((Team) match.getAwayTeam()).activateAllPlayers();
     }
 
 }

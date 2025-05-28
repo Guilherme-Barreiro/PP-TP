@@ -5,6 +5,7 @@
 package api.Team;
 
 import Exceptions.TeamExceptions;
+import api.Player.Goalkeeper;
 import api.Player.Player;
 import api.Player.PlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
@@ -314,6 +315,31 @@ public class Team implements ITeam {
 
         } catch (ParseException e) {
             throw new IOException("Erro ao processar o ficheiro JSON: " + e.getMessage());
+        }
+    }
+
+    public void activateAllPlayers() {
+        for (int i = 0; i < playerCount; i++) {
+            if (players[i] instanceof Player) {
+                ((Player) players[i]).setActive(true);
+            }
+        }
+    }
+
+    public void disablePlayer(IPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        for (int i = 0; i < playerCount; i++) {
+            if (players[i].equals(player)) {
+                if (players[i] instanceof Player) {
+                    ((Player) players[i]).setActive(false);
+                } else if (players[i] instanceof Goalkeeper) {
+                    ((Goalkeeper) players[i]).setActive(false);
+                }
+                return;
+            }
         }
     }
 

@@ -28,4 +28,26 @@ public abstract class Event implements IEvent {
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not implemented yet");
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Event other = (Event) obj;
+        return this.minute == other.minute;
+    }
+    
 }

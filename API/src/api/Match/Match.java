@@ -235,10 +235,11 @@ public class Match implements IMatch {
 
     @Override
     public void addEvent(IEvent ievent) {
-        int index = findIndex(ievent);
         if (ievent == null) {
             throw new IllegalArgumentException("the event is null");
         }
+        int index = findIndex(ievent);
+
         if (index != -1) {
             throw new IllegalStateException("the event is already stored");
         }

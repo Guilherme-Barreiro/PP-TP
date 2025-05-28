@@ -40,6 +40,7 @@ public class Player implements IPlayer {
     private float height;
     private float weight;
     private PreferredFoot preferredFoot;
+    private boolean active = true;
 
     /**
      * Constructs a Player with all required attributes.
@@ -59,6 +60,7 @@ public class Player implements IPlayer {
         this.height = height;
         this.weight = weight;
         this.preferredFoot = preferredFoot;
+        this.active = true;
     }
 
     /**
@@ -177,6 +179,14 @@ public class Player implements IPlayer {
     @Override
     public float getWeight() {
         return this.weight;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     /**
