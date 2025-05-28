@@ -7,6 +7,7 @@ package api.Event;
 
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import contracts.IPlayerEvent;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONObject;
@@ -15,7 +16,7 @@ import org.json.simple.JSONObject;
  *
  * @author guiba
  */
-public class GoalEvent implements IGoalEvent {
+public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
