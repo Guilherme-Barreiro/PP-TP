@@ -219,10 +219,10 @@ public class League implements ILeague {
         final League other = (League) obj;
         return Objects.equals(this.name, other.name);
     }
-
-    public static League importFromJson(String filename, ISeason[] temporadasDisponiveis) throws IOException {
+    //mudar import
+    public static League importFromJson(String filename, ) throws IOException {
         JSONParser parser = new JSONParser();
-
+        ISeason[] temporadasDisponiveis;
         try ( FileReader reader = new FileReader(filename)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 

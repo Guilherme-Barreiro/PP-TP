@@ -390,6 +390,18 @@ public class Season implements ISeason {
         return current;
     }
 
+    public IClub getCurrentClub(String code) {
+        IClub current = null;
+        for (int i = 0; i < clubCount; i++) {
+            if(clubs[i].getCode().equals(code)) {
+                current = clubs[i];
+            }else{
+                current = null;
+            }
+        }
+        return current;
+    }
+
     private int findIndex(IClub club) {
         for (int i = 0; i < this.clubCount; i++) {
             if (clubs[i].equals(club)) {
@@ -451,7 +463,8 @@ public class Season implements ISeason {
         throw new IllegalArgumentException("Club not found in season");
     }
 
-    public static Season importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
+    public static Season importFromJson(String fileName) throws IOException {
+        IClub[] clubesDisponiveis;
         JSONParser parser = new JSONParser();
 
         try (FileReader reader = new FileReader(fileName)) {
@@ -471,6 +484,7 @@ public class Season implements ISeason {
 
             // Importar clubes
             JSONArray clubArray = (JSONArray) json.get("clubs");
+            clubesDisponiveis = new IClub[clubArray.size()];
             for (int i = 0; i < clubArray.size(); i++) {
                 JSONObject clubJson = (JSONObject) clubArray.get(i);
                 String clubName = (String) clubJson.get("name");
