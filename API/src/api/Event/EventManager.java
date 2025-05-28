@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Event;
 
@@ -17,8 +21,7 @@ import static java.lang.Math.random;
 import java.util.Random;
 
 /**
- *
- * @author Utilizador
+ * Manages a list of football events that occur during a match.
  */
 public class EventManager implements IEventManager {
 
@@ -26,11 +29,21 @@ public class EventManager implements IEventManager {
     private int eventCount;
     private final java.util.Random random = new java.util.Random();
 
+    /**
+     * Constructs an EventManager with a fixed capacity.
+     */
     public EventManager() {
         this.events = new IEvent[100]; // Capacidade fixa para o exemplo
         this.eventCount = 0;
     }
 
+    /**
+     * Adds a new event if it doesn't already exist.
+     *
+     * @param ievent The event to add.
+     * @throws IllegalArgumentException If the event is null.
+     * @throws IllegalStateException If the event already exists.
+     */
     @Override
     public void addEvent(IEvent ievent) {
         if (ievent == null) {
@@ -43,6 +56,11 @@ public class EventManager implements IEventManager {
         this.events[this.eventCount++] = ievent;
     }
 
+    /**
+     * Returns all stored events.
+     *
+     * @return Array of stored events.
+     */
     @Override
     public IEvent[] getEvents() {
         IEvent[] copyEvent = new IEvent[eventCount];
@@ -52,11 +70,22 @@ public class EventManager implements IEventManager {
         return copyEvent;
     }
 
+    /**
+     * Returns the current number of stored events.
+     *
+     * @return Event count.
+     */
     @Override
     public int getEventCount() {
         return this.eventCount;
     }
 
+    /**
+     * Finds the index of a given event in the array.
+     *
+     * @param event The event to find.
+     * @return Index of the event or -1 if not found.
+     */
     private int findIndex(IEvent event) {
         for (int i = 0; i < this.eventCount; i++) {
             if (this.events[i].equals(event)) {
@@ -66,6 +95,13 @@ public class EventManager implements IEventManager {
         return -1;
     }
 
+    /**
+     * Checks whether a player belongs to a given team.
+     *
+     * @param player The player to check.
+     * @param teamPlayers Array of team players.
+     * @return true if player is in the array; false otherwise.
+     */
     public boolean belongsToTeam(IPlayer player, IPlayer[] teamPlayers) {
         for (int i = 0; i < teamPlayers.length; i++) {
             if (teamPlayers[i].equals(player)) {
@@ -75,6 +111,12 @@ public class EventManager implements IEventManager {
         return false;
     }
 
+    /**
+     * Selects a random player from a given list.
+     *
+     * @param players Array of players.
+     * @return Randomly selected player or null if list is empty.
+     */
     public IPlayer pickRandomPlayer(IPlayer[] players) {
         if (players == null || players.length == 0) {
             return null;
@@ -83,10 +125,16 @@ public class EventManager implements IEventManager {
         return players[random.nextInt(players.length)];
     }
 
+    /**
+     * Filters players by a given position.
+     *
+     * @param players Array of players.
+     * @param positionDescription Position to filter by.
+     * @return Array of players with that position.
+     */
     public IPlayer[] filterPlayersByPosition(IPlayer[] players, String positionDescription) {
         int count = 0;
 
-        // Conta quantos jogadores têm x posição
         for (int i = 0; i < players.length; i++) {
             if (players[i].getPosition().getDescription().equalsIgnoreCase(positionDescription)) {
                 count++;
@@ -105,6 +153,13 @@ public class EventManager implements IEventManager {
         return filtered;
     }
 
+    /**
+     * Simulates a chance for a goal to occur.
+     *
+     * @param goloChance Chance (0–200) to try scoring.
+     * @param minute Minute of the match.
+     * @param match The current match.
+     */
     public void chanceForGoal(int goloChance, int minute, IMatch match) {
         if (random.nextInt(200) < goloChance) {
 
@@ -159,6 +214,16 @@ public class EventManager implements IEventManager {
         }
     }
 
+    /**
+     * Simulates a red card chance for a team.
+     *
+     * @param team Team to penalize.
+     * @param minute Minute of the event.
+     * @param match Current match.
+     * @param expelledPlayers Array of expelled players.
+     * @param expelledCount Count of expulsions.
+     * @return true if a red card occurred; false otherwise.
+     */
     public boolean chanceRedCard(ITeam team, int minute, IMatch match, IPlayer[] expelledPlayers, int expelledCount) {
         if (random.nextInt(1000) < 5) {
             IPlayer dismissed = pickRandomPlayer(team.getPlayers());
@@ -179,6 +244,17 @@ public class EventManager implements IEventManager {
         return false;
     }
 
+    /**
+     * Simulates a yellow card chance and checks for second yellow/red card.
+     *
+     * @param match Current match.
+     * @param minute Minute of the event.
+     * @param expelledPlayers Players sent off.
+     * @param expelledCount Count of expulsions.
+     * @param yellowedPlayers Players with a yellow card.
+     * @param yellowedCountRef Reference to yellow count (index 0).
+     * @return true if a red card was given; false otherwise.
+     */
     public boolean chanceYellowCard(IMatch match, int minute,
             IPlayer[] expelledPlayers, int expelledCount,
             IPlayer[] yellowedPlayers, int[] yellowedCountRef) {
@@ -231,6 +307,14 @@ public class EventManager implements IEventManager {
         return false;
     }
 
+    /**
+     * Checks whether a player already has a yellow card.
+     *
+     * @param player The player to check.
+     * @param yellowedPlayers Array of yellowed players.
+     * @param yellowedCount Count of yellow cards.
+     * @return true if player already has a yellow card; false otherwise.
+     */
     private boolean hasYellow(IPlayer player, IPlayer[] yellowedPlayers, int yellowedCount) {
         for (int i = 0; i < yellowedCount; i++) {
             if (yellowedPlayers[i].equals(player)) {

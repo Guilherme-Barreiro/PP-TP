@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.League;
 
@@ -9,8 +13,8 @@ import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 /**
- *
- * @author Utilizador
+ * Represents the standing (performance) of a team in a league season. It stores
+ * statistics such as wins, draws, losses, goals, and points.
  */
 public class Standing implements IStanding {
 
@@ -22,6 +26,12 @@ public class Standing implements IStanding {
     private Integer goalsConceded;
     private Integer points;
 
+    /**
+     * Constructs a new Standing instance for a given team.
+     *
+     * @param team the team associated with the standing
+     * @throws IllegalArgumentException if the team is null
+     */
     public Standing(ITeam team) {
         if (team == null) {
             throw new IllegalArgumentException("Team cannot be null");
@@ -35,6 +45,12 @@ public class Standing implements IStanding {
         this.points = 0;
     }
 
+    /**
+     * Returns the team associated with this standing.
+     *
+     * @return the team
+     * @throws IllegalStateException if the team is not initialized
+     */
     @Override
     public ITeam getTeam() {
         if (this.team == null) {
@@ -43,6 +59,12 @@ public class Standing implements IStanding {
         return this.team;
     }
 
+    /**
+     * Returns the total number of points earned.
+     *
+     * @return the points
+     * @throws IllegalStateException if the points are not initialized
+     */
     @Override
     public int getPoints() {
         if (this.points == null) {
@@ -51,6 +73,12 @@ public class Standing implements IStanding {
         return this.points;
     }
 
+    /**
+     * Adds points directly to the standing.
+     *
+     * @param i the number of points to add
+     * @throws IllegalArgumentException if the points are negative
+     */
     @Override
     public void addPoints(int i) {
         if (i < 0) {
@@ -59,6 +87,12 @@ public class Standing implements IStanding {
         this.points += i;
     }
 
+    /**
+     * Increments the number of wins and adds the corresponding points.
+     *
+     * @param i the points awarded per win
+     * @throws IllegalArgumentException if the value is negative
+     */
     @Override
     public void addWin(int i) {
         if (i < 0) {
@@ -68,6 +102,12 @@ public class Standing implements IStanding {
         this.points += i;
     }
 
+    /**
+     * Increments the number of draws and adds the corresponding points.
+     *
+     * @param i the points awarded per draw
+     * @throws IllegalArgumentException if the value is negative
+     */
     @Override
     public void addDraw(int i) {
         if (i < 0) {
@@ -77,6 +117,12 @@ public class Standing implements IStanding {
         this.points += i;
     }
 
+    /**
+     * Increments the number of losses and adds the corresponding points.
+     *
+     * @param i the points awarded per loss
+     * @throws IllegalArgumentException if the value is negative
+     */
     @Override
     public void addLoss(int i) {
         if (i < 0) {
@@ -86,6 +132,12 @@ public class Standing implements IStanding {
         this.points += i;
     }
 
+    /**
+     * Returns the number of wins.
+     *
+     * @return the wins
+     * @throws IllegalStateException if wins is not initialized
+     */
     @Override
     public int getWins() {
         if (this.wins == null) {
@@ -94,6 +146,12 @@ public class Standing implements IStanding {
         return this.wins;
     }
 
+    /**
+     * Returns the number of draws.
+     *
+     * @return the draws
+     * @throws IllegalStateException if draws is not initialized
+     */
     @Override
     public int getDraws() {
         if (this.draws == null) {
@@ -102,6 +160,12 @@ public class Standing implements IStanding {
         return this.draws;
     }
 
+    /**
+     * Returns the number of losses.
+     *
+     * @return the losses
+     * @throws IllegalStateException if losses is not initialized
+     */
     @Override
     public int getLosses() {
         if (this.losses == null) {
@@ -110,6 +174,12 @@ public class Standing implements IStanding {
         return this.losses;
     }
 
+    /**
+     * Returns the total number of matches (wins + draws + losses).
+     *
+     * @return total matches played
+     * @throws IllegalStateException if match stats are not initialized
+     */
     @Override
     public int getTotalMatches() {
         if (this.wins == null && this.draws == null && this.losses == null) {
@@ -118,6 +188,12 @@ public class Standing implements IStanding {
         return this.wins + this.draws + this.losses;
     }
 
+    /**
+     * Returns the number of goals scored.
+     *
+     * @return the goals scored
+     * @throws IllegalStateException if goalsScored is not initialized
+     */
     @Override
     public int getGoalScored() {
         if (this.goalsScored == null) {
@@ -126,6 +202,12 @@ public class Standing implements IStanding {
         return this.goalsScored;
     }
 
+    /**
+     * Returns the number of goals conceded.
+     *
+     * @return the goals conceded
+     * @throws IllegalStateException if goalsConceded is not initialized
+     */
     @Override
     public int getGoalsConceded() {
         if (this.goalsConceded == null) {
@@ -134,6 +216,12 @@ public class Standing implements IStanding {
         return this.goalsConceded;
     }
 
+    /**
+     * Returns the goal difference (goals scored - goals conceded).
+     *
+     * @return the goal difference
+     * @throws IllegalStateException if goal stats are not initialized
+     */
     @Override
     public int getGoalDifference() {
         if (this.goalsScored == null && this.goalsConceded == null) {
@@ -142,6 +230,12 @@ public class Standing implements IStanding {
         return this.goalsScored - this.goalsConceded;
     }
 
+    /**
+     * Adds to the total number of goals scored.
+     *
+     * @param goals the number of goals to add
+     * @throws IllegalArgumentException if goals are negative
+     */
     public void addGoalsScored(int goals) {
         if (goals < 0) {
             throw new IllegalArgumentException("Goals cannot be negative");
@@ -149,6 +243,12 @@ public class Standing implements IStanding {
         this.goalsScored += goals;
     }
 
+    /**
+     * Adds to the total number of goals conceded.
+     *
+     * @param goals the number of goals to add
+     * @throws IllegalArgumentException if goals are negative
+     */
     public void addGoalsConceded(int goals) {
         if (goals < 0) {
             throw new IllegalArgumentException("Goals cannot be negative");
@@ -156,6 +256,11 @@ public class Standing implements IStanding {
         this.goalsConceded += goals;
     }
 
+    /**
+     * Returns a string representation of the team's standing.
+     *
+     * @return a string with team statistics
+     */
     @Override
     public String toString() {
         return "Standing{"

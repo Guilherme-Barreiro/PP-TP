@@ -27,8 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 /**
- *
- * @author Utilizador
+ * Represents a football season containing clubs, matches, and standings.
  */
 public class Season implements ISeason {
 
@@ -48,6 +47,13 @@ public class Season implements ISeason {
     private ITeam[] teams;
     private ISchedule schedule;
 
+    /**
+     * Constructor to initialize a new season.
+     *
+     * @param name Name of the season
+     * @param year Year of the season
+     * @param maxTeams Maximum number of teams allowed
+     */
     public Season(String name, int year, int maxTeams) {
         this.name = name;
         this.year = year;
@@ -61,11 +67,22 @@ public class Season implements ISeason {
         this.teams = new ITeam[maxTeams];
     }
 
+    /**
+     * Returns the year of the season.
+     *
+     * @return the year of the season
+     */
     @Override
     public int getYear() {
         return this.year;
     }
 
+    /**
+     * Adds a club to the season if it's not already present.
+     *
+     * @param iclub Club to be added
+     * @return true if successfully added, false if already exists
+     */
     @Override
     public boolean addClub(IClub iclub) {
         int index = findIndex(iclub);
@@ -82,6 +99,12 @@ public class Season implements ISeason {
         return true;
     }
 
+    /**
+     * Removes a club from the season if it exists.
+     *
+     * @param iclub Club to remove
+     * @return true if removed, false if not found
+     */
     @Override
     public boolean removeClub(IClub iclub) {
         int index = findIndex(iclub);
@@ -98,6 +121,10 @@ public class Season implements ISeason {
         return true;
     }
 
+    /**
+     * Generates a complete schedule for the season using double round-robin
+     * format.
+     */
     @Override
     public void generateSchedule() {
         if (clubCount == 0) {
@@ -119,20 +146,22 @@ public class Season implements ISeason {
                 IClub home = clubs[i];
                 IClub away = clubs[j];
 
-                // Ida (home vs away)
                 IMatch firstLeg = new Match(home, away, round);
                 matches[matchCount++] = firstLeg;
 
-                // Volta (away vs home)
                 IMatch secondLeg = new Match(away, home, round + 1);
                 matches[matchCount++] = secondLeg;
 
-                // Avança 2 rondas (ida + volta)
                 round = (round + 2) % maxRounds;
             }
         }
     }
 
+    /**
+     * Returns all matches.
+     *
+     * @return Array of matches
+     */
     @Override
     public IMatch[] getMatches() {
         IMatch[] copyMatches = new IMatch[matchCount];
@@ -142,6 +171,12 @@ public class Season implements ISeason {
         return copyMatches;
     }
 
+    /**
+     * Returns matches of a specific round.
+     *
+     * @param i Round number
+     * @return Array of matches in that round
+     */
     @Override
     public IMatch[] getMatches(int i) {
         if (i < 0 || i >= getMaxRounds()) {
@@ -166,6 +201,9 @@ public class Season implements ISeason {
         return roundMatches;
     }
 
+    /**
+     * Simulates all matches in the current round.
+     */
     @Override
     public void simulateRound() {
         if (clubCount == 0) {
@@ -186,6 +224,9 @@ public class Season implements ISeason {
         currentRound++;
     }
 
+    /**
+     * Simulates all remaining rounds in the season.
+     */
     @Override
     public void simulateSeason() {
         if (clubCount == 0) {
@@ -206,11 +247,21 @@ public class Season implements ISeason {
         }
     }
 
+    /**
+     * Returns the number of the current round.
+     *
+     * @return the current round
+     */
     @Override
     public int getCurrentRound() {
         return this.currentRound;
     }
 
+    /**
+     * Checks whether all matches in the season have been played.
+     *
+     * @return true if the season is complete; false otherwise
+     */
     @Override
     public boolean isSeasonComplete() {
         for (int i = 0; i < matchCount; i++) {
@@ -221,6 +272,10 @@ public class Season implements ISeason {
         return true;
     }
 
+    /**
+     * Resets the season, removing all scheduled matches and resetting round
+     * counter.
+     */
     @Override
     public void resetSeason() {
         for (int i = 0; i < matchCount; i++) {
@@ -230,6 +285,13 @@ public class Season implements ISeason {
         currentRound = 0;
     }
 
+    /**
+     * Returns a string representing the final result of a given match.
+     *
+     * @param imatch Match to display result for
+     * @return the formatted result string
+     * @throws IllegalArgumentException if the match is null
+     */
     @Override
     public String displayMatchResult(IMatch imatch) {
         if (imatch == null) {
@@ -248,6 +310,12 @@ public class Season implements ISeason {
         return home.getName() + " " + homeGoals + " - " + awayGoals + " " + away.getName();
     }
 
+    /**
+     * Sets the strategy used to simulate matches.
+     *
+     * @param mss Match simulation strategy
+     * @throws IllegalArgumentException if the simulator is null
+     */
     @Override
     public void setMatchSimulator(MatchSimulatorStrategy mss) {
         if (mss == null) {
@@ -256,6 +324,12 @@ public class Season implements ISeason {
         this.matchSimulator = mss;
     }
 
+    /**
+     * Computes and returns the league standings.
+     *
+     * @return array of current standings
+     * @throws IllegalStateException if no clubs are present
+     */
     @Override
     public IStanding[] getLeagueStandings() {
         if (clubCount == 0) {
@@ -318,6 +392,12 @@ public class Season implements ISeason {
         return standings;
     }
 
+    /**
+     * Returns the league schedule.
+     *
+     * @return the schedule
+     * @throws IllegalStateException if the schedule is not initialized
+     */
     @Override
     public ISchedule getSchedule() {
         if (matchCount == 0) {
@@ -329,36 +409,71 @@ public class Season implements ISeason {
         return schedule;
     }
 
+    /**
+     * Returns the number of points awarded for a win.
+     *
+     * @return the points per win
+     */
     @Override
     public int getPointsPerWin() {
         return this.pointsPerWin;
     }
 
+    /**
+     * Returns the number of points awarded for a draw.
+     *
+     * @return the points per draw
+     */
     @Override
     public int getPointsPerDraw() {
         return this.pointsPerDraw;
     }
 
+    /**
+     * Returns the number of points awarded for a loss.
+     *
+     * @return the points per loss
+     */
     @Override
     public int getPointsPerLoss() {
         return this.pointsPerLoss;
     }
 
+    /**
+     * Returns the name of the season.
+     *
+     * @return the name of the season
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the maximum number of teams in the season.
+     *
+     * @return the maximum number of teams
+     */
     @Override
     public int getMaxTeams() {
         return this.maxTeams;
     }
 
+    /**
+     * Returns the total number of rounds in the season.
+     *
+     * @return the maximum number of rounds
+     */
     @Override
     public int getMaxRounds() {
         return (this.clubCount - 1) * 2;
     }
 
+    /**
+     * Returns the number of matches that have already been played.
+     *
+     * @return the number of played matches
+     */
     @Override
     public int getCurrentMatches() {
         int count = 0;
@@ -370,11 +485,21 @@ public class Season implements ISeason {
         return count;
     }
 
+    /**
+     * Returns the number of teams currently in the season.
+     *
+     * @return the number of teams
+     */
     @Override
     public int getNumberOfCurrentTeams() {
         return this.clubCount;
     }
 
+    /**
+     * Returns the list of clubs currently in the season.
+     *
+     * @return an array of current clubs
+     */
     @Override
     public IClub[] getCurrentClubs() {
         IClub[] current = new IClub[clubCount];
@@ -384,6 +509,12 @@ public class Season implements ISeason {
         return current;
     }
 
+    /**
+     * Returns a club with the given code.
+     *
+     * @param code the club's unique code
+     * @return the club with the matching code, or null if not found
+     */
     public IClub getCurrentClub(String code) {
         IClub current = null;
         for (int i = 0; i < clubCount; i++) {
@@ -396,6 +527,12 @@ public class Season implements ISeason {
         return current;
     }
 
+    /**
+     * Finds the index of a given club in the array of clubs.
+     *
+     * @param club the club to search for
+     * @return the index of the club if found; -1 otherwise
+     */
     private int findIndex(IClub club) {
         for (int i = 0; i < this.clubCount; i++) {
             if (clubs[i].equals(club)) {
@@ -405,6 +542,11 @@ public class Season implements ISeason {
         return -1;
     }
 
+    /**
+     * Exports the season's data to a JSON file.
+     *
+     * @throws IOException if file writing fails
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -447,6 +589,13 @@ public class Season implements ISeason {
         }
     }
 
+    /**
+     * Assigns a team to a club for simulation and standings.
+     *
+     * @param club the club to assign the team to
+     * @param team the team instance
+     * @throws IllegalArgumentException if the club is not found
+     */
     public void setTeamForClub(IClub club, ITeam team) {
         for (int i = 0; i < clubCount; i++) {
             if (clubs[i].equals(club)) {
@@ -457,6 +606,13 @@ public class Season implements ISeason {
         throw new IllegalArgumentException("Club not found in season");
     }
 
+    /**
+     * Imports a season from a JSON file.
+     *
+     * @param fileName the name of the file
+     * @return the imported Season object
+     * @throws IOException if reading or parsing fails
+     */
     public static Season importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 

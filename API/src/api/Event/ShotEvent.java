@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Event;
 
@@ -12,8 +16,7 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author guiba
+ * Represents a shot attempt by a player.
  */
 public class ShotEvent implements IPlayerEvent {
 
@@ -21,6 +24,14 @@ public class ShotEvent implements IPlayerEvent {
     private final int minute;
     private final boolean onTarget;
 
+    /**
+     * Constructs a ShotEvent with the given player, minute and target flag.
+     *
+     * @param player The player who took the shot.
+     * @param minute The minute the shot occurred.
+     * @param onTarget Whether the shot was on target.
+     * @throws IllegalArgumentException if player is null or minute is invalid.
+     */
     public ShotEvent(IPlayer player, int minute, boolean onTarget) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
@@ -33,21 +44,41 @@ public class ShotEvent implements IPlayerEvent {
         this.onTarget = onTarget;
     }
 
+    /**
+     * Returns a textual description of the shot event.
+     *
+     * @return Description of the shot.
+     */
     @Override
     public String getDescription() {
         String resultado = onTarget ? "Remate à baliza" : "Remate para fora";
         return minute + "' " + resultado + " de " + player.getName();
     }
 
+    /**
+     * Returns the minute the event occurred.
+     *
+     * @return Minute of the shot.
+     */
     @Override
     public int getMinute() {
         return this.minute;
     }
 
+    /**
+     * Indicates whether the shot was on target.
+     *
+     * @return true if on target; false otherwise.
+     */
     public boolean isOnTarget() {
         return onTarget;
     }
 
+    /**
+     * Exports the shot event data to a JSON file.
+     *
+     * @throws IOException If an error occurs during file writing.
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -64,6 +95,11 @@ public class ShotEvent implements IPlayerEvent {
         }
     }
 
+    /**
+     * Returns the player who took the shot.
+     *
+     * @return The player.
+     */
     @Override
     public IPlayer getPlayer() {
         return this.player;

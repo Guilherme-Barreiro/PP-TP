@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Event;
 
@@ -12,14 +16,20 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author Utilizador
+ * Represents a foul event committed by a player during a match.
  */
-public class FoulEvent implements IPlayerEvent{
+public class FoulEvent implements IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
 
+    /**
+     * Constructs a FoulEvent with the given player and minute.
+     *
+     * @param player The player who committed the foul.
+     * @param minute The minute the foul occurred.
+     * @throws IllegalArgumentException if player is null or minute is invalid.
+     */
     public FoulEvent(IPlayer player, int minute) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
@@ -31,16 +41,31 @@ public class FoulEvent implements IPlayerEvent{
         this.minute = minute;
     }
 
+    /**
+     * Returns a textual description of the foul event.
+     *
+     * @return Description of the event.
+     */
     @Override
     public String getDescription() {
         return minute + "' Falta cometida por " + player.getName();
     }
 
+    /**
+     * Returns the minute the event occurred.
+     *
+     * @return Minute of the foul.
+     */
     @Override
     public int getMinute() {
         return this.minute;
     }
 
+    /**
+     * Exports the foul event data to a JSON file.
+     *
+     * @throws IOException If an error occurs during file writing.
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -50,12 +75,17 @@ public class FoulEvent implements IPlayerEvent{
 
         String fileName = "foul_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
 
-        try (FileWriter file = new FileWriter(fileName)) {
+        try ( FileWriter file = new FileWriter(fileName)) {
             file.write(json.toJSONString());
             file.flush();
         }
     }
 
+    /**
+     * Returns the player associated with this event.
+     *
+     * @return The player who committed the foul.
+     */
     @Override
     public IPlayer getPlayer() {
         return this.player;

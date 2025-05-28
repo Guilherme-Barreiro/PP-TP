@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Simulation;
 
@@ -16,13 +21,25 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 
 /**
+ * Implements the strategy for simulating a football match. This simulation
+ * randomly generates events such as goals, yellow cards, and red cards during a
+ * 90-minute match.
  *
- * @author guiba
+ * Events are managed using the EventManager, and players can be marked as
+ * yellow-carded or expelled depending on the events.
  */
 public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
     private final java.util.Random random = new java.util.Random();
 
+    /**
+     * Simulates a football match minute-by-minute. The simulation includes
+     * chances for goals, red cards, and yellow cards. Players receiving a red
+     * card are expelled and cannot participate further.
+     *
+     * @param match The match to simulate.
+     * @throws IllegalArgumentException if the match is null.
+     */
     @Override
     public void simulate(IMatch match) {
         if (match == null) {
@@ -74,7 +91,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         }
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
-        
+
     }
 
 }

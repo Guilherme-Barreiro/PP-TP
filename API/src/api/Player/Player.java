@@ -44,6 +44,21 @@ public class Player implements IPlayer {
 
     /**
      * Constructs a Player with all required attributes.
+     *
+     * @param name The name of the player.
+     * @param birthDate The date of birth of the player.
+     * @param age The age of the player.
+     * @param nationality The nationality of the player.
+     * @param position The position of the player.
+     * @param photo The photo path or URL.
+     * @param number The shirt number.
+     * @param shooting The shooting skill rating.
+     * @param passing The passing skill rating.
+     * @param stamina The stamina rating.
+     * @param speed The speed rating.
+     * @param height The height in meters.
+     * @param weight The weight in kilograms.
+     * @param preferredFoot The preferred foot (LEFT or RIGHT).
      */
     public Player(String name, LocalDate birthDate, int age, String nationality, IPlayerPosition position, String photo, int number, int shooting, int passing, int stamina, int speed, float height, float weight, PreferredFoot preferredFoot) {
         this.name = name;
@@ -65,6 +80,8 @@ public class Player implements IPlayer {
 
     /**
      * Returns the name of the player.
+     *
+     * @return the player's name
      */
     @Override
     public String getName() {
@@ -73,6 +90,8 @@ public class Player implements IPlayer {
 
     /**
      * Returns the birth date of the player.
+     *
+     * @return the player's date of birth
      */
     @Override
     public LocalDate getBirthDate() {
@@ -81,6 +100,8 @@ public class Player implements IPlayer {
 
     /**
      * Returns the age of the player.
+     *
+     * @return the player's age
      */
     @Override
     public int getAge() {
@@ -89,6 +110,8 @@ public class Player implements IPlayer {
 
     /**
      * Returns the nationality of the player.
+     *
+     * @return the player's nationality
      */
     @Override
     public String getNationality() {
@@ -110,7 +133,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns the photo URL or path of the player.
+     * Returns the photo path or URL of the player.
+     *
+     * @return the player's photo
      */
     @Override
     public String getPhoto() {
@@ -119,6 +144,8 @@ public class Player implements IPlayer {
 
     /**
      * Returns the shirt number of the player.
+     *
+     * @return the player's number
      */
     @Override
     public int getNumber() {
@@ -126,7 +153,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns the shooting skill rating of the player.
+     * Returns the shooting skill of the player.
+     *
+     * @return the player's shooting stat
      */
     @Override
     public int getShooting() {
@@ -134,7 +163,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns the passing skill rating of the player.
+     * Returns the passing skill of the player.
+     *
+     * @return the player's passing stat
      */
     @Override
     public int getPassing() {
@@ -142,7 +173,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns the stamina rating of the player.
+     * Returns the stamina of the player.
+     *
+     * @return the player's stamina stat
      */
     @Override
     public int getStamina() {
@@ -150,7 +183,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns the speed rating of the player.
+     * Returns the speed of the player.
+     *
+     * @return the player's speed stat
      */
     @Override
     public int getSpeed() {
@@ -158,7 +193,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns the position the player plays.
+     * Returns the current position of the player.
+     *
+     * @return the player's position
      */
     @Override
     public IPlayerPosition getPosition() {
@@ -167,6 +204,8 @@ public class Player implements IPlayer {
 
     /**
      * Returns the height of the player.
+     *
+     * @return the player's height in meters
      */
     @Override
     public float getHeight() {
@@ -175,22 +214,36 @@ public class Player implements IPlayer {
 
     /**
      * Returns the weight of the player.
+     *
+     * @return the player's weight in kilograms
      */
     @Override
     public float getWeight() {
         return this.weight;
     }
 
+    /**
+     * Returns whether the player is currently active.
+     *
+     * @return true if active, false otherwise
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Sets whether the player is currently active.
+     *
+     * @param active true to activate, false to deactivate
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
     /**
      * Returns the preferred foot of the player.
+     *
+     * @return the player's preferred foot
      */
     @Override
     public PreferredFoot getPreferredFoot() {
@@ -198,9 +251,9 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Placeholder method to export the player to JSON.
+     * Exports the player's data to a JSON file.
      *
-     * @throws UnsupportedOperationException when called
+     * @throws IOException if the file cannot be written
      */
     @Override
     public void exportToJson() throws IOException {
@@ -228,21 +281,35 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Returns a string representation of the Player object. Useful for
-     * debugging or logging.
+     * Returns a string representation of the Player object.
+     *
+     * @return a string describing the player
      */
     @Override
     public String toString() {
-        return "Player{"
-                + "name='" + name + '\''
-                + ", position=" + position
-                + ", number=" + number
-                + '}';
+        return "Player {"
+                + "\n  name='" + this.getName() + '\''
+                + ",\n  birthDate=" + this.getBirthDate()
+                + ",\n  age=" + this.getAge()
+                + ",\n  nationality='" + this.getNationality() + '\''
+                + ",\n  position=" + (this.getPosition() != null ? this.getPosition().getDescription() : "null")
+                + ",\n  photo='" + this.getPhoto() + '\''
+                + ",\n  number=" + this.getNumber()
+                + ",\n  shooting=" + this.getShooting()
+                + ",\n  passing=" + this.getPassing()
+                + ",\n  stamina=" + this.getStamina()
+                + ",\n  speed=" + this.getSpeed()
+                + ",\n  height=" + this.getHeight()
+                + ",\n  weight=" + this.getWeight()
+                + ",\n  preferredFoot=" + (this.getPreferredFoot() != null ? this.getPreferredFoot().toString() : "null")
+                + ",\n  active=" + this.isActive()
+                + "\n}";
     }
 
     /**
-     * Generates a hash code for the Player object. Important for hash-based
-     * collections.
+     * Generates a hash code for this player based on their shirt number.
+     *
+     * @return the hash code
      */
     @Override
     public int hashCode() {
@@ -253,7 +320,10 @@ public class Player implements IPlayer {
 
     /**
      * Compares this Player to another object for equality. Two players are
-     * equal if all their attributes are equal.
+     * considered equal if they have the same number.
+     *
+     * @param obj the object to compare
+     * @return true if equal, false otherwise
      */
     @Override
     public boolean equals(Object obj) {
@@ -270,6 +340,13 @@ public class Player implements IPlayer {
         return this.number == other.number;
     }
 
+    /**
+     * Imports a Player object from a JSON file.
+     *
+     * @param filePath the path to the JSON file
+     * @return the created Player object
+     * @throws IOException if the file cannot be read or parsed
+     */
     public static Player importFromJson(String filePath) throws IOException {
         JSONParser parser = new JSONParser();
 

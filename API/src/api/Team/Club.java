@@ -41,6 +41,13 @@ public class Club implements IClub {
 
     /**
      * Constructs a Club with basic club information.
+     *
+     * @param code The unique code for the club.
+     * @param Country The country the club is based in.
+     * @param foundedYear The year the club was founded.
+     * @param logo The path or URL to the club's logo.
+     * @param name The name of the club.
+     * @param stadiumName The name of the club's stadium.
      */
     public Club(String code, String Country, int foundedYear, String logo, String name, String stadiumName) {
         this.code = code;
@@ -55,6 +62,8 @@ public class Club implements IClub {
 
     /**
      * Returns the name of the club.
+     *
+     * @return The club name.
      */
     @Override
     public String getName() {
@@ -63,6 +72,8 @@ public class Club implements IClub {
 
     /**
      * Returns a copy of the current list of players in the club.
+     *
+     * @return Array of current players.
      */
     @Override
     public IPlayer[] getPlayers() {
@@ -75,6 +86,8 @@ public class Club implements IClub {
 
     /**
      * Returns the unique club code.
+     *
+     * @return The club code.
      */
     @Override
     public String getCode() {
@@ -83,6 +96,8 @@ public class Club implements IClub {
 
     /**
      * Returns the country the club is associated with.
+     *
+     * @return The country.
      */
     @Override
     public String getCountry() {
@@ -91,6 +106,8 @@ public class Club implements IClub {
 
     /**
      * Returns the year the club was founded.
+     *
+     * @return The founded year.
      */
     @Override
     public int getFoundedYear() {
@@ -99,6 +116,8 @@ public class Club implements IClub {
 
     /**
      * Returns the name of the club's stadium.
+     *
+     * @return The stadium name.
      */
     @Override
     public String getStadiumName() {
@@ -107,6 +126,8 @@ public class Club implements IClub {
 
     /**
      * Returns the logo path or URL of the club.
+     *
+     * @return The logo (could be a path or URL).
      */
     @Override
     public String getLogo() {
@@ -185,6 +206,8 @@ public class Club implements IClub {
 
     /**
      * Returns the number of players currently in the club.
+     *
+     * @return Number of players.
      */
     @Override
     public int getPlayerCount() {
@@ -333,6 +356,8 @@ public class Club implements IClub {
 
     /**
      * Returns a string representation of the club.
+     *
+     * @return The club details as a string.
      */
     @Override
     public String toString() {
@@ -359,6 +384,8 @@ public class Club implements IClub {
 
     /**
      * Computes a hash code for the club based on code and country.
+     *
+     * @return The hash code.
      */
     @Override
     public int hashCode() {
@@ -369,8 +396,10 @@ public class Club implements IClub {
     }
 
     /**
-     * Checks equality between this club and another object. Clubs are equal if
-     * they share the same code and country.
+     * Checks equality between this club and another object.
+     *
+     * @param obj The object to compare with.
+     * @return True if equal, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -390,6 +419,20 @@ public class Club implements IClub {
         return Objects.equals(this.Country, other.Country);
     }
 
+    /**
+     * Imports a Club object from a JSON file located in the "JSON Files/Clubs"
+     * directory. The JSON must include the club's name, code, country, founded
+     * year, stadium name, logo, and a list of player filenames.
+     * 
+     * Each player file in the "players" array must be separately imported using
+     * the Player class.
+     *
+     * @param fileName The name of the JSON file to import (e.g.,
+     * "MyClub.json").
+     * @return A Club object reconstructed from the JSON file.
+     * @throws IOException If an I/O error occurs or if the JSON file is
+     * malformed.
+     */
     public static Club importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 

@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Event;
 
@@ -12,14 +16,20 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author Utilizador
+ * Represents a yellow card event given to a player.
  */
 public class YellowCardEvent implements IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
 
+    /**
+     * Constructs a YellowCardEvent with the given player and minute.
+     *
+     * @param player The player who received the yellow card.
+     * @param minute The minute the yellow card was shown.
+     * @throws IllegalArgumentException if player is null or minute is invalid.
+     */
     public YellowCardEvent(IPlayer player, int minute) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
@@ -31,16 +41,31 @@ public class YellowCardEvent implements IPlayerEvent {
         this.minute = minute;
     }
 
+    /**
+     * Returns a textual description of the yellow card event.
+     *
+     * @return Description of the event.
+     */
     @Override
     public String getDescription() {
         return minute + "'\u001B[33m" + " Cartao amarelo" + "\u001B[0m mostrado a " + player.getName();
     }
 
+    /**
+     * Returns the minute the event occurred.
+     *
+     * @return Minute of the yellow card.
+     */
     @Override
     public int getMinute() {
         return this.minute;
     }
 
+    /**
+     * Exports the yellow card event data to a JSON file.
+     *
+     * @throws IOException If an error occurs during file writing.
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -50,12 +75,17 @@ public class YellowCardEvent implements IPlayerEvent {
 
         String fileName = "yellowcard_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
 
-        try (FileWriter file = new FileWriter(fileName)) {
+        try ( FileWriter file = new FileWriter(fileName)) {
             file.write(json.toJSONString());
             file.flush();
         }
     }
 
+    /**
+     * Returns the player who received the yellow card.
+     *
+     * @return The player.
+     */
     @Override
     public IPlayer getPlayer() {
         return this.player;

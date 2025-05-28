@@ -154,22 +154,6 @@ public class League implements ILeague {
         return -1;
     }
 
-//    public boolean containsClub(Club club) {
-//        if (club == null)
-//            return false;
-//        for (int i = 0; i < count; i++) {
-//            ISeason season = seasons[i];
-//            if (season != null) {
-//                ITeam[] teams = season.getTeams();
-//                for (int j = 0; j < teams.length; j++) {
-//                    if (teams[j] != null && teams[j].getClub().equals(club)) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
     /**
      * Exports the league data to a JSON file.
      *
@@ -184,10 +168,8 @@ public class League implements ILeague {
         JSONArray seasonsArray = new JSONArray();
         for (int i = 0; i < count; i++) {
             if (seasons[i] != null) {
-                // Exporta a season individualmente para um ficheiro
                 seasons[i].exportToJson();
 
-                // Cria o objeto da season para o JSON da League
                 JSONObject seasonObj = new JSONObject();
                 seasonObj.put("year", seasons[i].getYear());
 
@@ -210,6 +192,11 @@ public class League implements ILeague {
         }
     }
 
+    /**
+     * Generates a hash code for this league based on its name.
+     *
+     * @return the hash code of the league
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -217,6 +204,13 @@ public class League implements ILeague {
         return hash;
     }
 
+    /**
+     * Compares this league to another object for equality. Two leagues are
+     * considered equal if they have the same name.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if the objects are equal, {@code false} otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -232,6 +226,15 @@ public class League implements ILeague {
         return Objects.equals(this.name, other.name);
     }
 
+    /**
+     * Imports a League from a JSON file, including its associated seasons. This
+     * method will load each season from its respective file as defined in the
+     * main JSON.
+     *
+     * @param filename the name of the JSON file to import from
+     * @return a new League instance with all seasons loaded
+     * @throws IOException if the file cannot be read or parsed
+     */
     public static League importFromJson(String filename) throws IOException {
         JSONParser parser = new JSONParser();
 
@@ -249,7 +252,7 @@ public class League implements ILeague {
                 ISeason season = Season.importFromJson(seasonFile);
                 if (season != null) {
                     league.createSeason(season);
-}
+                }
             }
 
             return league;

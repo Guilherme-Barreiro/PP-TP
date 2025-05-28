@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Event;
 
@@ -13,8 +17,7 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author guiba
+ * Represents a goal event scored by a player.
  */
 public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
@@ -23,6 +26,13 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
     private int shooting;
     private int reflexes;
 
+    /**
+     * Constructs a GoalEvent with the given player and minute.
+     *
+     * @param player The player who scored the goal.
+     * @param minute The minute the goal was scored.
+     * @throws IllegalArgumentException if player is null or minute is invalid.
+     */
     public GoalEvent(IPlayer player, int minute) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
@@ -48,11 +58,21 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
         this.reflexes = reflexes;
     }
 
+    /**
+     * Returns the player who scored the goal.
+     *
+     * @return The player associated with the goal.
+     */
     @Override
     public IPlayer getPlayer() {
         return this.player;
     }
 
+    /**
+     * Returns a textual description of the goal event.
+     *
+     * @return Description of the event.
+     */
     @Override
     public String getDescription() {
         return minute + "' Golo de " + player.getName()
@@ -61,11 +81,21 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
     }
 
+    /**
+     * Returns the minute the goal was scored.
+     *
+     * @return Minute of the goal.
+     */
     @Override
     public int getMinute() {
         return this.minute;
     }
 
+    /**
+     * Exports the goal event data to a JSON file.
+     *
+     * @throws IOException If an error occurs during file writing.
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -77,7 +107,7 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
         String fileName = "goalevent_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + "min.json";
 
-        try (FileWriter writer = new FileWriter(fileName)) {
+        try ( FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }

@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.League;
 
@@ -17,8 +22,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 /**
- *
- * @author guiba
+ * Represents the schedule of matches in a league season.
  */
 public class Schedule implements ISchedule {
 
@@ -27,6 +31,15 @@ public class Schedule implements ISchedule {
     private int numberOfRounds;
     private boolean initialized;
 
+    /**
+     * Constructs a Schedule object with the given matches, match count, and
+     * number of rounds.
+     *
+     * @param matches array of match objects
+     * @param matchCount number of valid matches in the array
+     * @param numberOfRounds total number of rounds in the schedule
+     * @throws IllegalArgumentException if input parameters are invalid
+     */
     public Schedule(IMatch[] matches, int matchCount, int numberOfRounds) {
         if (matches == null || matchCount <= 0 || numberOfRounds <= 0 || matchCount > matches.length) {
             throw new IllegalArgumentException("Invalid schedule parameters");
@@ -42,6 +55,14 @@ public class Schedule implements ISchedule {
         this.initialized = true;
     }
 
+    /**
+     * Returns an array of matches scheduled for the given round.
+     *
+     * @param i the round number
+     * @return an array of matches in the specified round
+     * @throws IllegalStateException if the schedule is not initialized
+     * @throws IllegalArgumentException if the round number is invalid
+     */
     @Override
     public IMatch[] getMatchesForRound(int i) {
         if (!initialized) {
@@ -73,6 +94,15 @@ public class Schedule implements ISchedule {
         return result;
     }
 
+    /**
+     * Returns all matches involving the specified team.
+     *
+     * @param iteam the team to search for
+     * @return an array of matches involving the team
+     * @throws IllegalArgumentException if the team is null
+     * @throws IllegalStateException if the schedule is not initialized or
+     * matches are not set
+     */
     @Override
     public IMatch[] getMatchesForTeam(ITeam iteam) {
         if (iteam == null) {
@@ -104,11 +134,22 @@ public class Schedule implements ISchedule {
         return result;
     }
 
+    /**
+     * Returns the total number of rounds in the schedule.
+     *
+     * @return the number of rounds
+     */
     @Override
     public int getNumberOfRounds() {
         return this.numberOfRounds;
     }
 
+    /**
+     * Returns all matches in the schedule.
+     *
+     * @return an array of all matches
+     * @throws IllegalStateException if the schedule is not initialized
+     */
     @Override
     public IMatch[] getAllMatches() {
         if (!initialized) {
@@ -122,6 +163,17 @@ public class Schedule implements ISchedule {
         return result;
     }
 
+    /**
+     * Sets the given team on all matches of a specific round where the club
+     * matches.
+     *
+     * @param iteam the team to associate
+     * @param i the round number
+     * @throws IllegalArgumentException if the team is null or the round number
+     * is invalid
+     * @throws IllegalStateException if the schedule is not initialized or club
+     * not found
+     */
     @Override
     public void setTeam(ITeam iteam, int i) {
         if (iteam == null) {
@@ -155,6 +207,11 @@ public class Schedule implements ISchedule {
         }
     }
 
+    /**
+     * Exports the schedule to a JSON file named "schedule.json".
+     *
+     * @throws IOException if an I/O error occurs during export
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -183,6 +240,13 @@ public class Schedule implements ISchedule {
         }
     }
 
+    /**
+     * Imports a schedule from a JSON file.
+     *
+     * @param filename the path to the JSON file
+     * @return a Schedule object with imported matches and settings
+     * @throws IOException if an error occurs during file reading or parsing
+     */
     public static Schedule importFromJson(String filename) throws IOException {
         Season season = Season.importFromJson("JSON Files/season.json");
         IClub[] clubes = season.getCurrentClubs();

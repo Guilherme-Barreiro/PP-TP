@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
  */
 package api.Match;
 
@@ -22,8 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 /**
- *
- * @author guiba
+ * Represents a football match between two clubs.
  */
 public class Match implements IMatch {
 
@@ -38,6 +42,14 @@ public class Match implements IMatch {
     private int eventCount;
     private boolean played;
 
+    /**
+     * Constructs a new Match with the given home and away clubs and round
+     * number.
+     *
+     * @param homeClub the home club
+     * @param awayClub the away club
+     * @param round the match round
+     */
     public Match(IClub homeClub, IClub awayClub, int round) {
         this.homeClub = homeClub;
         this.awayClub = awayClub;
@@ -47,10 +59,21 @@ public class Match implements IMatch {
         this.played = false;
     }
 
+    /**
+     * Returns whether the match has been played.
+     *
+     * @return true if the match was played, false otherwise
+     */
     public boolean wasPlayed() {
         return this.played;
     }
 
+    /**
+     * Returns the home club.
+     *
+     * @return the home club
+     * @throws IllegalStateException if the home club is not initialized
+     */
     @Override
     public IClub getHomeClub() {
         if (this.homeClub == null) {
@@ -59,6 +82,12 @@ public class Match implements IMatch {
         return this.homeClub;
     }
 
+    /**
+     * Returns the away club.
+     *
+     * @return the away club
+     * @throws IllegalStateException if the away club is not initialized
+     */
     @Override
     public IClub getAwayClub() {
         if (this.awayClub == null) {
@@ -67,11 +96,22 @@ public class Match implements IMatch {
         return this.awayClub;
     }
 
+    /**
+     * Returns whether the match was played.
+     *
+     * @return true if played, false otherwise
+     */
     @Override
     public boolean isPlayed() {
         return this.played;
     }
 
+    /**
+     * Returns the home team.
+     *
+     * @return the home team
+     * @throws IllegalStateException if the home team is not initialized
+     */
     @Override
     public ITeam getHomeTeam() {
         if (this.homeTeam == null) {
@@ -80,6 +120,12 @@ public class Match implements IMatch {
         return this.homeTeam;
     }
 
+    /**
+     * Returns the away team.
+     *
+     * @return the away team
+     * @throws IllegalStateException if the away team is not initialized
+     */
     @Override
     public ITeam getAwayTeam() {
         if (this.awayTeam == null) {
@@ -88,11 +134,25 @@ public class Match implements IMatch {
         return this.awayTeam;
     }
 
+    /**
+     * Marks the match as played.
+     */
     @Override
     public void setPlayed() {
         this.played = true;
     }
 
+    /**
+     * Returns the number of events of the given type associated with a specific
+     * club.
+     *
+     * @param type the event class type (e.g., GoalEvent.class)
+     * @param iclub the club for which events are counted
+     * @return number of matching events
+     * @throws IllegalArgumentException if parameters are null
+     * @throws IllegalStateException if the club does not belong to the match or
+     * team not set
+     */
     @Override
     public int getTotalByEvent(Class type, IClub iclub) {
         if (type == null || iclub == null) {
@@ -130,6 +190,12 @@ public class Match implements IMatch {
         return total;
     }
 
+    /**
+     * Extracts the player involved in an event, if applicable.
+     *
+     * @param event the event
+     * @return the player involved, or null if none
+     */
     private IPlayer extractPlayerFromEvent(IEvent event) {
         if (event instanceof IGoalEvent) {
             return ((IGoalEvent) event).getPlayer();
@@ -140,6 +206,12 @@ public class Match implements IMatch {
 
     }
 
+    /**
+     * Verifies if the match is valid (clubs are not null or equal, and
+     * formations exist).
+     *
+     * @return true if valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         if (this.getHomeClub() != null
@@ -152,6 +224,11 @@ public class Match implements IMatch {
         return false;
     }
 
+    /**
+     * Returns the winning team, or null if draw.
+     *
+     * @return the winner team or null if draw
+     */
     @Override
     public ITeam getWinner() {
         int homeGoals = 0;
@@ -185,11 +262,24 @@ public class Match implements IMatch {
         }
     }
 
+    /**
+     * Returns the match round.
+     *
+     * @return the round number
+     */
     @Override
     public int getRound() {
         return this.round;
     }
 
+    /**
+     * Assigns a team (home or away) to the match.
+     *
+     * @param iteam the team to assign
+     * @throws IllegalArgumentException if the team is null
+     * @throws IllegalStateException if the match is already played or team does
+     * not match
+     */
     @Override
     public void setTeam(ITeam iteam) {
         if (iteam == null) {
@@ -211,6 +301,11 @@ public class Match implements IMatch {
         }
     }
 
+    /**
+     * Exports the match data and events to a JSON file.
+     *
+     * @throws IOException if an error occurs during writing
+     */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
@@ -284,12 +379,19 @@ public class Match implements IMatch {
 
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileWriter writer = new FileWriter(fullPath)) {
+        try ( FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
     }
 
+    /**
+     * Adds an event to the match.
+     *
+     * @param ievent the event to add
+     * @throws IllegalArgumentException if the event is null
+     * @throws IllegalStateException if the event is already added
+     */
     @Override
     public void addEvent(IEvent ievent) {
         if (ievent == null) {
@@ -303,6 +405,11 @@ public class Match implements IMatch {
         this.events[this.eventCount++] = ievent;
     }
 
+    /**
+     * Returns a copy of all events added to the match.
+     *
+     * @return array of events
+     */
     @Override
     public IEvent[] getEvents() {
         IEvent[] copyEvent = new IEvent[eventCount];
@@ -312,11 +419,22 @@ public class Match implements IMatch {
         return copyEvent;
     }
 
+    /**
+     * Returns the number of events added to the match.
+     *
+     * @return event count
+     */
     @Override
     public int getEventCount() {
         return this.eventCount;
     }
 
+    /**
+     * Finds the index of a given event in the event array.
+     *
+     * @param event the event to find
+     * @return the index or -1 if not found
+     */
     private int findIndex(IEvent event) {
         for (int i = 0; i < this.eventCount; i++) {
             if (this.events[i].equals(event)) {
@@ -326,6 +444,13 @@ public class Match implements IMatch {
         return -1;
     }
 
+    /**
+     * Checks if a player belongs to a given team.
+     *
+     * @param player the player
+     * @param team the team
+     * @return true if the player belongs to the team
+     */
     private boolean playerBelongsToTeam(IPlayer player, ITeam team) {
         IPlayer[] teamPlayers = team.getPlayers();
         for (int i = 0; i < teamPlayers.length; i++) {
@@ -336,6 +461,12 @@ public class Match implements IMatch {
         return false;
     }
 
+    /**
+     * Returns the score of the match as a string in the format: "Home X - Y
+     * Away".
+     *
+     * @return string representation of the score
+     */
     public String getScore() {
         int homeGoals = 0;
         int awayGoals = 0;
@@ -357,6 +488,13 @@ public class Match implements IMatch {
         return homeClub.getName() + " " + homeGoals + " - " + awayGoals + " " + awayClub.getName();
     }
 
+    /**
+     * Imports a Match object from a JSON file.
+     *
+     * @param fileName the file name to read
+     * @return the deserialized Match object
+     * @throws IOException if an error occurs during reading or parsing
+     */
     public static Match importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
         JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
@@ -376,11 +514,11 @@ public class Match implements IMatch {
                 if (clubesDisponiveis[i] != null) {
                     if (clubesDisponiveis[i].getName().equals(homeClubName)) {
                         homeClub = clubesDisponiveis[i];
-                }
+                    }
                     if (clubesDisponiveis[i].getName().equals(awayClubName)) {
                         awayClub = clubesDisponiveis[i];
+                    }
                 }
-            }
             }
 
             if (homeClub == null || awayClub == null) {
@@ -392,7 +530,6 @@ public class Match implements IMatch {
                 match.setPlayed();
             }
 
-            // Construir array com todos os jogadores disponíveis
             int totalPlayers = 0;
             for (int i = 0; i < clubesDisponiveis.length; i++) {
                 if (clubesDisponiveis[i] != null) {
@@ -501,10 +638,17 @@ public class Match implements IMatch {
         }
     }
 
+    /**
+     * Finds a player by name in a given array.
+     *
+     * @param jogadoresDisponiveis the array of players
+     * @param name the name to search
+     * @return the found player or null
+     */
     private static IPlayer findPlayerByName(IPlayer[] jogadoresDisponiveis, String name) {
         if (name == null) {
             return null;
-}
+        }
         for (int k = 0; k < jogadoresDisponiveis.length; k++) {
             if (jogadoresDisponiveis[k].getName().equals(name)) {
                 return jogadoresDisponiveis[k];
