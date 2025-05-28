@@ -4,6 +4,8 @@
  */
 package api.Match;
 
+import api.Event.*;
+import api.League.Season;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
@@ -12,13 +14,12 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import contracts.IPlayerEvent;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -222,12 +223,68 @@ public class Match implements IMatch {
         json.put("awayGoals", getTotalByEvent(IGoalEvent.class, awayClub));
         json.put("eventCount", eventCount);
 
+        // Eventos
+        JSONArray eventArray = new JSONArray();
+        for (int i = 0; i < eventCount; i++) {
+            IEvent ev = events[i];
+            JSONObject evJson = new JSONObject();
+
+            // Identificar o tipo concreto do evento e guardar campos específicos
+            if (ev instanceof GoalEvent) {
+                IGoalEvent goal = (IGoalEvent) ev;
+                evJson.put("type", "GoalEvent");
+                evJson.put("player", goal.getPlayer().getName());
+                evJson.put("minute", goal.getMinute());
+                evJson.put("description", goal.getDescription());
+            } else if (ev instanceof AssistEvent) {
+                AssistEvent assist = (AssistEvent) ev;
+                evJson.put("type", "AssistEvent");
+                evJson.put("fromPlayer", assist.getFromPlayer().getName());
+                evJson.put("toPlayer", assist.getToPlayer().getName());
+                evJson.put("minute", assist.getMinute());
+                evJson.put("successful", assist.isSuccessful());
+                evJson.put("description", assist.getDescription());
+            } else if (ev instanceof FoulEvent) {
+                FoulEvent foul = (FoulEvent) ev;
+                evJson.put("type", "FoulEvent");
+                evJson.put("player", foul.getPlayer().getName());
+                evJson.put("minute", foul.getMinute());
+                evJson.put("description", foul.getDescription());
+            } else if (ev instanceof RedCardEvent) {
+                RedCardEvent redCard = (RedCardEvent) ev;
+                evJson.put("type", "RedCardEvent");
+                evJson.put("player", redCard.getPlayer().getName());
+                evJson.put("minute", redCard.getMinute());
+                evJson.put("description", redCard.getDescription());
+            } else if (ev instanceof YellowCardEvent) {
+                YellowCardEvent yellowCard = (YellowCardEvent) ev;
+                evJson.put("type", "YellowCardEvent");
+                evJson.put("player", yellowCard.getPlayer().getName());
+                evJson.put("minute", yellowCard.getMinute());
+                evJson.put("description", yellowCard.getDescription());
+            } else if (ev instanceof ShotEvent) {
+                ShotEvent shot = (ShotEvent) ev;
+                evJson.put("type", "ShotEvent");
+                evJson.put("player", shot.getPlayer().getName());
+                evJson.put("minute", shot.getMinute());
+                evJson.put("onTarget", shot.isOnTarget());
+                evJson.put("description", shot.getDescription());
+            } else {
+                evJson.put("type", "unknown");
+            }
+
+            eventArray.add(evJson);
+        }
+
+        json.put("events", eventArray);
+
         String fileName = "match_" + homeClub.getName().replaceAll("\\s+", "_")
                 + "_vs_" + awayClub.getName().replaceAll("\\s+", "_")
                 + "_round_" + round + ".json";
+
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileWriter writer = new FileWriter(fullPath)) {
+        try ( FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -300,12 +357,14 @@ public class Match implements IMatch {
         return homeClub.getName() + " " + homeGoals + " - " + awayGoals + " " + awayClub.getName();
     }
 
-    public static Match importFromJson(String fileName, IClub[] clubesDisponiveis) throws IOException {
-        JSONParser parser = new JSONParser();
+    public static Match importFromJson(String fileName) throws IOException {
+        Season season = Season.importFromJson("JSON Files/season.json");
+        IClub[] clubesDisponiveis = season.getCurrentClubs();
 
+        JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileReader reader = new FileReader(fullPath)) {
+        try ( FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String homeClubName = (String) json.get("homeClub");
@@ -317,12 +376,13 @@ public class Match implements IMatch {
             IClub awayClub = null;
 
             for (int i = 0; i < clubesDisponiveis.length; i++) {
-                IClub c = clubesDisponiveis[i];
-                if (c.getName().equals(homeClubName)) {
-                    homeClub = c;
-                }
-                if (c.getName().equals(awayClubName)) {
-                    awayClub = c;
+                if (clubesDisponiveis[i] != null) {
+                    if (clubesDisponiveis[i].getName().equals(homeClubName)) {
+                        homeClub = clubesDisponiveis[i];
+                    }
+                    if (clubesDisponiveis[i].getName().equals(awayClubName)) {
+                        awayClub = clubesDisponiveis[i];
+                    }
                 }
             }
 
@@ -335,10 +395,124 @@ public class Match implements IMatch {
                 match.setPlayed();
             }
 
+            // Construir array com todos os jogadores disponíveis
+            int totalPlayers = 0;
+            for (int i = 0; i < clubesDisponiveis.length; i++) {
+                if (clubesDisponiveis[i] != null) {
+                    IPlayer[] players = clubesDisponiveis[i].getPlayers();
+                    if (players != null) {
+                        totalPlayers += players.length;
+                    }
+                }
+            }
+
+            IPlayer[] jogadoresDisponiveis = new IPlayer[totalPlayers];
+            int pos = 0;
+            for (int i = 0; i < clubesDisponiveis.length; i++) {
+                if (clubesDisponiveis[i] != null) {
+                    IPlayer[] players = clubesDisponiveis[i].getPlayers();
+                    if (players != null) {
+                        for (int j = 0; j < players.length; j++) {
+                            jogadoresDisponiveis[pos++] = players[j];
+                        }
+                    }
+                }
+            }
+
+            // Reconstituir eventos
+            JSONArray eventArray = (JSONArray) json.get("events");
+            if (eventArray != null) {
+                for (int i = 0; i < eventArray.size(); i++) {
+                    JSONObject evJson = (JSONObject) eventArray.get(i);
+                    String type = (String) evJson.get("type");
+                    long minuteLong = (Long) evJson.get("minute");
+                    int minute = (int) minuteLong;
+
+                    switch (type) {
+                        case "GoalEvent": {
+                            String playerName = (String) evJson.get("player");
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null) {
+                                continue;
+                            }
+                            IGoalEvent goal = new GoalEvent(player, minute);
+                            match.addEvent(goal);
+                            break;
+                        }
+                        case "AssistEvent": {
+                            String fromPlayerName = (String) evJson.get("fromPlayer");
+                            String toPlayerName = (String) evJson.get("toPlayer");
+                            Boolean successful = (Boolean) evJson.get("successful");
+                            IPlayer fromPlayer = findPlayerByName(jogadoresDisponiveis, fromPlayerName);
+                            IPlayer toPlayer = findPlayerByName(jogadoresDisponiveis, toPlayerName);
+                            if (fromPlayer == null || toPlayer == null || successful == null) {
+                                continue;
+                            }
+                            AssistEvent assist = new AssistEvent(fromPlayer, toPlayer, minute, successful);
+                            match.addEvent(assist);
+                            break;
+                        }
+                        case "FoulEvent": {
+                            String playerName = (String) evJson.get("player");
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null) {
+                                continue;
+                            }
+                            FoulEvent foul = new FoulEvent(player, minute);
+                            match.addEvent(foul);
+                            break;
+                        }
+                        case "RedCardEvent": {
+                            String playerName = (String) evJson.get("player");
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null) {
+                                continue;
+                            }
+                            RedCardEvent redCard = new RedCardEvent(player, minute);
+                            match.addEvent(redCard);
+                            break;
+                        }
+                        case "YellowCardEvent": {
+                            String playerName = (String) evJson.get("player");
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null) {
+                                continue;
+                            }
+                            YellowCardEvent yellowCard = new YellowCardEvent(player, minute);
+                            match.addEvent(yellowCard);
+                            break;
+                        }
+                        case "ShotEvent": {
+                            String playerName = (String) evJson.get("player");
+                            Boolean onTarget = (Boolean) evJson.get("onTarget");
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null || onTarget == null) {
+                                continue;
+                            }
+                            ShotEvent shot = new ShotEvent(player, minute, onTarget);
+                            match.addEvent(shot);
+                            break;
+                        }
+                    }
+                }
+            }
+
             return match;
-        } catch (Exception e) {
-            throw new IOException("Erro ao importar o Match de JSON: " + e.getMessage(), e);
+
+        } catch (org.json.simple.parser.ParseException e) {
+            throw new IOException("Erro ao ler o JSON: " + e.getMessage(), e);
         }
     }
 
+    private static IPlayer findPlayerByName(IPlayer[] jogadoresDisponiveis, String name) {
+        if (name == null) {
+            return null;
+        }
+        for (int k = 0; k < jogadoresDisponiveis.length; k++) {
+            if (jogadoresDisponiveis[k].getName().equals(name)) {
+                return jogadoresDisponiveis[k];
+            }
+        }
+        return null;
+    }
 }

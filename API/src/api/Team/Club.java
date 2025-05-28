@@ -299,7 +299,18 @@ public class Club implements IClub {
         clubJson.put("stadium", this.stadiumName);
         clubJson.put("logo", this.logo);
 
-        try (FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        // Adiciona lista com os nomes dos jogadores exportados
+        JSONArray playerFiles = new JSONArray();
+
+        for (int i = 0; i < playerCount; i++) {
+            Player player = (Player) players[i];
+            player.exportToJson(); // Exporta o jogador para o seu próprio ficheiro
+            playerFiles.add(player.getName() + ".json"); // Nome do ficheiro usado para importar depois
+        }
+
+        clubJson.put("players", playerFiles);
+
+        try ( FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -382,7 +393,7 @@ public class Club implements IClub {
     public static Club importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
+        try ( FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");
@@ -392,7 +403,18 @@ public class Club implements IClub {
             String stadium = (String) obj.get("stadium");
             String logo = (String) obj.get("logo");
 
-            return new Club(code, country, founded, logo, name, stadium);
+            Club club = new Club(code, country, founded, logo, name, stadium);
+
+            JSONArray playerFiles = (JSONArray) obj.get("players");
+            if (playerFiles != null) {
+                for (Object pFile : playerFiles) {
+                    String playerFileName = (String) pFile;
+                    Player player = Player.importFromJson(playerFileName);
+                    club.addPlayer(player);
+                }
+            }
+
+            return club;
         } catch (org.json.simple.parser.ParseException e) {
             throw new IOException("Erro ao ler o ficheiro JSON: " + e.getMessage());
         }

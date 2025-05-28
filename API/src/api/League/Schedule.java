@@ -183,7 +183,10 @@ public class Schedule implements ISchedule {
         }
     }
 
-    public static Schedule importFromJson(String filename, IClub[] clubesDisponiveis) throws IOException {
+    public static Schedule importFromJson(String filename) throws IOException {
+        Season season = Season.importFromJson("JSON Files/season.json");
+        IClub[] clubes = season.getCurrentClubs();
+
         JSONParser parser = new JSONParser();
 
         try ( FileReader reader = new FileReader(filename)) {
@@ -193,9 +196,10 @@ public class Schedule implements ISchedule {
             int matchCount = ((Long) json.get("matchCount")).intValue();
 
             JSONArray matchesArray = (JSONArray) json.get("matches");
-            IMatch[] matches = new IMatch[matchesArray.size()];
 
-            for (int i = 0; i < matchesArray.size(); i++) {
+            IMatch[] matches = new IMatch[matchCount];
+
+            for (int i = 0; i < matchCount; i++) {
                 JSONObject m = (JSONObject) matchesArray.get(i);
 
                 String homeName = (String) m.get("homeClub");
@@ -206,19 +210,19 @@ public class Schedule implements ISchedule {
                 IClub home = null;
                 IClub away = null;
 
-                for (int j = 0; j < clubesDisponiveis.length; j++) {
-                    if (clubesDisponiveis[j] != null) {
-                        if (clubesDisponiveis[j].getName().equals(homeName)) {
-                            home = clubesDisponiveis[j];
+                for (int j = 0; j < clubes.length; j++) {
+                    if (clubes[j] != null) {
+                        if (clubes[j].getName().equals(homeName)) {
+                            home = clubes[j];
                         }
-                        if (clubesDisponiveis[j].getName().equals(awayName)) {
-                            away = clubesDisponiveis[j];
+                        if (clubes[j].getName().equals(awayName)) {
+                            away = clubes[j];
                         }
                     }
                 }
 
                 if (home == null || away == null) {
-                    throw new IllegalStateException("Club not found for match: " + homeName + " vs " + awayName);
+                    throw new IllegalStateException("Clube não encontrado: " + homeName + " vs " + awayName);
                 }
 
                 Match match = new Match(home, away, round);

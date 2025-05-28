@@ -44,6 +44,10 @@ public class ShotEvent implements IPlayerEvent {
         return this.minute;
     }
 
+    public boolean isOnTarget() {
+        return onTarget;
+    }
+
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();

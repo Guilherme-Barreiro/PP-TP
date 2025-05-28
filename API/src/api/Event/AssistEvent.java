@@ -54,6 +54,18 @@ public class AssistEvent implements IPlayerEvent {
         return this.fromPlayer;
     }
 
+    public IPlayer getFromPlayer() {
+        return fromPlayer;
+    }
+
+    public IPlayer getToPlayer() {
+        return toPlayer;
+    }
+
+    public boolean isSuccessful() {
+        return successful;
+    }
+
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();

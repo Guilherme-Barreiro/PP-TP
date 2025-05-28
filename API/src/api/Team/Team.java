@@ -191,7 +191,18 @@ public class Team implements ITeam {
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
 
-        json.put("club", club != null ? club.getName() : "undefined");
+        if (club != null) {
+            JSONObject clubJson = new JSONObject();
+            clubJson.put("name", club.getName());
+            clubJson.put("country", club.getCountry());
+            clubJson.put("founded", club.getFoundedYear());
+            clubJson.put("logo", club.getLogo());
+            clubJson.put("shortName", club.getCode());
+            clubJson.put("stadium", club.getStadiumName());
+            json.put("club", clubJson);
+        } else {
+            json.put("club", "undefined");
+        }
 
         String formationName = (formation != null) ? formation.getDisplayName() : "not defined";
         json.put("formation", formationName);
@@ -230,7 +241,7 @@ public class Team implements ITeam {
         String fileName = (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined").toLowerCase() + ".json";
         String fullPath = folderPath + "/" + fileName;
 
-        try (FileWriter writer = new FileWriter(fullPath)) {
+        try ( FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -272,11 +283,19 @@ public class Team implements ITeam {
 
         String fullPath = "JSON Files/Teams/" + fileName;
 
-        try (FileReader reader = new FileReader(fullPath)) {
+        try ( FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
-            String clubName = (String) json.get("club");
-            Club club = new Club(clubName, "Portugal", 1900, "", clubName, "Estádio Importado");
+            JSONObject clubJson = (JSONObject) json.get("club");
+
+            String clubName = (String) clubJson.get("name");
+            String country = (String) clubJson.get("country");
+            int founded = ((Long) clubJson.get("founded")).intValue();
+            String logo = (String) clubJson.get("logo");
+            String shortName = (String) clubJson.get("shortName");
+            String stadium = (String) clubJson.get("stadium");
+
+            Club club = new Club(clubName, country, founded, logo, shortName, stadium);
 
             Team team = new Team(club);
 

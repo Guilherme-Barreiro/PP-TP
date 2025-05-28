@@ -10,6 +10,7 @@
 package api.League;
 
 import api.Match.Match;
+import api.Team.Club;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
@@ -194,12 +195,12 @@ public class Season implements ISeason {
         if (matchCount == 0) {
             throw new IllegalStateException("The league is not scheduled");
         }
-        
+
         //ter a certeza que acaba a simulação
         if (isSeasonComplete()) {
             return;
         }
-        
+
         while (!isSeasonComplete()) {
             simulateRound();
         }
@@ -255,7 +256,6 @@ public class Season implements ISeason {
         this.matchSimulator = mss;
     }
 
-    // chatgpt deve estar mal
     @Override
     public IStanding[] getLeagueStandings() {
         if (clubCount == 0) {
@@ -264,12 +264,10 @@ public class Season implements ISeason {
 
         IStanding[] standings = new IStanding[clubCount];
 
-        // Inicializar standings
         for (int i = 0; i < clubCount; i++) {
             standings[i] = new Standing(teams[i]);
         }
 
-        // Atualizar standings com base nos jogos
         for (int i = 0; i < matchCount; i++) {
             IMatch match = matches[i];
             if (!match.isPlayed()) {
@@ -282,14 +280,12 @@ public class Season implements ISeason {
             ITeam awayTeam = match.getAwayTeam();
             ITeam winner = match.getWinner();
 
-            // Golos
             int homeGoals = match.getTotalByEvent(IGoalEvent.class,
                     home);
 
             int awayGoals = match.getTotalByEvent(IGoalEvent.class,
                     away);
 
-            // Encontrar standings respetivos
             Standing homeStanding = null;
             Standing awayStanding = null;
 
@@ -301,14 +297,12 @@ public class Season implements ISeason {
                 }
             }
 
-            // Atualizar golos
             homeStanding.addGoalsScored(homeGoals);
             homeStanding.addGoalsConceded(awayGoals);
 
             awayStanding.addGoalsScored(awayGoals);
             awayStanding.addGoalsConceded(homeGoals);
 
-            // Atualizar pontos e resultados
             if (winner == null) {
                 homeStanding.addDraw(getPointsPerDraw());
                 awayStanding.addDraw(getPointsPerDraw());
@@ -393,9 +387,9 @@ public class Season implements ISeason {
     public IClub getCurrentClub(String code) {
         IClub current = null;
         for (int i = 0; i < clubCount; i++) {
-            if(clubs[i].getCode().equals(code)) {
+            if (clubs[i].getCode().equals(code)) {
                 current = clubs[i];
-            }else{
+            } else {
                 current = null;
             }
         }
@@ -426,8 +420,8 @@ public class Season implements ISeason {
         JSONArray clubArray = new JSONArray();
         for (int i = 0; i < clubCount; i++) {
             JSONObject clubJson = new JSONObject();
-            clubJson.put("name", clubs[i].getName());
-            clubJson.put("code", clubs[i].getCode());
+            String clubName = clubs[i].getName().replaceAll("\\s+", "_");
+            clubJson.put("file", clubName + ".json");
             clubArray.add(clubJson);
         }
         json.put("clubs", clubArray);
@@ -447,7 +441,7 @@ public class Season implements ISeason {
 
         // Escrever no ficheiro
         String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
-        try (FileWriter writer = new FileWriter(fileName)) {
+        try ( FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -464,10 +458,9 @@ public class Season implements ISeason {
     }
 
     public static Season importFromJson(String fileName) throws IOException {
-        IClub[] clubesDisponiveis;
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader(fileName)) {
+        try ( FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String name = (String) json.get("name");
@@ -479,25 +472,21 @@ public class Season implements ISeason {
 
             Season season = new Season(name, year, maxTeams);
             season.currentRound = currentRound;
-            season.matchCount = currentMatchCount;
             season.totalMatches = totalMatches;
+            season.matchCount = currentMatchCount;
 
-            // Importar clubes
+            // IMPORTAR CLUBES
             JSONArray clubArray = (JSONArray) json.get("clubs");
-            clubesDisponiveis = new IClub[clubArray.size()];
-            for (int i = 0; i < clubArray.size(); i++) {
-                JSONObject clubJson = (JSONObject) clubArray.get(i);
-                String clubName = (String) clubJson.get("name");
+            for (Object obj : clubArray) {
+                JSONObject clubJson = (JSONObject) obj;
+                String clubFileName = (String) clubJson.get("file");
 
-                for (int j = 0; j < clubesDisponiveis.length; j++) {
-                    if (clubesDisponiveis[j] != null && clubesDisponiveis[j].getName().equals(clubName)) {
-                        season.addClub(clubesDisponiveis[j]);
-                        break;
-                    }
-                }
+                // Usa o importador do teu Club para ler a partir de ficheiros individuais
+                Club club = Club.importFromJson(clubFileName);
+                season.addClub(club);
             }
 
-            // Importar jogos
+            // IMPORTAR JOGOS
             JSONArray matchArray = (JSONArray) json.get("matches");
             for (int i = 0; i < matchArray.size(); i++) {
                 JSONObject matchJson = (JSONObject) matchArray.get(i);
@@ -507,16 +496,13 @@ public class Season implements ISeason {
                 int round = ((Long) matchJson.get("round")).intValue();
                 boolean played = (Boolean) matchJson.get("played");
 
-                IClub home = null;
-                IClub away = null;
+                IClub home = null, away = null;
 
-                for (int j = 0; j < clubesDisponiveis.length; j++) {
-                    if (clubesDisponiveis[j] != null) {
-                        if (clubesDisponiveis[j].getName().equals(homeClubName)) {
-                            home = clubesDisponiveis[j];
-                        } else if (clubesDisponiveis[j].getName().equals(awayClubName)) {
-                            away = clubesDisponiveis[j];
-                        }
+                for (IClub club : season.getCurrentClubs()) {
+                    if (club.getName().equals(homeClubName)) {
+                        home = club;
+                    } else if (club.getName().equals(awayClubName)) {
+                        away = club;
                     }
                 }
 
@@ -529,7 +515,6 @@ public class Season implements ISeason {
                 if (played) {
                     match.setPlayed();
                 }
-
                 season.matches[i] = match;
             }
 

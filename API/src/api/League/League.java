@@ -184,15 +184,27 @@ public class League implements ILeague {
         JSONArray seasonsArray = new JSONArray();
         for (int i = 0; i < count; i++) {
             if (seasons[i] != null) {
-                seasonsArray.add(seasons[i].getYear());
+                // Exporta a season individualmente para um ficheiro
+                seasons[i].exportToJson();
+
+                // Cria o objeto da season para o JSON da League
+                JSONObject seasonObj = new JSONObject();
+                seasonObj.put("year", seasons[i].getYear());
+
+                String seasonFileName = "season_" + name.replaceAll("\\s+", "_") + "_" + seasons[i].getYear() + ".json";
+                seasonObj.put("file", seasonFileName);
+
+                seasonsArray.add(seasonObj);
             }
         }
 
         leagueJson.put("seasons", seasonsArray);
 
-        // Nome do ficheiro: league_nomeDaLiga.json
+        // Nome seguro do ficheiro da league
         String safeName = name.replaceAll("\\s+", "_");
-        try ( FileWriter writer = new FileWriter("league_" + safeName + ".json")) {
+        String leagueFileName = "league_" + safeName + ".json";
+
+        try ( FileWriter writer = new FileWriter(leagueFileName)) {
             writer.write(leagueJson.toJSONString());
             writer.flush();
         }
@@ -219,26 +231,24 @@ public class League implements ILeague {
         final League other = (League) obj;
         return Objects.equals(this.name, other.name);
     }
-    //mudar import
-    public static League importFromJson(String filename, ) throws IOException {
+
+    public static League importFromJson(String filename) throws IOException {
         JSONParser parser = new JSONParser();
-        ISeason[] temporadasDisponiveis;
+
         try ( FileReader reader = new FileReader(filename)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String leagueName = (String) json.get("name");
             League league = new League(leagueName);
 
-            JSONArray seasonYears = (JSONArray) json.get("seasons");
+            JSONArray seasonArray = (JSONArray) json.get("seasons");
+            for (Object o : seasonArray) {
+                JSONObject seasonObj = (JSONObject) o;
+                String seasonFile = (String) seasonObj.get("file");
 
-            for (int i = 0; i < seasonYears.size(); i++) {
-                long year = (Long) seasonYears.get(i);
-                for (int j = 0; j < temporadasDisponiveis.length; j++) {
-                    ISeason s = temporadasDisponiveis[j];
-                    if (s != null && s.getYear() == (int) year) {
-                        league.createSeason(s);
-                        break;
-                    }
+                ISeason season = Season.importFromJson(seasonFile);
+                if (season != null) {
+                    league.createSeason(season);
                 }
             }
 
