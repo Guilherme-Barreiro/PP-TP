@@ -188,13 +188,6 @@ public class EventManager implements IEventManager {
 
             IPlayer[] filtered = filterPlayersByPosition(players, position);
             IPlayer scorer = pickRandomPlayer(filtered);
-            System.out.println("Tentativa de golo por: " + (scorer != null ? scorer.getName() : "null"));
-
-            if (scorer == null) {
-                System.out.println("scorer é null no minuto " + minute);
-            } else if (!(scorer instanceof Player)) {
-                System.out.println("scorer não é Player: " + scorer.getClass().getSimpleName());
-            }
 
             if (scorer != null && scorer instanceof Player) {
                 int shooting = ((Player) scorer).getShooting();
@@ -208,7 +201,10 @@ public class EventManager implements IEventManager {
                     GoalEvent goal = new GoalEvent(scorer, minute, shooting, reflexes);
                     match.addEvent(goal);
                     System.out.println(goal.getDescription());
-
+                } else {
+                    FailedShotEvent failedShot = new FailedShotEvent(goalkeeper, minute, shooting, reflexes);
+                    match.addEvent(failedShot);
+                    System.out.println(failedShot.getDescription());
                 }
             }
         }

@@ -333,7 +333,7 @@ public class Club implements IClub {
 
         clubJson.put("players", playerFiles);
 
-        try ( FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        try (FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -406,24 +406,18 @@ public class Club implements IClub {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Club other = (Club) obj;
-        if (!Objects.equals(this.code, other.code)) {
-            return false;
-        }
-        return Objects.equals(this.Country, other.Country);
+        Club other = (Club) obj;
+        return this.name.equalsIgnoreCase(other.name);
     }
 
     /**
      * Imports a Club object from a JSON file located in the "JSON Files/Clubs"
      * directory. The JSON must include the club's name, code, country, founded
      * year, stadium name, logo, and a list of player filenames.
-     * 
+     *
      * Each player file in the "players" array must be separately imported using
      * the Player class.
      *
@@ -436,7 +430,7 @@ public class Club implements IClub {
     public static Club importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
+        try (FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");

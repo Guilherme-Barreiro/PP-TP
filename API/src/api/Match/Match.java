@@ -292,6 +292,12 @@ public class Match implements IMatch {
 
         IClub teamClub = iteam.getClub();
 
+        System.out.println("teamClub: " + teamClub.getName());
+        System.out.println("homeClub: " + homeClub.getName());
+        System.out.println("awayClub: " + awayClub.getName());
+        System.out.println("equals home? " + teamClub.equals(homeClub));
+        System.out.println("equals away? " + teamClub.equals(awayClub));
+
         if (teamClub.equals(this.homeClub)) {
             this.homeTeam = iteam;
         } else if (teamClub.equals(this.awayClub)) {
@@ -331,20 +337,6 @@ public class Match implements IMatch {
                 evJson.put("player", goal.getPlayer().getName());
                 evJson.put("minute", goal.getMinute());
                 evJson.put("description", goal.getDescription());
-            } else if (ev instanceof AssistEvent) {
-                AssistEvent assist = (AssistEvent) ev;
-                evJson.put("type", "AssistEvent");
-                evJson.put("fromPlayer", assist.getFromPlayer().getName());
-                evJson.put("toPlayer", assist.getToPlayer().getName());
-                evJson.put("minute", assist.getMinute());
-                evJson.put("successful", assist.isSuccessful());
-                evJson.put("description", assist.getDescription());
-            } else if (ev instanceof FoulEvent) {
-                FoulEvent foul = (FoulEvent) ev;
-                evJson.put("type", "FoulEvent");
-                evJson.put("player", foul.getPlayer().getName());
-                evJson.put("minute", foul.getMinute());
-                evJson.put("description", foul.getDescription());
             } else if (ev instanceof RedCardEvent) {
                 RedCardEvent redCard = (RedCardEvent) ev;
                 evJson.put("type", "RedCardEvent");
@@ -357,12 +349,11 @@ public class Match implements IMatch {
                 evJson.put("player", yellowCard.getPlayer().getName());
                 evJson.put("minute", yellowCard.getMinute());
                 evJson.put("description", yellowCard.getDescription());
-            } else if (ev instanceof ShotEvent) {
-                ShotEvent shot = (ShotEvent) ev;
+            } else if (ev instanceof FailedShotEvent) {
+                FailedShotEvent shot = (FailedShotEvent) ev;
                 evJson.put("type", "ShotEvent");
                 evJson.put("player", shot.getPlayer().getName());
                 evJson.put("minute", shot.getMinute());
-                evJson.put("onTarget", shot.isOnTarget());
                 evJson.put("description", shot.getDescription());
             } else {
                 evJson.put("type", "unknown");
@@ -379,7 +370,7 @@ public class Match implements IMatch {
 
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try ( FileWriter writer = new FileWriter(fullPath)) {
+        try (FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -499,7 +490,7 @@ public class Match implements IMatch {
         JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try ( FileReader reader = new FileReader(fullPath)) {
+        try (FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String homeClubName = (String) json.get("homeClub");
@@ -563,39 +554,16 @@ public class Match implements IMatch {
                     int minute = (int) minuteLong;
 
                     switch (type) {
-                        case "GoalEvent": {
-                            String playerName = (String) evJson.get("player");
-                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
-                            if (player == null) {
-                                continue;
-                            }
-                            IGoalEvent goal = new GoalEvent(player, minute);
-                            match.addEvent(goal);
-                            break;
-                        }
-                        case "AssistEvent": {
-                            String fromPlayerName = (String) evJson.get("fromPlayer");
-                            String toPlayerName = (String) evJson.get("toPlayer");
-                            Boolean successful = (Boolean) evJson.get("successful");
-                            IPlayer fromPlayer = findPlayerByName(jogadoresDisponiveis, fromPlayerName);
-                            IPlayer toPlayer = findPlayerByName(jogadoresDisponiveis, toPlayerName);
-                            if (fromPlayer == null || toPlayer == null || successful == null) {
-                                continue;
-                            }
-                            AssistEvent assist = new AssistEvent(fromPlayer, toPlayer, minute, successful);
-                            match.addEvent(assist);
-                            break;
-                        }
-                        case "FoulEvent": {
-                            String playerName = (String) evJson.get("player");
-                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
-                            if (player == null) {
-                                continue;
-                            }
-                            FoulEvent foul = new FoulEvent(player, minute);
-                            match.addEvent(foul);
-                            break;
-                        }
+//                        case "GoalEvent": {
+//                            String playerName = (String) evJson.get("player");
+//                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+//                            if (player == null) {
+//                                continue;
+//                            }
+//                            IGoalEvent goal = new GoalEvent(player, minute);
+//                            match.addEvent(goal);
+//                            break;
+//                        }
                         case "RedCardEvent": {
                             String playerName = (String) evJson.get("player");
                             IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
@@ -616,15 +584,11 @@ public class Match implements IMatch {
                             match.addEvent(yellowCard);
                             break;
                         }
-                        case "ShotEvent": {
-                            String playerName = (String) evJson.get("player");
-                            Boolean onTarget = (Boolean) evJson.get("onTarget");
-                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
-                            if (player == null || onTarget == null) {
-                                continue;
-                            }
-                            ShotEvent shot = new ShotEvent(player, minute, onTarget);
-                            match.addEvent(shot);
+                        case "FailedShotEvent": {
+                            //String playerName = (String) evJson.get("player");
+                            //IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            //FailedShotEvent shot = new FailedShotEvent(player, minute);
+                            //match.addEvent(shot);
                             break;
                         }
                     }

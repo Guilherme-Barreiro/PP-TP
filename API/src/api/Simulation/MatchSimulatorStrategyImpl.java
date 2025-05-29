@@ -63,7 +63,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         for (int minute = 1; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
-
+            
             em.chanceForGoal(goloChance, minute, match);
 
             if (em.chanceRedCard(match.getHomeTeam(), minute, match, expelledPlayers, expelledCount)) {
@@ -81,7 +81,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
             }
 
             try {
-//                Thread.sleep(1000);
+//                Thread.sleep(100);
                 Thread.sleep(0);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();

@@ -16,45 +16,53 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 /**
- * Represents a foul event committed by a player during a match.
+ * Represents a shot attempt by a player.
  */
-public class FoulEvent implements IPlayerEvent {
+public class FailedShotEvent implements IPlayerEvent {
 
     private final IPlayer player;
     private final int minute;
+    private int shooting;
+    private int reflexes;
 
     /**
-     * Constructs a FoulEvent with the given player and minute.
+     * Constructs a FailedShotEvent with the given player, minute and target
+     * flag.
      *
-     * @param player The player who committed the foul.
-     * @param minute The minute the foul occurred.
+     * @param player The player who took the shot.
+     * @param minute The minute the shot occurred.
+     * @param onTarget Whether the shot was on target.
      * @throws IllegalArgumentException if player is null or minute is invalid.
      */
-    public FoulEvent(IPlayer player, int minute) {
+    public FailedShotEvent(IPlayer player, int minute, int shooting, int reflexes) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
         }
-        if (minute < 0 || minute > 120) {
+        if (minute < 0 || minute > 90) {
             throw new IllegalArgumentException("Invalid minute: " + minute);
         }
         this.player = player;
         this.minute = minute;
+        this.shooting = shooting;
+        this.reflexes = reflexes;
     }
 
     /**
-     * Returns a textual description of the foul event.
+     * Returns a textual description of the shot event.
      *
-     * @return Description of the event.
+     * @return Description of the shot.
      */
     @Override
     public String getDescription() {
-        return minute + "' Falta cometida por " + player.getName();
+        //return minute + "' \u001B[32m" + "Remate defendido" + "\u001B[0m por " + player.getName() + "! shooting vs reflexos : " + shooting + " vs " + reflexes;
+       String min = (minute < 10 ? " " : "") + minute;
+       return min + "' Remate defendido por " + player.getName() + "! shooting vs reflexos : " + shooting + " vs " + reflexes;
     }
 
     /**
      * Returns the minute the event occurred.
      *
-     * @return Minute of the foul.
+     * @return Minute of the shot.
      */
     @Override
     public int getMinute() {
@@ -62,29 +70,29 @@ public class FoulEvent implements IPlayerEvent {
     }
 
     /**
-     * Exports the foul event data to a JSON file.
+     * Exports the shot event data to a JSON file.
      *
      * @throws IOException If an error occurs during file writing.
      */
     @Override
     public void exportToJson() throws IOException {
         JSONObject json = new JSONObject();
-        json.put("type", "FoulEvent");
+        json.put("type", "ShotEvent");
         json.put("minute", minute);
         json.put("player", player.getName());
 
-        String fileName = "foul_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
+        String fileName = "shot_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + ".json";
 
-        try ( FileWriter file = new FileWriter(fileName)) {
+        try (FileWriter file = new FileWriter(fileName)) {
             file.write(json.toJSONString());
             file.flush();
         }
     }
 
     /**
-     * Returns the player associated with this event.
+     * Returns the player who took the shot.
      *
-     * @return The player who committed the foul.
+     * @return The player.
      */
     @Override
     public IPlayer getPlayer() {

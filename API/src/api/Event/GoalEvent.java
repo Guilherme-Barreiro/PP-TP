@@ -42,7 +42,6 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
         }
         this.player = player;
         this.minute = minute;
-
     }
 
     /**
@@ -88,10 +87,8 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
      */
     @Override
     public String getDescription() {
-        return minute + "' Golo de " + player.getName()
-                + ", shooting vs reflexos : " + shooting + " vs " + reflexes;
-        //return minute + "'\u001B[34m" + " Golo de" + "\u001B[0m mostrado a " + player.getName();
-
+        String min = (minute < 10 ? " " : "") + minute;
+        return min + "' \u001B[32mGolo\u001B[0m de " + player.getName() + ", shooting vs reflexos : " + shooting + " vs " + reflexes;
     }
 
     /**
@@ -120,7 +117,7 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
 
         String fileName = "goalevent_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + "min.json";
 
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
