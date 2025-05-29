@@ -292,12 +292,6 @@ public class Match implements IMatch {
 
         IClub teamClub = iteam.getClub();
 
-        System.out.println("teamClub: " + teamClub.getName());
-        System.out.println("homeClub: " + homeClub.getName());
-        System.out.println("awayClub: " + awayClub.getName());
-        System.out.println("equals home? " + teamClub.equals(homeClub));
-        System.out.println("equals away? " + teamClub.equals(awayClub));
-
         if (teamClub.equals(this.homeClub)) {
             this.homeTeam = iteam;
         } else if (teamClub.equals(this.awayClub)) {

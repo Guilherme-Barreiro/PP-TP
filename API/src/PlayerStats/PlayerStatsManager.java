@@ -7,8 +7,9 @@
 * Número: <8220849>  
 * Turma: <Turma do colega de grupo>  
  */
-package api;
+package PlayerStats;
 
+import PlayerStats.PlayerStats;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;

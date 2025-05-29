@@ -224,6 +224,7 @@ public class EventManager implements IEventManager {
         if (random.nextInt(1000) < 5) {
             IPlayer dismissed = pickRandomPlayer(team.getPlayers());
             if (dismissed != null) {
+                if (dismissed instanceof Goalkeeper) return false;
                 RedCardEvent redcard = new RedCardEvent(dismissed, minute);
                 match.addEvent(redcard);
                 System.out.println(redcard.getDescription());
@@ -281,6 +282,7 @@ public class EventManager implements IEventManager {
             IPlayer player = pickRandomPlayer(filtered);
 
             if (player != null) {
+                if (player instanceof Goalkeeper) return false;
                 if (hasYellow(player, yellowedPlayers, yellowedCountRef[0])) {
                     RedCardEvent red = new RedCardEvent(player, minute);
                     match.addEvent(red);

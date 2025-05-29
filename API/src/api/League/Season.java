@@ -583,7 +583,7 @@ public class Season implements ISeason {
 
         // Escrever no ficheiro
         String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -616,7 +616,7 @@ public class Season implements ISeason {
     public static Season importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(fileName)) {
+        try (FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String name = (String) json.get("name");
@@ -680,4 +680,23 @@ public class Season implements ISeason {
             throw new IOException("Erro ao importar season: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public String toString() {
+        String str = "Season{";
+        str += "name=" + getName();
+        str += ", clubs=[";
+
+        IClub[] currentClubs = getCurrentClubs();
+        for (int i = 0; i < currentClubs.length; i++) {
+            str += currentClubs[i].getName();
+            if (i < currentClubs.length - 1) {
+                str += ", ";
+            }
+        }
+
+        str += "]}";
+        return str;
+    }
+
 }

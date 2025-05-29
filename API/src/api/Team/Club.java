@@ -333,7 +333,7 @@ public class Club implements IClub {
 
         clubJson.put("players", playerFiles);
 
-        try ( FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        try (FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -430,7 +430,7 @@ public class Club implements IClub {
     public static Club importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
+        try (FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");
@@ -455,5 +455,17 @@ public class Club implements IClub {
         } catch (org.json.simple.parser.ParseException e) {
             throw new IOException("Erro ao ler o ficheiro JSON: " + e.getMessage());
         }
+    }
+
+    public String listPlayers() {
+        String result = "";
+
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null) {
+                result = result + (i + 1) + " - " + players[i].getPosition().getDescription() + " - "  + players[i].getName() + "\n";
+            }
+        }
+
+        return result;
     }
 }

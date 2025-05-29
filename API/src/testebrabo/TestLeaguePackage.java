@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package testes;
+package testebrabo;
 
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import api.League.League;
@@ -48,31 +48,42 @@ public class TestLeaguePackage {
         PlayerPosition def = new PlayerPosition("defender");
         PlayerPosition gk = new PlayerPosition("goalkeeper");
 
-        Goalkeeper g1 = new Goalkeeper("J_Benfica_goalkeeper_84", LocalDate.of(1997, 4, 4), 27, "Portugal", gk, "", 84, 74, 69, 79, 64, 1.83f, 78f, PreferredFoot.Right, 85);
-        Player p1 = new Player("J_Benfica_forward_80", LocalDate.of(2000, 1, 1), 24, "Portugal", fwd, "", 80, 70, 65, 75, 60, 1.80f, 75f, PreferredFoot.Right);
-        Player p2 = new Player("J_Benfica_midfielder_82", LocalDate.of(1999, 2, 2), 25, "Portugal", mid, "", 82, 72, 67, 77, 62, 1.81f, 76f, PreferredFoot.Right);
-        Player p3 = new Player("J_Benfica_defender_83", LocalDate.of(1998, 3, 3), 26, "Portugal", def, "", 83, 73, 68, 78, 63, 1.82f, 77f, PreferredFoot.Right);
-        Player p4 = new Player("J_Benfica_midfielder_84", LocalDate.of(1997, 4, 4), 27, "Portugal", mid, "", 84, 74, 69, 79, 64, 1.83f, 78f, PreferredFoot.Right);
-        Player p5 = new Player("J_Benfica_forward_85", LocalDate.of(2001, 5, 5), 23, "Portugal", fwd, "", 85, 75, 70, 80, 65, 1.84f, 79f, PreferredFoot.Right);
-        Player p6 = new Player("J_Benfica_midfielder_86", LocalDate.of(2002, 6, 6), 22, "Portugal", mid, "", 86, 76, 71, 81, 66, 1.85f, 80f, PreferredFoot.Right);
-        Player p7 = new Player("J_Benfica_defender_87", LocalDate.of(2003, 7, 7), 21, "Portugal", def, "", 87, 77, 72, 82, 67, 1.86f, 81f, PreferredFoot.Right);
-        Player p8 = new Player("J_Benfica_midfielder_88", LocalDate.of(2000, 8, 8), 24, "Portugal", mid, "", 88, 78, 73, 83, 68, 1.87f, 82f, PreferredFoot.Right);
-        Player p9 = new Player("J_Benfica_forward_89", LocalDate.of(1999, 9, 9), 25, "Portugal", fwd, "", 89, 79, 74, 84, 69, 1.88f, 83f, PreferredFoot.Right);
-        Player p10 = new Player("J_Benfica_midfielder_90", LocalDate.of(1998, 10, 10), 26, "Portugal", mid, "", 90, 80, 75, 85, 70, 1.89f, 84f, PreferredFoot.Right);
-        //Player p11 = new Player("J_Benfica_defender_91", LocalDate.of(1997, 11, 11), 27, "Portugal", def, "", 91, 81, 76, 86, 71, 1.90f, 85f, PreferredFoot.Right);
+        Player t1 = new Player("Pepe", LocalDate.of(1983, 2, 26), 42, "Portugal", def, "", 3, 60, 65, 80, 60, 1.87f, 81f, PreferredFoot.Right);
+        Player t2 = new Player("António Silva", LocalDate.of(2003, 10, 30), 21, "Portugal", def, "", 4, 65, 68, 78, 65, 1.86f, 79f, PreferredFoot.Right);
+        Player t3 = new Player("Gonçalo Inácio", LocalDate.of(2001, 8, 25), 23, "Portugal", def, "", 25, 62, 66, 76, 64, 1.85f, 77f, PreferredFoot.Left);
+        Player t4 = new Player("Nuno Mendes", LocalDate.of(2002, 6, 19), 22, "Portugal", def, "", 5, 68, 70, 74, 78, 1.76f, 70f, PreferredFoot.Left);
+        Player t5 = new Player("João Cancelo", LocalDate.of(1994, 5, 27), 30, "Portugal", def, "", 20, 70, 75, 72, 82, 1.82f, 74f, PreferredFoot.Right);
+        Player t6 = new Player("Raphael Guerreiro", LocalDate.of(1993, 12, 22), 31, "Portugal", def, "", 14, 66, 73, 75, 75, 1.70f, 68f, PreferredFoot.Left);
+        Player t7 = new Player("Domingos Duarte", LocalDate.of(1995, 3, 10), 30, "Portugal", def, "", 6, 61, 65, 78, 61, 1.90f, 83f, PreferredFoot.Right);
+        Player t8 = new Player("Tiago Djaló", LocalDate.of(2000, 4, 9), 25, "Portugal", def, "", 24, 63, 67, 76, 69, 1.85f, 76f, PreferredFoot.Right);
+        Player t9 = new Player("Bernardo Silva", LocalDate.of(1994, 8, 10), 30, "Portugal", mid, "", 10, 75, 85, 80, 74, 1.73f, 68f, PreferredFoot.Left);
+        Player t10 = new Player("Vitinha", LocalDate.of(2000, 2, 13), 25, "Portugal", mid, "", 8, 70, 83, 78, 72, 1.72f, 66f, PreferredFoot.Right);
+        Player t11 = new Player("Rúben Neves", LocalDate.of(1997, 3, 13), 28, "Portugal", mid, "", 18, 68, 80, 79, 70, 1.80f, 74f, PreferredFoot.Right);
+        Player t12 = new Player("João Mário", LocalDate.of(1993, 1, 19), 32, "Portugal", mid, "", 17, 69, 78, 75, 71, 1.79f, 76f, PreferredFoot.Right);
+        Player t13 = new Player("Florentino Luís", LocalDate.of(1999, 8, 19), 25, "Portugal", mid, "", 28, 65, 76, 81, 68, 1.83f, 75f, PreferredFoot.Right);
+        Player t14 = new Player("Renato Sanches", LocalDate.of(1997, 8, 18), 27, "Portugal", mid, "", 16, 72, 75, 78, 76, 1.76f, 74f, PreferredFoot.Right);
+        Player t15 = new Player("João Neves", LocalDate.of(2004, 9, 27), 20, "Portugal", mid, "", 21, 66, 79, 76, 73, 1.74f, 68f, PreferredFoot.Right);
+        Player t16 = new Player("Cristiano Ronaldo", LocalDate.of(1985, 2, 5), 40, "Portugal", fwd, "", 7, 92, 76, 85, 85, 1.87f, 83f, PreferredFoot.Right);
+        Player t17 = new Player("João Félix", LocalDate.of(1999, 11, 10), 25, "Portugal", fwd, "", 11, 84, 77, 76, 81, 1.80f, 74f, PreferredFoot.Right);
+        Player t18 = new Player("Rafael Leão", LocalDate.of(1999, 6, 10), 25, "Portugal", fwd, "", 17, 86, 74, 75, 88, 1.88f, 79f, PreferredFoot.Right);
+        Player t19 = new Player("Gonçalo Ramos", LocalDate.of(2001, 6, 20), 23, "Portugal", fwd, "", 9, 83, 70, 78, 79, 1.85f, 77f, PreferredFoot.Right);
+        Player t20 = new Player("Diogo Jota", LocalDate.of(1996, 12, 4), 28, "Portugal", fwd, "", 19, 80, 75, 79, 83, 1.78f, 73f, PreferredFoot.Right);
+        Player t21 = new Player("Pedro Neto", LocalDate.of(2000, 3, 9), 25, "Portugal", fwd, "", 23, 78, 72, 74, 86, 1.74f, 69f, PreferredFoot.Left);
+        Goalkeeper t22 = new Goalkeeper("Diogo Costa", LocalDate.of(1999, 9, 19), 25, "Portugal", gk, "", 1, 40, 55, 75, 50, 1.86f, 82f, PreferredFoot.Right, 88);
+        Goalkeeper t23 = new Goalkeeper("Rui Patrício", LocalDate.of(1988, 2, 15), 37, "Portugal", gk, "", 12, 42, 57, 70, 48, 1.90f, 84f, PreferredFoot.Right, 85);
+        Goalkeeper t24 = new Goalkeeper("José Sá", LocalDate.of(1993, 1, 17), 32, "Portugal", gk, "", 22, 45, 54, 72, 52, 1.88f, 80f, PreferredFoot.Right, 86);
 
-        Cslb.addPlayer(g1);
-        Cslb.addPlayer(p1);
-        Cslb.addPlayer(p2);
-        Cslb.addPlayer(p3);
-        Cslb.addPlayer(p4);
-        Cslb.addPlayer(p5);
-        Cslb.addPlayer(p6);
-        Cslb.addPlayer(p7);
-        Cslb.addPlayer(p8);
-        Cslb.addPlayer(p9);
-        Cslb.addPlayer(p10);
-        //Cslb.addPlayer(p11);
+        Cslb.addPlayer(t1);
+        Cslb.addPlayer(t2);
+        Cslb.addPlayer(t3);
+        Cslb.addPlayer(t4);
+        Cslb.addPlayer(t5);
+        Cslb.addPlayer(t6);
+        Cslb.addPlayer(t7);
+        Cslb.addPlayer(t8);
+        Cslb.addPlayer(t9);
+        Cslb.addPlayer(t10);
+        Cslb.addPlayer(t22);
 
         Goalkeeper g2 = new Goalkeeper("J_Porto_goalkeeper_1", LocalDate.of(2000, 9, 20), 24, "Portugal", gk, "", 20, 90, 85, 95, 80, 1.82f, 78f, PreferredFoot.Right, 88);
         Player q1 = new Player("J_Porto_forward_17", LocalDate.of(2001, 6, 17), 23, "Portugal", fwd, "", 17, 87, 82, 92, 77, 1.85f, 75f, PreferredFoot.Right);
@@ -154,17 +165,17 @@ public class TestLeaguePackage {
         Tscb.setFormation(new Formation("4-3-3"));
 
         try {
-            Tslb.addPlayer(p1);
-            Tslb.addPlayer(p2);
-            Tslb.addPlayer(p3);
-            Tslb.addPlayer(p4);
-            Tslb.addPlayer(p5);
-            Tslb.addPlayer(p6);
-            Tslb.addPlayer(p7);
-            Tslb.addPlayer(p8);
-            Tslb.addPlayer(p9);
-            Tslb.addPlayer(p10);
-            Tslb.addPlayer(g1);
+            Tslb.addPlayer(t1);
+            Tslb.addPlayer(t2);
+            Tslb.addPlayer(t3);
+            Tslb.addPlayer(t4);
+            Tslb.addPlayer(t5);
+            Tslb.addPlayer(t6);
+            Tslb.addPlayer(t7);
+            Tslb.addPlayer(t8);
+            Tslb.addPlayer(t9);
+            Tslb.addPlayer(t10);
+            Tslb.addPlayer(t22);
 
             Tfcp.addPlayer(g2);
             Tfcp.addPlayer(q1);
@@ -189,7 +200,7 @@ public class TestLeaguePackage {
             Tscp.addPlayer(s8);
             Tscp.addPlayer(s9);
             Tscp.addPlayer(s10);
-            
+
             Tscb.addPlayer(g4);
             Tscb.addPlayer(b2);
             Tscb.addPlayer(b3);
