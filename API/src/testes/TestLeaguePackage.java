@@ -35,10 +35,12 @@ public class TestLeaguePackage {
         Club Cslb = new Club("slb", "tuga", 1904, "https://logo.com", "benfica", "luz");
         Club Cfcp = new Club("fcp", "tuga", 1893, "https://logo.com", "porto", "dragao");
         Club Cscp = new Club("scp", "tuga", 1906, "https://logo.com", "sporting", "lagartos");
+        Club Cscb = new Club("scb", "tuga", 1921, "https://logo.com", "braga", "axab");
 
         Team Tslb = new Team(Cslb);
         Team Tfcp = new Team(Cfcp);
         Team Tscp = new Team(Cscp);
+        Team Tscb = new Team(Cscb);
 
         // === Posições ===
         PlayerPosition fwd = new PlayerPosition("forward");
@@ -122,9 +124,34 @@ public class TestLeaguePackage {
         Cscp.addPlayer(s9);
         Cscp.addPlayer(s10);
 
+        Goalkeeper g4 = new Goalkeeper("J_Braga_goalkeeper_10", LocalDate.of(1995, 1, 1), 29, "Portugal", gk, "", 10, 65, 60, 70, 60, 1.85f, 80f, PreferredFoot.Right, 20);
+        Player b2 = new Player("J_Braga_defender_11", LocalDate.of(1996, 2, 2), 28, "Portugal", def, "", 11, 67, 65, 72, 64, 1.83f, 78f, PreferredFoot.Right);
+        Player b3 = new Player("J_Braga_defender_12", LocalDate.of(1997, 3, 3), 27, "Portugal", def, "", 12, 68, 66, 73, 65, 1.84f, 79f, PreferredFoot.Left);
+        Player b4 = new Player("J_Braga_defender_13", LocalDate.of(1998, 4, 4), 26, "Portugal", def, "", 13, 69, 67, 74, 66, 1.85f, 80f, PreferredFoot.Right);
+        Player b5 = new Player("J_Braga_midfielder_14", LocalDate.of(1999, 5, 5), 25, "Portugal", mid, "", 14, 70, 70, 75, 67, 1.80f, 75f, PreferredFoot.Left);
+        Player b6 = new Player("J_Braga_midfielder_15", LocalDate.of(2000, 6, 6), 24, "Portugal", mid, "", 15, 72, 72, 76, 68, 1.81f, 76f, PreferredFoot.Right);
+        Player b7 = new Player("J_Braga_midfielder_16", LocalDate.of(2001, 7, 7), 23, "Portugal", mid, "", 16, 74, 73, 77, 69, 1.82f, 77f, PreferredFoot.Left);
+        Player b8 = new Player("J_Braga_midfielder_17", LocalDate.of(2002, 8, 8), 22, "Portugal", mid, "", 17, 76, 74, 78, 70, 1.83f, 78f, PreferredFoot.Right);
+        Player b9 = new Player("J_Braga_forward_18", LocalDate.of(2000, 9, 9), 24, "Portugal", fwd, "", 18, 78, 75, 79, 71, 1.84f, 79f, PreferredFoot.Left);
+        Player b10 = new Player("J_Braga_forward_19", LocalDate.of(2001, 10, 10), 23, "Portugal", fwd, "", 19, 80, 76, 80, 72, 1.85f, 80f, PreferredFoot.Right);
+        Player b11 = new Player("J_Braga_forward_20", LocalDate.of(2002, 11, 11), 22, "Portugal", fwd, "", 20, 82, 77, 81, 73, 1.86f, 81f, PreferredFoot.Left);
+
+        Cscb.addPlayer(g4);
+        Cscb.addPlayer(b2);
+        Cscb.addPlayer(b3);
+        Cscb.addPlayer(b4);
+        Cscb.addPlayer(b5);
+        Cscb.addPlayer(b6);
+        Cscb.addPlayer(b7);
+        Cscb.addPlayer(b8);
+        Cscb.addPlayer(b9);
+        Cscb.addPlayer(b10);
+        Cscb.addPlayer(b11);
+
         Tslb.setFormation(new Formation("4-3-3"));
         Tfcp.setFormation(new Formation("4-3-3"));
         Tscp.setFormation(new Formation("4-3-3"));
+        Tscb.setFormation(new Formation("4-3-3"));
 
         try {
             Tslb.addPlayer(p1);
@@ -162,6 +189,18 @@ public class TestLeaguePackage {
             Tscp.addPlayer(s8);
             Tscp.addPlayer(s9);
             Tscp.addPlayer(s10);
+            
+            Tscb.addPlayer(g4);
+            Tscb.addPlayer(b2);
+            Tscb.addPlayer(b3);
+            Tscb.addPlayer(b4);
+            Tscb.addPlayer(b5);
+            Tscb.addPlayer(b6);
+            Tscb.addPlayer(b7);
+            Tscb.addPlayer(b8);
+            Tscb.addPlayer(b9);
+            Tscb.addPlayer(b10);
+            Tscb.addPlayer(b11);
         } catch (Exception err) {
             System.out.println(err.getMessage());
         }
@@ -171,15 +210,17 @@ public class TestLeaguePackage {
         season.addClub(Cslb);
         season.addClub(Cfcp);
         season.addClub(Cscp);
+        season.addClub(Cscb);
 
         season.setMatchSimulator(new MatchSimulatorStrategyImpl());
         ((Season) season).setTeamForClub(Cslb, Tslb);
         ((Season) season).setTeamForClub(Cfcp, Tfcp);
         ((Season) season).setTeamForClub(Cscp, Tscp);
+        ((Season) season).setTeamForClub(Cscb, Tscb);
         season.generateSchedule();
 
-        IClub[] clubes = {Cslb, Cfcp, Cscp};
-        ITeam[] equipas = {Tslb, Tfcp, Tscp};
+        IClub[] clubes = {Cslb, Cfcp, Cscp, Cscb};
+        ITeam[] equipas = {Tslb, Tfcp, Tscp, Tscb};
 
         for (IMatch m : season.getMatches()) {
             IClub home = m.getHomeClub();
