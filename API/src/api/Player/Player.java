@@ -274,7 +274,10 @@ public class Player implements IPlayer {
         playerJson.put("weight", this.weight);
         playerJson.put("preferredFoot", this.preferredFoot != null ? this.preferredFoot.toString() : null);
 
-        try ( FileWriter file = new FileWriter("player_" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        String basePath = "API/JSON Files/Players/";
+        String fileName = "player_" + this.name.replaceAll("\\s+", "_") + ".json";
+
+        try ( FileWriter file = new FileWriter(basePath + fileName)) {
             file.write(playerJson.toJSONString());
             file.flush();
         }
@@ -347,7 +350,10 @@ public class Player implements IPlayer {
      * @return the created Player object
      * @throws IOException if the file cannot be read or parsed
      */
-    public static Player importFromJson(String filePath) throws IOException {
+    public static Player importFromJson(String playerFileName) throws IOException {
+        String basePath = "API/JSON Files/Players/";
+        String filePath = basePath + playerFileName;
+        
         JSONParser parser = new JSONParser();
 
         try ( FileReader reader = new FileReader(filePath)) {

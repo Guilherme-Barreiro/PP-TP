@@ -9,12 +9,16 @@
  */
 package api.Event;
 
+import api.Player.Player;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import contracts.IPlayerEvent;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Represents a goal event scored by a player.
@@ -113,13 +117,44 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
         json.put("type", "GoalEvent");
         json.put("player", player.getName());
         json.put("minute", minute);
+        json.put("shooting", shooting);
+        json.put("reflexes", reflexes);
         json.put("description", getDescription());
 
         String fileName = "goalevent_" + player.getName().replaceAll("\\s+", "_") + "_" + minute + "min.json";
 
-        try (FileWriter writer = new FileWriter(fileName)) {
+        try ( FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
+        }
+    }
+
+    /**
+     * Imports a GoalEvent from a JSON file.
+     *
+     * @param fileName The name of the JSON file to read from.
+     * @return A GoalEvent object constructed from the JSON data.
+     * @throws IOException If an I/O error occurs or the JSON is invalid.
+     */
+    public static GoalEvent importFromJson(String fileName) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(fileName)) {
+            JSONObject obj = (JSONObject) parser.parse(reader);
+
+            String playerNameFile = (String) obj.get("player");
+            int minute = ((Long) obj.get("minute")).intValue();
+            int shooting = ((Long) obj.get("shooting")).intValue();
+            int reflexes = ((Long) obj.get("reflexes")).intValue();
+
+            // Assumimos que o ficheiro do jogador tem o nome igual ao exportado em Club
+            String playerFileName = playerNameFile + ".json";
+            IPlayer player = Player.importFromJson(playerFileName);
+
+            return new GoalEvent(player, minute, shooting, reflexes);
+
+        } catch (ParseException e) {
+            throw new IOException("Erro ao ler o ficheiro JSON de GoalEvent: " + e.getMessage());
         }
     }
 }
