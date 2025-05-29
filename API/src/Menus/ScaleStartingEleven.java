@@ -1,6 +1,7 @@
 package Menus;
 
 import api.Player.Coach;
+import api.Player.Goalkeeper;
 import api.Team.Club;
 import api.Team.Formation;
 import api.Team.Team;
@@ -40,7 +41,7 @@ public class ScaleStartingEleven {
         } else {
             StrategyMenu strategyMenu = new StrategyMenu();
             Formation formation = strategyMenu.MenuEstrategia();
-            
+
             IClub clube = TestMainMenu.coach.getClub();
             System.out.println(((Club) clube).listPlayers());
 
@@ -53,9 +54,19 @@ public class ScaleStartingEleven {
 
                 if (choice > 0 && choice <= ((Club) clube).getPlayers().length) {
                     IPlayer jogador = ((Club) clube).getPlayers()[choice - 1];
-                    team.addPlayer(jogador);
-                    count++;
+                    if (jogador instanceof Goalkeeper && team.hasGoalkeeper()) {
+                        System.out.println("Já existe um goleiro na equipa! Escolhe outro jogador.");
+                    } else {
+                        team.addPlayer(jogador);
+                        count++;
+                    }
                 }
+            }
+            if (!team.hasGoalkeeper()) {
+                System.out.println("\n⚠ ERRO: A equipa precisa ter pelo menos um goleiro.");
+                System.out.println("Por favor, recomeça a escalação.\n");
+
+                scaleStartingEleven(season);
             }
         }
     }

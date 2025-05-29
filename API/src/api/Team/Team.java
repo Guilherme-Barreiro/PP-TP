@@ -502,4 +502,12 @@ public class Team implements ITeam {
         throw new IllegalStateException("Nenhum guarda-redes encontrado na equipa.");
     }
 
+    public boolean hasGoalkeeper() {
+        for (IPlayer player : players) {
+            if (player instanceof Goalkeeper) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
