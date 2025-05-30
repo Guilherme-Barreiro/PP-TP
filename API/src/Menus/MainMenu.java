@@ -389,10 +389,10 @@ public class MainMenu {
             System.out.println("2. Ver Calendario");
             System.out.println("3. Ver Classificacao");
             System.out.println("4. Simular Jornada");
-            System.out.println("5. Estatisticas");
-            System.out.println("6. Exportar");
-            System.out.println("7. Importar");
-            System.out.println("8. html");
+//            System.out.println("5. Estatisticas");
+//            System.out.println("6. Exportar");
+//            System.out.println("7. Importar");
+            System.out.println("8. Generate HTML");
             System.out.println("0. Sair");
             System.out.println("************************************");
             System.out.print("Escolha uma opcao: ");
@@ -422,26 +422,26 @@ public class MainMenu {
                     season.simulateRound();
                     break;
 
-                case '5':
-
-                    IMatch[] jogos1 = season.getMatches();
-
+//                case '5':
+//
+//                    IMatch[] jogos1 = season.getMatches();
+//
 //                    psm.updateStatistics(jogos1);
-                    MenuStats ms = new MenuStats();
-                    ms.MenuStats(psm.getStatistics());
-                    break;
+//                    MenuStats ms = new MenuStats();
+//                    ms.MenuStats(psm.getStatistics());
+//                    break;
 
-                case '6':
-                    for (int i = 0; i < clubes.length; i++) {
+//                case '6':
+//                    for (int i = 0; i < clubes.length; i++) {
 //                        exportarPlayer(clubes[i].getPlayers());
-                    }
+//                    }
 
                     //Export.exportAll(Tscb, Cscb, b11, season, match, goalEvent, failedShotEvent, yellowCardEvent, redCardEvent);
-                    break;
+//                    break;
 
-                case '7':
+//                case '7':
 //                    season.importToJson();
-                    break;
+//                    break;
 
                 case '8':
                     String dirPath = "C:\\Users\\Utilizador\\Documents\\NetBeansProjects\\PP-TP\\API\\JSON Files\\HTML";
@@ -454,7 +454,7 @@ public class MainMenu {
                     generate(Cfcp, path);
                     generate(Cscp, path2);
                     generate(Cscb, path3);
-                    generate(Cslb, path4);
+                    generate(Cslb, path3);
                     
 
                     break;
