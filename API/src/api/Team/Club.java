@@ -9,6 +9,7 @@
  */
 package api.Team;
 
+import api.Player.Goalkeeper;
 import api.Player.Player;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
@@ -77,11 +78,19 @@ public class Club implements IClub {
      */
     @Override
     public IPlayer[] getPlayers() {
-        IPlayer[] playersCopy = new IPlayer[this.playerCount];
-        for (int i = 0; i < this.playerCount; i++) {
-            playersCopy[i] = this.players[i];
+        IPlayer[] clonedPlayers = new IPlayer[playerCount];
+
+        for (int i = 0; i < playerCount; i++) {
+            if (players[i] instanceof Goalkeeper) {
+                clonedPlayers[i] = ((Goalkeeper) players[i]).clone();
+            } else if (players[i] instanceof Player) {
+                clonedPlayers[i] = ((Player) players[i]).clone();
+            } else {
+                clonedPlayers[i] = players[i];
+            }
         }
-        return playersCopy;
+
+        return clonedPlayers;
     }
 
     /**
@@ -333,7 +342,7 @@ public class Club implements IClub {
 
         clubJson.put("players", playerFiles);
 
-        try (FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
+        try ( FileWriter file = new FileWriter("JSON Files/Clubs/" + this.name.replaceAll("\\s+", "_") + ".json")) {
             file.write(clubJson.toJSONString());
             file.flush();
         }
@@ -430,7 +439,7 @@ public class Club implements IClub {
     public static Club importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
+        try ( FileReader reader = new FileReader("JSON Files/Clubs/" + fileName)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");
@@ -462,10 +471,37 @@ public class Club implements IClub {
 
         for (int i = 0; i < players.length; i++) {
             if (players[i] != null) {
-                result = result + (i + 1) + " - " + players[i].getPosition().getDescription() + " - "  + players[i].getName() + "\n";
+                result = result + (i + 1) + " - " + players[i].getPosition().getDescription() + " - " + players[i].getName() + "\n";
             }
         }
 
         return result;
     }
+
+    @Override
+    public Club clone() {
+        Club clonedClub = new Club(
+                this.code,
+                this.Country,
+                this.foundedYear,
+                this.logo,
+                this.name,
+                this.stadiumName
+        );
+
+        for (int i = 0; i < this.playerCount; i++) {
+            if (this.players[i] instanceof Goalkeeper) {
+                clonedClub.players[i] = ((Goalkeeper) this.players[i]).clone();
+            } else if (this.players[i] instanceof Player) {
+                clonedClub.players[i] = ((Player) this.players[i]).clone();
+            } else {
+                clonedClub.players[i] = this.players[i];
+            }
+        }
+
+        clonedClub.playerCount = this.playerCount;
+
+        return clonedClub;
+    }
+
 }

@@ -353,7 +353,7 @@ public class Player implements IPlayer {
     public static Player importFromJson(String playerFileName) throws IOException {
         String basePath = "API/JSON Files/Players/";
         String filePath = basePath + playerFileName;
-        
+
         JSONParser parser = new JSONParser();
 
         try ( FileReader reader = new FileReader(filePath)) {
@@ -382,4 +382,30 @@ public class Player implements IPlayer {
             throw new IOException("Erro ao ler o ficheiro JSON: " + e.getMessage());
         }
     }
+
+    @Override
+    public Player clone() {
+        IPlayerPosition clonedPosition = null;
+        if (this.position != null) {
+            clonedPosition = new PlayerPosition(this.position.getDescription());
+        }
+
+        return new Player(
+                this.name,
+                this.birthDate,
+                this.age,
+                this.nationality,
+                clonedPosition,
+                this.photo,
+                this.number,
+                this.shooting,
+                this.passing,
+                this.stamina,
+                this.speed,
+                this.height,
+                this.weight,
+                this.preferredFoot
+        );
+    }
+
 }

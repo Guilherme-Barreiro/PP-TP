@@ -49,8 +49,8 @@ public class RedCardEvent implements IPlayerEvent {
      */
     @Override
     public String getDescription() {
-       String min = (minute < 10 ? " " : "") + minute;
-       return min + "'\u001B[31m" + " Cartao vermelho" + "\u001B[0m mostrado a " + player.getName();
+        String min = (minute < 10 ? " " : "") + minute;
+        return min + "'\u001B[31m" + " Cartao vermelho" + "\u001B[0m mostrado a " + player.getName();
     }
 
     /**
@@ -92,4 +92,10 @@ public class RedCardEvent implements IPlayerEvent {
     public IPlayer getPlayer() {
         return this.player;
     }
+
+    @Override
+    public RedCardEvent clone() {
+        return new RedCardEvent(this.player, this.minute);
+    }
+
 }

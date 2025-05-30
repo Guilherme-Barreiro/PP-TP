@@ -133,4 +133,18 @@ public class FailedShotEvent implements IPlayerEvent {
             throw new IOException("Erro ao importar FailedShotEvent: " + e.getMessage());
         }
     }
+
+    public int getShooting() {
+        return shooting;
+    }
+
+    public int getReflexes() {
+        return reflexes;
+    }
+
+    @Override
+    public FailedShotEvent clone() {
+        return new FailedShotEvent(this.player, this.minute, this.shooting, this.reflexes);
+    }
+
 }

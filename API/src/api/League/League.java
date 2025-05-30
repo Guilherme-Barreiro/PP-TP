@@ -59,11 +59,15 @@ public class League implements ILeague {
      */
     @Override
     public ISeason[] getSeasons() {
-        ISeason[] seasons = new ISeason[count];
+        ISeason[] deepCopiedSeasons = new ISeason[count];
         for (int i = 0; i < count; i++) {
-            seasons[i] = this.seasons[i];
+            if (this.seasons[i] instanceof Season) {
+                deepCopiedSeasons[i] = ((Season) this.seasons[i]).clone();
+            } else {
+                deepCopiedSeasons[i] = seasons[i];
+            }
         }
-        return seasons;
+        return deepCopiedSeasons;
     }
 
     /**

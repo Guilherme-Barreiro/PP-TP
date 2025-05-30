@@ -130,4 +130,8 @@ public class Formation implements IFormation {
         return Objects.equals(this.displayName, other.displayName);
     }
 
+    @Override
+    public Formation clone() {
+        return new Formation(this.displayName);
+    }
 }

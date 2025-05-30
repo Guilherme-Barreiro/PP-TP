@@ -158,7 +158,11 @@ public class Schedule implements ISchedule {
 
         IMatch[] result = new IMatch[matchCount];
         for (int i = 0; i < matchCount; i++) {
-            result[i] = matches[i];
+            if (matches[i] instanceof Match) {
+                result[i] = ((Match) matches[i]).clone();
+            } else {
+                result[i] = matches[i]; // fallback (atenção: shallow copy aqui)
+            }
         }
         return result;
     }

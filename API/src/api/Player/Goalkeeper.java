@@ -83,4 +83,26 @@ public class Goalkeeper extends Player implements IGoalkeeper {
         return super.toString() + "\treflexes=" + reflexes;
     }
 
+    @Override
+    public Goalkeeper clone() {
+        Player clonedBase = super.clone();
+        return new Goalkeeper(
+                clonedBase.getName(),
+                clonedBase.getBirthDate(),
+                clonedBase.getAge(),
+                clonedBase.getNationality(),
+                clonedBase.getPosition(),
+                clonedBase.getPhoto(),
+                clonedBase.getNumber(),
+                clonedBase.getShooting(),
+                clonedBase.getPassing(),
+                clonedBase.getStamina(),
+                clonedBase.getSpeed(),
+                clonedBase.getHeight(),
+                clonedBase.getWeight(),
+                clonedBase.getPreferredFoot(),
+                this.reflexes
+        );
+    }
+
 }

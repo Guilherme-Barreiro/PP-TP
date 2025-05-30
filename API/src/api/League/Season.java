@@ -11,6 +11,7 @@ package api.League;
 
 import api.Match.Match;
 import api.Team.Club;
+import api.Team.Team;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
@@ -166,7 +167,11 @@ public class Season implements ISeason {
     public IMatch[] getMatches() {
         IMatch[] copyMatches = new IMatch[matchCount];
         for (int i = 0; i < this.matchCount; i++) {
-            copyMatches[i] = this.matches[i];
+            if (this.matches[i] instanceof Match) {
+                copyMatches[i] = ((Match) this.matches[i]).clone();
+            } else {
+                copyMatches[i] = this.matches[i];
+            }
         }
         return copyMatches;
     }
@@ -504,7 +509,11 @@ public class Season implements ISeason {
     public IClub[] getCurrentClubs() {
         IClub[] current = new IClub[clubCount];
         for (int i = 0; i < clubCount; i++) {
-            current[i] = clubs[i];
+            if (clubs[i] instanceof Club) {
+                current[i] = ((Club) clubs[i]).clone();
+            } else {
+                current[i] = clubs[i];
+            }
         }
         return current;
     }
@@ -516,15 +525,12 @@ public class Season implements ISeason {
      * @return the club with the matching code, or null if not found
      */
     public IClub getCurrentClub(String code) {
-        IClub current = null;
         for (int i = 0; i < clubCount; i++) {
             if (clubs[i].getCode().equals(code)) {
-                current = clubs[i];
-            } else {
-                current = null;
+                return clubs[i];
             }
         }
-        return current;
+        return null;
     }
 
     /**
@@ -583,7 +589,7 @@ public class Season implements ISeason {
 
         // Escrever no ficheiro
         String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
-        try (FileWriter writer = new FileWriter(fileName)) {
+        try ( FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -616,7 +622,7 @@ public class Season implements ISeason {
     public static Season importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader(fileName)) {
+        try ( FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String name = (String) json.get("name");
@@ -697,6 +703,35 @@ public class Season implements ISeason {
 
         str += "]}";
         return str;
+    }
+
+    @Override
+    public Season clone() {
+        Season copy = new Season(this.name, this.year, this.maxTeams);
+        copy.currentRound = this.currentRound;
+        copy.totalMatches = this.totalMatches;
+        copy.matchCount = this.matchCount;
+        copy.clubCount = this.clubCount;
+
+        for (int i = 0; i < this.clubCount; i++) {
+            copy.clubs[i] = ((Club) this.clubs[i]).clone();
+        }
+
+        // Copiar equipas
+        for (int i = 0; i < this.clubCount; i++) {
+            if (this.teams[i] != null) {
+                copy.teams[i] = ((Team) this.teams[i]).clone();
+            }
+        }
+
+        // Copiar jogos (deep copy)
+        for (int i = 0; i < this.matchCount; i++) {
+            copy.matches[i] = ((Match) this.matches[i]).clone();
+        }
+
+        copy.setMatchSimulator(this.matchSimulator);
+
+        return copy;
     }
 
 }

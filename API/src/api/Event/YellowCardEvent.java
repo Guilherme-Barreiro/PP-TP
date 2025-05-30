@@ -48,8 +48,8 @@ public class YellowCardEvent implements IPlayerEvent {
      */
     @Override
     public String getDescription() {
-       String min = (minute < 10 ? " " : "") + minute;
-       return min + "'\u001B[33m" + " Cartao amarelo" + "\u001B[0m mostrado a " + player.getName();
+        String min = (minute < 10 ? " " : "") + minute;
+        return min + "'\u001B[33m" + " Cartao amarelo" + "\u001B[0m mostrado a " + player.getName();
     }
 
     /**
@@ -91,4 +91,10 @@ public class YellowCardEvent implements IPlayerEvent {
     public IPlayer getPlayer() {
         return this.player;
     }
+
+    @Override
+    public YellowCardEvent clone() {
+        return new YellowCardEvent(this.player, this.minute);
+    }
+
 }

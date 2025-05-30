@@ -157,4 +157,18 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
             throw new IOException("Erro ao ler o ficheiro JSON de GoalEvent: " + e.getMessage());
         }
     }
+
+    public int getShooting() {
+        return shooting;
+    }
+
+    public int getReflexes() {
+        return reflexes;
+    }
+
+    @Override
+    public GoalEvent clone() {
+        return new GoalEvent(this.player, this.minute, this.shooting, this.reflexes);
+    }
+
 }

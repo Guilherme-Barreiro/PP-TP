@@ -132,13 +132,19 @@ public class Team implements ITeam {
      */
     @Override
     public IPlayer[] getPlayers() {
-        IPlayer[] currentPlayers = new IPlayer[playerCount];
+        IPlayer[] clonedPlayers = new IPlayer[playerCount];
 
         for (int i = 0; i < playerCount; i++) {
-            currentPlayers[i] = players[i];
+            if (players[i] instanceof Goalkeeper) {
+                clonedPlayers[i] = ((Goalkeeper) players[i]).clone();
+            } else if (players[i] instanceof Player) {
+                clonedPlayers[i] = ((Player) players[i]).clone();
+            } else {
+                clonedPlayers[i] = players[i];
+            }
         }
 
-        return currentPlayers;
+        return clonedPlayers;
     }
 
     /**
@@ -510,4 +516,42 @@ public class Team implements ITeam {
         }
         return false;
     }
+
+    @Override
+    public Team clone() {
+        // Clonar o clube (supondo que club.clone() retorna um IClub corretamente clonado)
+        IClub clonedClub = null;
+        if (this.club != null && this.club instanceof Club) {
+            clonedClub = ((Club) this.club).clone();
+        } else {
+            clonedClub = this.club; // fallback se não for possível clonar
+        }
+
+        // Criar nova equipa com o clube clonado
+        Team clonedTeam = new Team(clonedClub);
+
+        // Clonar jogadores
+        for (int i = 0; i < this.playerCount; i++) {
+            if (this.players[i] instanceof Goalkeeper) {
+                clonedTeam.players[i] = ((Goalkeeper) this.players[i]).clone();
+            } else if (this.players[i] instanceof Player) {
+                clonedTeam.players[i] = ((Player) this.players[i]).clone();
+            } else {
+                clonedTeam.players[i] = this.players[i]; // fallback para qualquer outro tipo
+            }
+        }
+
+        // Copiar contagem de jogadores
+        clonedTeam.playerCount = this.playerCount;
+
+        // Clonar a formação, se existir
+        if (this.formation != null && this.formation instanceof Formation) {
+            clonedTeam.formation = ((Formation) this.formation).clone();
+        } else {
+            clonedTeam.formation = this.formation; // fallback
+        }
+
+        return clonedTeam;
+    }
+
 }

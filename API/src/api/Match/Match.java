@@ -11,6 +11,8 @@ package api.Match;
 
 import api.Event.*;
 import api.League.Season;
+import api.Team.Club;
+import api.Team.Team;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
@@ -326,11 +328,13 @@ public class Match implements IMatch {
 
             // Identificar o tipo concreto do evento e guardar campos específicos
             if (ev instanceof GoalEvent) {
-                IGoalEvent goal = (IGoalEvent) ev;
+                GoalEvent goal = (GoalEvent) ev;
                 evJson.put("type", "GoalEvent");
                 evJson.put("player", goal.getPlayer().getName());
                 evJson.put("minute", goal.getMinute());
                 evJson.put("description", goal.getDescription());
+                evJson.put("shooting", goal.getShooting());
+                evJson.put("reflexes", goal.getReflexes());
             } else if (ev instanceof RedCardEvent) {
                 RedCardEvent redCard = (RedCardEvent) ev;
                 evJson.put("type", "RedCardEvent");
@@ -345,10 +349,12 @@ public class Match implements IMatch {
                 evJson.put("description", yellowCard.getDescription());
             } else if (ev instanceof FailedShotEvent) {
                 FailedShotEvent shot = (FailedShotEvent) ev;
-                evJson.put("type", "ShotEvent");
+                evJson.put("type", "FailedShotEvent");
                 evJson.put("player", shot.getPlayer().getName());
                 evJson.put("minute", shot.getMinute());
                 evJson.put("description", shot.getDescription());
+                evJson.put("shooting", shot.getShooting());
+                evJson.put("reflexes", shot.getReflexes());
             } else {
                 evJson.put("type", "unknown");
             }
@@ -364,7 +370,7 @@ public class Match implements IMatch {
 
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileWriter writer = new FileWriter(fullPath)) {
+        try ( FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -399,7 +405,19 @@ public class Match implements IMatch {
     public IEvent[] getEvents() {
         IEvent[] copyEvent = new IEvent[eventCount];
         for (int i = 0; i < this.eventCount; i++) {
-            copyEvent[i] = this.events[i];
+            IEvent e = this.events[i];
+
+            if (e instanceof YellowCardEvent) {
+                copyEvent[i] = ((YellowCardEvent) e).clone();
+            } else if (e instanceof RedCardEvent) {
+                copyEvent[i] = ((RedCardEvent) e).clone();
+            } else if (e instanceof GoalEvent) {
+                copyEvent[i] = ((GoalEvent) e).clone();
+            } else if (e instanceof FailedShotEvent) {
+                copyEvent[i] = ((FailedShotEvent) e).clone();
+            } else {
+                throw new UnsupportedOperationException("Unknown event type: " + e.getClass().getName());
+            }
         }
         return copyEvent;
     }
@@ -484,7 +502,7 @@ public class Match implements IMatch {
         JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileReader reader = new FileReader(fullPath)) {
+        try ( FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String homeClubName = (String) json.get("homeClub");
@@ -548,16 +566,19 @@ public class Match implements IMatch {
                     int minute = (int) minuteLong;
 
                     switch (type) {
-//                        case "GoalEvent": {
-//                            String playerName = (String) evJson.get("player");
-//                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
-//                            if (player == null) {
-//                                continue;
-//                            }
-//                            IGoalEvent goal = new GoalEvent(player, minute);
-//                            match.addEvent(goal);
-//                            break;
-//                        }
+                        case "GoalEvent": {
+                            String playerName = (String) evJson.get("player");
+                            int shooting = ((Long) evJson.get("shooting")).intValue();
+                            int reflexes = ((Long) evJson.get("reflexes")).intValue();
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null) {
+                                continue;
+                            }
+                            IGoalEvent goal = new GoalEvent(player, minute, shooting, reflexes);
+                            match.addEvent(goal);
+                            break;
+                        }
+
                         case "RedCardEvent": {
                             String playerName = (String) evJson.get("player");
                             IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
@@ -579,12 +600,18 @@ public class Match implements IMatch {
                             break;
                         }
                         case "FailedShotEvent": {
-                            //String playerName = (String) evJson.get("player");
-                            //IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
-                            //FailedShotEvent shot = new FailedShotEvent(player, minute);
-                            //match.addEvent(shot);
+                            String playerName = (String) evJson.get("player");
+                            int shooting = ((Long) evJson.get("shooting")).intValue();
+                            int reflexes = ((Long) evJson.get("reflexes")).intValue();
+                            IPlayer player = findPlayerByName(jogadoresDisponiveis, playerName);
+                            if (player == null) {
+                                continue;
+                            }
+                            FailedShotEvent shot = new FailedShotEvent(player, minute, shooting, reflexes);
+                            match.addEvent(shot);
                             break;
                         }
+
                     }
                 }
             }
@@ -614,4 +641,43 @@ public class Match implements IMatch {
         }
         return null;
     }
+
+    @Override
+    public Match clone() {
+        Match clonedMatch = new Match(
+                this.homeClub != null ? ((Club) this.homeClub).clone() : null,
+                this.awayClub != null ? ((Club) this.awayClub).clone() : null,
+                this.round
+        );
+
+        if (this.played) {
+            clonedMatch.setPlayed();
+        }
+
+        clonedMatch.homeTeam = this.homeTeam != null ? ((Team) this.homeTeam).clone() : null;
+        clonedMatch.awayTeam = this.awayTeam != null ? ((Team) this.awayTeam).clone() : null;
+
+        for (int i = 0; i < this.eventCount; i++) {
+            IEvent originalEvent = this.events[i];
+
+            IEvent clonedEvent = null;
+
+            if (originalEvent instanceof GoalEvent) {
+                clonedEvent = ((GoalEvent) originalEvent).clone();
+            } else if (originalEvent instanceof RedCardEvent) {
+                clonedEvent = ((RedCardEvent) originalEvent).clone();
+            } else if (originalEvent instanceof YellowCardEvent) {
+                clonedEvent = ((YellowCardEvent) originalEvent).clone();
+            } else if (originalEvent instanceof FailedShotEvent) {
+                clonedEvent = ((FailedShotEvent) originalEvent).clone();
+            }
+
+            if (clonedEvent != null) {
+                clonedMatch.addEvent(clonedEvent);
+            }
+        }
+
+        return clonedMatch;
+    }
+
 }
