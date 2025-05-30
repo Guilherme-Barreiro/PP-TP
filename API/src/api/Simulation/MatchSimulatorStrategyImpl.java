@@ -52,7 +52,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
 
-        System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
+        System.out.println("\n========== PARTIDA ENTRE " + match.getHomeClub().getName() + " VS " + match.getAwayClub().getName() + " ==========");
 
         IPlayer[] yellowedPlayers = new IPlayer[30];
         IPlayer[] expelledPlayers = new IPlayer[30];
@@ -96,6 +96,8 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         ((Team) match.getAwayTeam()).activateAllPlayers();
 
         PlayerStatsManager psm = new PlayerStatsManager();
+        psm.updateStatistics(match);
+
         PlayerStats[] stats = psm.getStatistics();
         for (int i = 0; i < stats.length; i++) {
             System.out.println(stats[i]);
