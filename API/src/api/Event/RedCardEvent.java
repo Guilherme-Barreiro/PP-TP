@@ -9,12 +9,16 @@
  */
 package api.Event;
 
+import api.Player.Player;
 import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import contracts.IPlayerEvent;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Represents a red card event given to a player.
@@ -98,4 +102,22 @@ public class RedCardEvent implements IPlayerEvent {
         return new RedCardEvent(this.player, this.minute);
     }
 
+    public static RedCardEvent importFromJson(String fileName) throws IOException {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(fileName)) {
+            JSONObject obj = (JSONObject) parser.parse(reader);
+
+            String playerName = (String) obj.get("player");
+            int minute = ((Long) obj.get("minute")).intValue();
+
+            String playerFileName = "JSON Files/Players/" + playerName + ".json";
+            IPlayer player = Player.importFromJson(playerFileName);
+
+            return new RedCardEvent(player, minute);
+
+        } catch (ParseException e) {
+            throw new IOException("Erro ao importar RedCardEvent: " + e.getMessage());
+        }
+    }
 }
