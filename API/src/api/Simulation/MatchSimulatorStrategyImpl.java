@@ -34,6 +34,7 @@ import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStra
 public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
     private final java.util.Random random = new java.util.Random();
+    private PlayerStatsManager psm = new PlayerStatsManager();
 
     /**
      * Simulates a football match minute-by-minute. The simulation includes
@@ -95,7 +96,6 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
 
-        PlayerStatsManager psm = new PlayerStatsManager();
         psm.updateStatistics(match);
 
         PlayerStats[] stats = psm.getStatistics();
