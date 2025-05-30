@@ -311,7 +311,7 @@ public class Standing implements IStanding {
         System.out.println("D  = Derrotas");
         System.out.println("GM = Golos Marcados");
         System.out.println("GS = Golos Sofridos");
-        System.out.println("DG = Diferença de Golos (GM - GS)");
+        System.out.println("DG = Diferenca de Golos (GM - GS)");
         System.out.println("Pts = Pontos Totais");
     }
 

@@ -13,6 +13,7 @@ package Menus;
  * Número:
  * Turma:
  */
+import JsonGeral.Export;
 import api.League.Season;
 import api.Player.Player;
 import PlayerStats.PlayerStats;
@@ -25,6 +26,7 @@ import api.Simulation.MatchSimulatorStrategyImpl;
 import api.Team.Club;
 import api.Team.Formation;
 import api.Team.Team;
+import static com.ppstudios.footballmanager.api.contracts.data.htmlgenerators.ClubHtmlGenerator.generate;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
@@ -48,6 +50,7 @@ public class MainMenu {
     private Season season;
     private PlayerStatsManager playerStatsManager;
     private ScaleStartingEleven scaleStartingEleven;
+    private final PlayerStatsManager psm = new PlayerStatsManager();
 
     /**
      * Displays the main menu and handles user input to perform various actions.
@@ -72,16 +75,16 @@ public class MainMenu {
         PlayerPosition def = new PlayerPosition("defender");
         PlayerPosition gk = new PlayerPosition("goalkeeper");
 
-        Player t1 = new Player("Pepe", LocalDate.of(1983, 2, 26), 42, "Portugal", def, "", 3, 60, 65, 80, 60, 1.87f, 81f, PreferredFoot.Right);
-        Player t2 = new Player("António Silva", LocalDate.of(2003, 10, 30), 21, "Portugal", def, "", 4, 65, 68, 78, 65, 1.86f, 79f, PreferredFoot.Right);
-        Player t3 = new Player("Gonçalo Inácio", LocalDate.of(2001, 8, 25), 23, "Portugal", def, "", 25, 62, 66, 76, 64, 1.85f, 77f, PreferredFoot.Left);
-        Player t4 = new Player("Nuno Mendes", LocalDate.of(2002, 6, 19), 22, "Portugal", def, "", 5, 68, 70, 74, 78, 1.76f, 70f, PreferredFoot.Left);
-        Player t5 = new Player("João Cancelo", LocalDate.of(1994, 5, 27), 30, "Portugal", def, "", 20, 70, 75, 72, 82, 1.82f, 74f, PreferredFoot.Right);
-        Player t6 = new Player("Raphael Guerreiro", LocalDate.of(1993, 12, 22), 31, "Portugal", def, "", 14, 66, 73, 75, 75, 1.70f, 68f, PreferredFoot.Left);
-        Player t7 = new Player("Domingos Duarte", LocalDate.of(1995, 3, 10), 30, "Portugal", def, "", 6, 61, 65, 78, 61, 1.90f, 83f, PreferredFoot.Right);
-        Player t8 = new Player("Tiago Djaló", LocalDate.of(2000, 4, 9), 25, "Portugal", def, "", 24, 63, 67, 76, 69, 1.85f, 76f, PreferredFoot.Right);
-        Player t9 = new Player("Bernardo Silva", LocalDate.of(1994, 8, 10), 30, "Portugal", mid, "", 10, 75, 85, 80, 74, 1.73f, 68f, PreferredFoot.Left);
-        Player t10 = new Player("Vitinha", LocalDate.of(2000, 2, 13), 25, "Portugal", mid, "", 8, 70, 83, 78, 72, 1.72f, 66f, PreferredFoot.Right);
+        Player t1 = new Player("Pepe", LocalDate.of(1983, 2, 26), 42, "Portugal", def, "", 3, 100, 65, 80, 60, 1.87f, 81f, PreferredFoot.Right);
+        Player t2 = new Player("António Silva", LocalDate.of(2003, 10, 30), 21, "Portugal", def, "", 100, 65, 68, 78, 65, 1.86f, 79f, PreferredFoot.Right);
+        Player t3 = new Player("Gonçalo Inácio", LocalDate.of(2001, 8, 25), 23, "Portugal", def, "", 100, 62, 66, 76, 64, 1.85f, 77f, PreferredFoot.Left);
+        Player t4 = new Player("Nuno Mendes", LocalDate.of(2002, 6, 19), 22, "Portugal", def, "", 5, 100, 70, 74, 78, 1.76f, 70f, PreferredFoot.Left);
+        Player t5 = new Player("João Cancelo", LocalDate.of(1994, 5, 27), 30, "Portugal", def, "", 20, 100, 75, 72, 82, 1.82f, 74f, PreferredFoot.Right);
+        Player t6 = new Player("Raphael Guerreiro", LocalDate.of(1993, 12, 22), 31, "Portugal", def, "", 10, 100, 73, 75, 75, 1.70f, 68f, PreferredFoot.Left);
+        Player t7 = new Player("Domingos Duarte", LocalDate.of(1995, 3, 10), 30, "Portugal", def, "", 6, 100, 65, 78, 61, 1.90f, 83f, PreferredFoot.Right);
+        Player t8 = new Player("Tiago Djaló", LocalDate.of(2000, 4, 9), 25, "Portugal", def, "", 24, 100, 67, 76, 69, 1.85f, 76f, PreferredFoot.Right);
+        Player t9 = new Player("Bernardo Silva", LocalDate.of(1994, 8, 10), 30, "Portugal", mid, "", 10, 100, 85, 80, 74, 1.73f, 68f, PreferredFoot.Left);
+        Player t10 = new Player("Vitinha", LocalDate.of(2000, 2, 13), 25, "Portugal", mid, "", 8, 100, 83, 78, 72, 1.72f, 66f, PreferredFoot.Right);
         Player t11 = new Player("Rúben Neves", LocalDate.of(1997, 3, 13), 28, "Portugal", mid, "", 18, 68, 80, 79, 70, 1.80f, 74f, PreferredFoot.Right);
         Player t12 = new Player("João Mário", LocalDate.of(1993, 1, 19), 32, "Portugal", mid, "", 99, 69, 78, 75, 71, 1.79f, 76f, PreferredFoot.Right);
         Player t13 = new Player("Florentino Luís", LocalDate.of(1999, 8, 19), 25, "Portugal", mid, "", 28, 65, 76, 81, 68, 1.83f, 75f, PreferredFoot.Right);
@@ -93,9 +96,9 @@ public class MainMenu {
         Player t19 = new Player("Gonçalo Ramos", LocalDate.of(2001, 6, 20), 23, "Portugal", fwd, "", 9, 83, 70, 78, 79, 1.85f, 77f, PreferredFoot.Right);
         Player t20 = new Player("Diogo Jota", LocalDate.of(1996, 12, 4), 28, "Portugal", fwd, "", 19, 80, 75, 79, 83, 1.78f, 73f, PreferredFoot.Right);
         Player t21 = new Player("Pedro Neto", LocalDate.of(2000, 3, 9), 25, "Portugal", fwd, "", 23, 78, 72, 74, 86, 1.74f, 69f, PreferredFoot.Left);
-        Goalkeeper t22 = new Goalkeeper("Diogo Costa", LocalDate.of(1999, 9, 19), 25, "Portugal", gk, "", 1, 40, 55, 75, 50, 1.86f, 82f, PreferredFoot.Right, 88);
-        Goalkeeper t23 = new Goalkeeper("Rui Patrício", LocalDate.of(1988, 2, 15), 37, "Portugal", gk, "", 12, 42, 57, 70, 48, 1.90f, 84f, PreferredFoot.Right, 85);
-        Goalkeeper t24 = new Goalkeeper("José Sá", LocalDate.of(1993, 1, 17), 32, "Portugal", gk, "", 22, 45, 54, 72, 52, 1.88f, 80f, PreferredFoot.Right, 86);
+        Goalkeeper t22 = new Goalkeeper("Diogo Costa", LocalDate.of(1999, 9, 19), 25, "Portugal", gk, "", 1, 40, 55, 75, 50, 1.86f, 82f, PreferredFoot.Right, 100);
+        Goalkeeper t23 = new Goalkeeper("Rui Patrício", LocalDate.of(1988, 2, 15), 37, "Portugal", gk, "", 12, 42, 57, 70, 48, 1.90f, 84f, PreferredFoot.Right, 100);
+        Goalkeeper t24 = new Goalkeeper("José Sá", LocalDate.of(1993, 1, 17), 32, "Portugal", gk, "", 22, 45, 54, 72, 52, 1.88f, 80f, PreferredFoot.Right, 100);
 
         Cslb.addPlayer(t1);
         Cslb.addPlayer(t2);
@@ -302,8 +305,10 @@ public class MainMenu {
             System.out.println("3. Ver Classificacao");
             System.out.println("4. Simular Jornada");
             System.out.println("5. Estatisticas");
-            System.out.println("6. Salvar e Sair");
-            System.out.println("0. Exit");
+            System.out.println("6. Exportar");
+            System.out.println("7. Importar");
+            System.out.println("8. html");
+            System.out.println("0. Sair");
             System.out.println("************************************");
             System.out.print("Escolha uma opcao: ");
 
@@ -315,28 +320,45 @@ public class MainMenu {
                 case '1':
                     scaleStartingEleven.scaleStartingEleven(season);
                     break;
+
                 case '2':
                     IMatch[] jogos = season.getMatches();
                     int totalRondas = season.getMaxRounds();
 
                     Match.printJogosPorRonda(jogos, totalRondas, TestMainMenu.coach);
                     break;
+
                 case '3':
                     IStanding[] standings = season.getLeagueStandings();
                     Standing.printCurrentTable(standings);
                     break;
+
                 case '4':
                     season.simulateRound();
                     break;
+
                 case '5':
-//                    playerStatsManager = new PlayerStatsManager(season.getCurrentClubs().getPlayers());
-//                    playerStatsManager.getStatistics();
+                    MenuStats ms = new MenuStats();
+                    ms.MenuStats();
                     break;
+
                 case '6':
-                    season.exportToJson();
+                    //Export.exportAll(Tscb, Cscb, b11, season, match, goalEvent, failedShotEvent, yellowCardEvent, redCardEvent);
+                    break;
+
+                case '7':
+//                    season.importToJson();
+                    break;
+
+                case '8':
+                    for(int i = 0; i < clubes.length; i++){
+                        generate(clubes[i], "HTML/a.html");
+                    }
+                    break;
                 case '0':
                     System.out.println("A sair...");
                     break;
+
                 default:
                     System.out.println("Opcao invalida");
                     break;

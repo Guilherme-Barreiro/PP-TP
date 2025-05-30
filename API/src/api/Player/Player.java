@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -277,7 +278,7 @@ public class Player implements IPlayer {
         String basePath = "API/JSON Files/Players/";
         String fileName = "player_" + this.name.replaceAll("\\s+", "_") + ".json";
 
-        try ( FileWriter file = new FileWriter(basePath + fileName)) {
+        try (FileWriter file = new FileWriter(basePath + fileName)) {
             file.write(playerJson.toJSONString());
             file.flush();
         }
@@ -316,9 +317,7 @@ public class Player implements IPlayer {
      */
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + this.number;
-        return hash;
+        return Objects.hash(name, number);
     }
 
     /**
@@ -333,14 +332,12 @@ public class Player implements IPlayer {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final Player other = (Player) obj;
-        return this.number == other.number;
+        return this.number == other.number
+                && this.name.equals(other.name);
     }
 
     /**
@@ -356,7 +353,7 @@ public class Player implements IPlayer {
 
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(filePath)) {
+        try (FileReader reader = new FileReader(filePath)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");

@@ -127,6 +127,21 @@ public class PlayerStats {
     public void addFailedShots() {
         this.failedShots++;
     }
+    
+    public String listAllStats() {
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        String nome = this.getPlayer().getName();
+        if (nome.length() > 15) {
+            nome = nome.substring(0, 12) + "...";
+        }
+
+        return nome + " | "
+                + matchesPlayed + " | "
+                + getGoals() + " | "
+                + getRedCards() + " | "
+                + getYellowCards() + " | "
+                + failedShots;
+    }
 
     /**
      * @return a string representation of the player's statistics
