@@ -30,6 +30,7 @@ import static com.ppstudios.footballmanager.api.contracts.data.htmlgenerators.Cl
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
+import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
@@ -37,6 +38,7 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import testebrabo.TestMainMenu;
 
 /**
@@ -338,11 +340,19 @@ public class MainMenu {
                     break;
 
                 case '5':
+
+                    IMatch[] jogos1 = season.getMatches();
+
+                    psm.updateStatistics(jogos1);
                     MenuStats ms = new MenuStats();
-                    ms.MenuStats();
+                    ms.MenuStats(psm.getStatistics());
                     break;
 
                 case '6':
+                    for (int i = 0; i < clubes.length; i++) {
+//                        exportarPlayer(clubes[i].getPlayers());
+                    }
+
                     //Export.exportAll(Tscb, Cscb, b11, season, match, goalEvent, failedShotEvent, yellowCardEvent, redCardEvent);
                     break;
 
@@ -351,7 +361,7 @@ public class MainMenu {
                     break;
 
                 case '8':
-                    for(int i = 0; i < clubes.length; i++){
+                    for (int i = 0; i < clubes.length; i++) {
                         generate(clubes[i], "HTML/a.html");
                     }
                     break;

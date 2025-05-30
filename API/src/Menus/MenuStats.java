@@ -19,7 +19,7 @@ public class MenuStats {
 
     private static PlayerStatsManager psm = new PlayerStatsManager();
 
-    public static void MenuStats() {
+    public static void MenuStats(PlayerStats[] stats) {
         Scanner scanner = new Scanner(System.in);
 
         int choice = -1;
@@ -40,7 +40,7 @@ public class MenuStats {
                     break;
 
                 case 2:
-                    PlayerStats[] stats = psm.getStatistics();
+                   stats = psm.getStatistics();
                     System.out.println("Nome            | MP | G | RC | YC | FS");
                     System.out.println("----------------------------------------");
                     for (PlayerStats stat : stats) {

@@ -239,8 +239,7 @@ public class Team implements ITeam {
      * @throws IllegalArgumentException If the formation is null.
      */
     @Override
-    public void setFormation(IFormation formation
-    ) {
+    public void setFormation(IFormation formation) {
         if (formation == null) {
             throw new IllegalArgumentException("formation is null");
         }
@@ -328,7 +327,7 @@ public class Team implements ITeam {
         String fileName = (club != null ? club.getName().replaceAll("\\s+", "_") : "undefined").toLowerCase() + ".json";
         String fullPath = folderPath + "/" + fileName;
 
-        try ( FileWriter writer = new FileWriter(fullPath)) {
+        try (FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -406,7 +405,7 @@ public class Team implements ITeam {
 
         String fullPath = "JSON Files/Teams/" + fileName;
 
-        try ( FileReader reader = new FileReader(fullPath)) {
+        try (FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             JSONObject clubJson = (JSONObject) json.get("club");
@@ -508,6 +507,11 @@ public class Team implements ITeam {
         throw new IllegalStateException("Nenhum guarda-redes encontrado na equipa.");
     }
 
+    /**
+     * Verifica se a equipa contém pelo menos um jogador que seja guarda-redes.
+     *
+     * @return true se existir um guarda-redes na equipa, false caso contrário.
+     */
     public boolean hasGoalkeeper() {
         for (IPlayer player : players) {
             if (player instanceof Goalkeeper) {
@@ -517,6 +521,13 @@ public class Team implements ITeam {
         return false;
     }
 
+    /**
+     * Cria e devolve uma cópia profunda (deep copy) desta equipa, incluindo os
+     * jogadores, a formação e o clube associado.
+     *
+     * @return uma nova instância de Team com os mesmos dados da equipa
+     * original.
+     */
     @Override
     public Team clone() {
         IClub clonedClub = null;

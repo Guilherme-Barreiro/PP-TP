@@ -103,6 +103,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
             System.out.println(stats[i]);
         }
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n");
+        
     }
 
 }

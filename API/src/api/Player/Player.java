@@ -283,7 +283,18 @@ public class Player implements IPlayer {
             file.flush();
         }
     }
-
+public void exportarPlayer(Player[] players) {
+    for (int i = 0; i < players.length; i++) {
+        if (players[i] != null) {
+            try {
+                players[i].exportToJson();
+            } catch (IOException e) {
+                System.out.println("Erro ao exportar jogador: " + players[i].getName());
+                e.printStackTrace();
+            }
+        }
+    }
+}
     /**
      * Returns a string representation of the Player object.
      *
