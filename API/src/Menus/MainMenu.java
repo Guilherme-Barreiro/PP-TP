@@ -203,6 +203,18 @@ public class MainMenu {
 
         try {
 
+            Tslb.addPlayer(t1);
+            Tslb.addPlayer(t2);
+            Tslb.addPlayer(t3);
+            Tslb.addPlayer(t4);
+            Tslb.addPlayer(t5);
+            Tslb.addPlayer(t6);
+            Tslb.addPlayer(t7);
+            Tslb.addPlayer(t8);
+            Tslb.addPlayer(t9);
+            Tslb.addPlayer(t10);
+            Tslb.addPlayer(t23);
+
             Tfcp.addPlayer(g2);
             Tfcp.addPlayer(q1);
             Tfcp.addPlayer(q2);

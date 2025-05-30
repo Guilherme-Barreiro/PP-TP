@@ -15,7 +15,6 @@ import testebrabo.TestMainMenu;
 
 public class ScaleStartingEleven {
 
-
     private static final int MAX_TEAM_PLAYERS = 11;
 
     public void scaleStartingEleven(ISeason season) throws IOException, ParseException {
@@ -44,10 +43,12 @@ public class ScaleStartingEleven {
                     System.out.println("Opcao invalida.");
                 }
             } while (clubChoice != 0);
-            if (clubChoice == 0) return;
+            if (clubChoice == 0) {
+                return;
+            }
             if (TestMainMenu.coach == null || TestMainMenu.coach.getClub() == null) {
-                 System.out.println("Nenhum clube selecionado para treinar. Saindo da escalação.");
-                 return;
+                System.out.println("Nenhum clube selecionado para treinar. Saindo da escalação.");
+                return;
             }
         }
 
@@ -60,22 +61,21 @@ public class ScaleStartingEleven {
             System.out.println("Erro: Nao foi possível obter o clube do treinador.");
             return;
         }
-        
+
         System.out.println("\nJogadores disponíveis no clube " + clubeDoTreinador.getName() + ":");
 
         if (clubeDoTreinador instanceof Club) {
-             System.out.println(((Club) clubeDoTreinador).listPlayers());
+            System.out.println(((Club) clubeDoTreinador).listPlayers());
         } else {
             System.out.println("Nao foi possível listar os jogadores.");
         }
 
-
         Team team = new Team(clubeDoTreinador);
         team.setFormation(formation);
-            System.out.println("\n--- Selecao de Jogador ---");
+        System.out.println("\n--- Selecao de Jogador ---");
         while (team.getPlayerCount() < MAX_TEAM_PLAYERS || !team.hasGoalkeeper()) {
             System.out.print("Escolha o jogador n" + (team.getPlayerCount() + 1) + " para adicionar a equipa: ");
-            
+
             int playerIndexChoice;
             if (scanner.hasNextInt()) {
                 playerIndexChoice = scanner.nextInt();
@@ -96,8 +96,8 @@ public class ScaleStartingEleven {
                         continue;
                     }
 
-                    if (team.getPlayerCount() == MAX_TEAM_PLAYERS - 1 && !team.hasGoalkeeper() &&
-                        !jogadorAAdicionar.getPosition().getDescription().equalsIgnoreCase("Goalkeeper")) {
+                    if (team.getPlayerCount() == MAX_TEAM_PLAYERS - 1 && !team.hasGoalkeeper()
+                            && !jogadorAAdicionar.getPosition().getDescription().equalsIgnoreCase("Goalkeeper")) {
                         System.out.println("Tem de adicionar um guarda redes!");
                         continue;
                     }
@@ -111,7 +111,7 @@ public class ScaleStartingEleven {
                 } catch (Exception e) {
                     System.out.println("ERRO: " + e.getMessage());
                     if (!team.hasGoalkeeper()) {
-                         System.out.println("ainda falta um guarda-redes!");
+                        System.out.println("ainda falta um guarda-redes!");
                     }
                 }
             } else {

@@ -13,6 +13,7 @@ import api.Event.EventManager;
 import api.Event.GoalEvent;
 import api.Event.RedCardEvent;
 import api.Event.YellowCardEvent;
+import api.Player.Goalkeeper;
 import api.Team.Team;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
@@ -48,7 +49,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
-
+        
         System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
 
         IPlayer[] yellowedPlayers = new IPlayer[30];

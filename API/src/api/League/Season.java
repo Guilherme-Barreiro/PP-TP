@@ -186,11 +186,7 @@ public class Season implements ISeason {
     public IMatch[] getMatches() {
         IMatch[] copyMatches = new IMatch[matchCount];
         for (int i = 0; i < this.matchCount; i++) {
-            if (this.matches[i] instanceof Match) {
-                copyMatches[i] = ((Match) this.matches[i]).clone();
-            } else {
-                copyMatches[i] = this.matches[i];
-            }
+            copyMatches[i] = this.matches[i];
         }
         return copyMatches;
     }
