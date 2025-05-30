@@ -35,6 +35,8 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
     private final java.util.Random random = new java.util.Random();
 
+    private final PlayerStatsManager psm = new PlayerStatsManager();
+
     /**
      * Simulates a football match minute-by-minute. The simulation includes
      * chances for goals, red cards, and yellow cards. Players receiving a red
@@ -95,12 +97,17 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
 
-        PlayerStatsManager psm = new PlayerStatsManager();
+        // ✅ Atualiza os stats com os eventos do jogo
+        psm.updateStatistics(match);
+
+        // ✅ Agora os stats existem e podem ser impressos
         PlayerStats[] stats = psm.getStatistics();
-        for (int i = 0; i < stats.length; i++) {
-            System.out.println(stats[i]);
+        for (PlayerStats stat : stats) {
+            System.out.println(stat);
         }
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n");
+
+        System.out.println("\n==================== FIM DO JOGO ====================\n\n");
+
     }
 
 }
