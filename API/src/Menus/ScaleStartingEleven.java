@@ -11,7 +11,7 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Scanner;
-import testebrabo.TestMainMenu;
+import Jogo.Jogo;
 
 public class ScaleStartingEleven {
 
@@ -22,7 +22,7 @@ public class ScaleStartingEleven {
         Scanner scanner = new Scanner(System.in);
         IClub[] clubes = season.getCurrentClubs();
 
-        if (TestMainMenu.coach == null || TestMainMenu.coach.getClub() == null) {
+        if (Jogo.coach == null || Jogo.coach.getClub() == null) {
             for (int i = 0; i < clubes.length; i++) {
                 System.out.println((i + 1) + ". " + clubes[i].getName());
             }
@@ -36,7 +36,7 @@ public class ScaleStartingEleven {
 
                 if (clubChoice > 0 && clubChoice <= clubes.length) {
                     IClub escolhido = clubes[clubChoice - 1];
-                    TestMainMenu.coach = new Coach(escolhido);
+                    Jogo.coach = new Coach(escolhido);
                     System.out.println("Treinador associado ao clube: " + escolhido.getName());
                     break;
                 } else if (clubChoice != 0) {
@@ -46,7 +46,7 @@ public class ScaleStartingEleven {
             if (clubChoice == 0) {
                 return;
             }
-            if (TestMainMenu.coach == null || TestMainMenu.coach.getClub() == null) {
+            if (Jogo.coach == null || Jogo.coach.getClub() == null) {
                 System.out.println("Nenhum clube selecionado para treinar. Saindo da escalação.");
                 return;
             }
@@ -55,7 +55,7 @@ public class ScaleStartingEleven {
         StrategyMenu strategyMenu = new StrategyMenu();
         Formation formation = strategyMenu.MenuEstrategia();
 
-        IClub clubeDoTreinador = TestMainMenu.coach.getClub();
+        IClub clubeDoTreinador = Jogo.coach.getClub();
 
         if (clubeDoTreinador == null) {
             System.out.println("Erro: Nao foi possível obter o clube do treinador.");

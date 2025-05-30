@@ -132,8 +132,4 @@ public class PlayerStatsManager {
         return copy;
     }
 
-    public void updateStatistics(IMatch[] jogos) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

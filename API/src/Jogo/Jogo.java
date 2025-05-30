@@ -1,4 +1,4 @@
-package testebrabo;
+package Jogo;
 
 import Menus.MainMenu;
 import api.Player.Coach;
@@ -7,7 +7,7 @@ import api.Team.Team;
 import java.io.IOException;
 import java.text.ParseException;
 
-public class TestMainMenu {
+public class Jogo {
 
     public static Coach coach;
     public static Team team;

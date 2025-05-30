@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>benfica - Club Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background: rgba(30, 60, 114, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+        .club-logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #fff;
+        }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.3em;
+            letter-spacing: 2px;
+            color: #00ff99;
+            margin-bottom: 8px;
+        }
+        .header p { color: #fff; font-size: 1.05em; }
+        .club-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+        .players-section {
+            margin-top: 30px;
+        }
+        .players-section h2 {
+            color: #00ff99;
+            font-size: 1.5em;
+            margin-bottom: 18px;
+        }
+        .players-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .player-card {
+            background: rgba(0,0,0,0.18);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+        }
+        .player-card h3 { color: #00ff99; margin-bottom: 8px; }
+        .player-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .stat-item { background: #222; border-radius: 6px; padding: 4px 10px; color: #fff; font-size: 0.95em; }
+        .stat-label { color: #00ff99; margin-right: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img class="club-logo" src="https://logo.com" alt="Club Logo">
+            <div>
+                <h1>benfica</h1>
+                <p>tuga | Founded: 1904</p>
+                <p>Stadium: luz</p>
+            </div>
+        </div>
+        <div class="club-info">
+            <div><strong>Club Code:</strong> slb</div>
+            <div><strong>Players:</strong> 24</div>
+        </div>
+        <div class="players-section">
+            <h2>Players</h2>
+            <div class="players-list">
+                <div class="player-card">
+                    <h3>Pepe</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1983-02-26</p>
+                </div>
+                <div class="player-card">
+                    <h3>António Silva</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2003-10-30</p>
+                </div>
+                <div class="player-card">
+                    <h3>Gonçalo Inácio</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2001-08-25</p>
+                </div>
+                <div class="player-card">
+                    <h3>Nuno Mendes</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2002-06-19</p>
+                </div>
+                <div class="player-card">
+                    <h3>João Cancelo</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1994-05-27</p>
+                </div>
+                <div class="player-card">
+                    <h3>Raphael Guerreiro</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1993-12-22</p>
+                </div>
+                <div class="player-card">
+                    <h3>Domingos Duarte</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1995-03-10</p>
+                </div>
+                <div class="player-card">
+                    <h3>Tiago Djaló</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2000-04-09</p>
+                </div>
+                <div class="player-card">
+                    <h3>Bernardo Silva</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1994-08-10</p>
+                </div>
+                <div class="player-card">
+                    <h3>Vitinha</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2000-02-13</p>
+                </div>
+                <div class="player-card">
+                    <h3>Rúben Neves</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1997-03-13</p>
+                </div>
+                <div class="player-card">
+                    <h3>João Mário</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1993-01-19</p>
+                </div>
+                <div class="player-card">
+                    <h3>Florentino Luís</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1999-08-19</p>
+                </div>
+                <div class="player-card">
+                    <h3>Renato Sanches</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1997-08-18</p>
+                </div>
+                <div class="player-card">
+                    <h3>João Neves</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2004-09-27</p>
+                </div>
+                <div class="player-card">
+                    <h3>Cristiano Ronaldo</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1985-02-05</p>
+                </div>
+                <div class="player-card">
+                    <h3>João Félix</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1999-11-10</p>
+                </div>
+                <div class="player-card">
+                    <h3>Rafael Leão</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1999-06-10</p>
+                </div>
+                <div class="player-card">
+                    <h3>Gonçalo Ramos</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2001-06-20</p>
+                </div>
+                <div class="player-card">
+                    <h3>Diogo Jota</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1996-12-04</p>
+                </div>
+                <div class="player-card">
+                    <h3>Pedro Neto</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 2000-03-09</p>
+                </div>
+                <div class="player-card">
+                    <h3>Diogo Costa</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1999-09-19</p>
+                </div>
+                <div class="player-card">
+                    <h3>Rui Patrício</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1988-02-15</p>
+                </div>
+                <div class="player-card">
+                    <h3>José Sá</h3>
+                    <p><strong>Nationality:</strong> Portugal</p>
+                    <p><strong>Birth Date:</strong> 1993-01-17</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

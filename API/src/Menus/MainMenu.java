@@ -39,7 +39,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import testebrabo.TestMainMenu;
+import Jogo.Jogo;
+import java.io.File;
 
 /**
  * The `Menus` class represents the menu system for the project management
@@ -64,7 +65,7 @@ public class MainMenu {
         Club Cslb = new Club("slb", "tuga", 1904, "https://logo.com", "benfica", "luz");
         Club Cfcp = new Club("fcp", "tuga", 1893, "https://logo.com", "porto", "dragao");
         Club Cscp = new Club("scp", "tuga", 1906, "https://logo.com", "sporting", "lagartos");
-        Club Cscb = new Club("scb", "tuga", 1921, "https://logo.com", "braga", "axab");
+        Club Cscb = new Club("scb", "tuga", 1921, "https://logo.com", "braga", "braga");
 
         Team Tslb = new Team(Cslb);
         Team Tfcp = new Team(Cfcp);
@@ -127,45 +128,84 @@ public class MainMenu {
         Cslb.addPlayer(t23);
         Cslb.addPlayer(t24);
 
-        Goalkeeper g2 = new Goalkeeper("J_Porto_goalkeeper_1", LocalDate.of(2000, 9, 20), 24, "Portugal", gk, "", 20, 90, 85, 95, 80, 1.82f, 78f, PreferredFoot.Right, 88);
-        Player q1 = new Player("J_Porto_forward_17", LocalDate.of(2001, 6, 17), 23, "Portugal", fwd, "", 17, 87, 82, 92, 77, 1.85f, 75f, PreferredFoot.Right);
-        Player q2 = new Player("J_Porto_midfielder_18", LocalDate.of(2002, 7, 18), 22, "Portugal", mid, "", 18, 88, 83, 93, 78, 1.84f, 76f, PreferredFoot.Right);
-        Player q3 = new Player("J_Porto_defender_19", LocalDate.of(2003, 8, 19), 21, "Portugal", def, "", 19, 89, 84, 94, 79, 1.83f, 77f, PreferredFoot.Right);
-        Player q4 = new Player("J_Porto_midfielder_20", LocalDate.of(2000, 9, 20), 24, "Portugal", mid, "", 20, 90, 85, 95, 80, 1.82f, 78f, PreferredFoot.Right);
-        Player q5 = new Player("J_Porto_forward_21", LocalDate.of(1999, 10, 21), 25, "Portugal", fwd, "", 21, 91, 86, 96, 81, 1.81f, 79f, PreferredFoot.Right);
-        Player q6 = new Player("J_Porto_midfielder_22", LocalDate.of(1998, 11, 22), 26, "Portugal", mid, "", 22, 92, 87, 97, 82, 1.80f, 80f, PreferredFoot.Right);
-        Player q7 = new Player("J_Porto_defender_23", LocalDate.of(1997, 12, 23), 27, "Portugal", def, "", 23, 93, 88, 98, 83, 1.79f, 81f, PreferredFoot.Right);
-        Player q8 = new Player("J_Porto_midfielder_24", LocalDate.of(2001, 1, 24), 23, "Portugal", mid, "", 24, 94, 89, 99, 84, 1.78f, 82f, PreferredFoot.Right);
-        Player q9 = new Player("J_Porto_forward_25", LocalDate.of(2002, 2, 25), 22, "Portugal", fwd, "", 25, 95, 90, 100, 85, 1.77f, 83f, PreferredFoot.Right);
-        Player q10 = new Player("J_Porto_midfielder_26", LocalDate.of(2003, 3, 26), 21, "Portugal", mid, "", 26, 96, 91, 100, 86, 1.76f, 84f, PreferredFoot.Right);
-        //Player q11 = new Player("J_Porto_defender_27", LocalDate.of(2000, 4, 27), 24, "Portugal", def, "", 27, 97, 92, 100, 87, 1.75f, 85f, PreferredFoot.Right);
+        Goalkeeper p1 = new Goalkeeper("Cláudio Ramos", LocalDate.of(1991, 11, 16), 33, "Portugal", gk, "", 1, 80, 65, 75, 72, 1.82f, 78f, PreferredFoot.Right, 70);
+        Player p2 = new Player("Pepe", LocalDate.of(1983, 2, 26), 42, "Portugal", def, "", 3, 88, 62, 72, 60, 1.87f, 81f, PreferredFoot.Right);
+        Player p3 = new Player("David Carmo", LocalDate.of(1999, 7, 19), 25, "Portugal", def, "", 4, 85, 65, 74, 63, 1.92f, 81f, PreferredFoot.Left);
+        Player p4 = new Player("Otávio Monteiro", LocalDate.of(1995, 2, 9), 30, "Portugal", def, "", 6, 82, 70, 75, 67, 1.78f, 76f, PreferredFoot.Right);
+        Player p5 = new Player("Wendell", LocalDate.of(1993, 7, 20), 31, "Brasil", def, "", 18, 80, 72, 76, 68, 1.76f, 74f, PreferredFoot.Left);
+        Player p6 = new Player("João Mário", LocalDate.of(2000, 1, 3), 25, "Portugal", def, "", 23, 78, 71, 78, 70, 1.79f, 75f, PreferredFoot.Right);
+        Player p7 = new Player("Zé Pedro", LocalDate.of(2001, 5, 10), 23, "Portugal", def, "", 25, 77, 68, 73, 69, 1.83f, 78f, PreferredFoot.Right);
+        Player p8 = new Player("Alan Varela", LocalDate.of(2001, 7, 4), 23, "Argentina", mid, "", 5, 85, 80, 82, 74, 1.76f, 72f, PreferredFoot.Right);
+        Player p9 = new Player("Nico González", LocalDate.of(2002, 1, 3), 23, "Espanha", mid, "", 8, 84, 82, 80, 73, 1.80f, 80f, PreferredFoot.Right);
+        Player p10 = new Player("Stephen Eustáquio", LocalDate.of(1996, 12, 21), 28, "Canadá", mid, "", 46, 82, 84, 81, 70, 1.79f, 75f, PreferredFoot.Right);
+        Player p11 = new Player("Romário Baró", LocalDate.of(2000, 1, 25), 25, "Portugal", mid, "", 14, 80, 76, 80, 72, 1.77f, 70f, PreferredFoot.Right);
+        Player p12 = new Player("Martim Fernandes", LocalDate.of(2005, 2, 6), 20, "Portugal", mid, "", 17, 78, 74, 78, 76, 1.80f, 72f, PreferredFoot.Right);
+        Player p13 = new Player("Gabriel Veron", LocalDate.of(2002, 9, 3), 22, "Brasil", mid, "", 11, 76, 78, 79, 80, 1.76f, 71f, PreferredFoot.Right);
+        Player p14 = new Player("Bruno Costa", LocalDate.of(1997, 4, 19), 27, "Portugal", mid, "", 27, 75, 73, 76, 71, 1.78f, 74f, PreferredFoot.Right);
+        Player p15 = new Player("Mehdi Taremi", LocalDate.of(1992, 7, 18), 32, "Irão", fwd, "", 9, 87, 74, 82, 76, 1.85f, 75f, PreferredFoot.Right);
+        Player p16 = new Player("Evanilson", LocalDate.of(1999, 10, 6), 25, "Brasil", fwd, "", 30, 86, 73, 80, 77, 1.83f, 78f, PreferredFoot.Right);
+        Player p17 = new Player("Toni Martínez", LocalDate.of(1997, 6, 30), 27, "Espanha", fwd, "", 19, 85, 72, 78, 75, 1.87f, 79f, PreferredFoot.Right);
+        Player p18 = new Player("Francisco Conceição", LocalDate.of(2002, 12, 14), 22, "Portugal", fwd, "", 10, 82, 78, 85, 83, 1.70f, 65f, PreferredFoot.Left);
+        Player p19 = new Player("Pepê", LocalDate.of(1997, 2, 24), 27, "Brasil", fwd, "", 11, 84, 76, 84, 82, 1.78f, 72f, PreferredFoot.Right);
+        Player p20 = new Player("Danny Loader", LocalDate.of(2000, 8, 28), 24, "Inglaterra", fwd, "", 13, 80, 70, 80, 78, 1.80f, 74f, PreferredFoot.Right);
+        Player p21 = new Player("Gonçalo Borges", LocalDate.of(2001, 3, 29), 24, "Portugal", fwd, "", 20, 79, 72, 82, 81, 1.78f, 71f, PreferredFoot.Right);
+        Player p22 = new Player("Ivan Jaime", LocalDate.of(2000, 9, 26), 24, "Espanha", fwd, "", 22, 78, 74, 80, 79, 1.82f, 76f, PreferredFoot.Left);
+        Player p23 = new Player("Rodrigo Conceição", LocalDate.of(2000, 1, 2), 25, "Portugal", fwd, "", 7, 76, 70, 77, 75, 1.79f, 73f, PreferredFoot.Right);
+        Player p24 = new Player("André Franco", LocalDate.of(1998, 4, 12), 27, "Portugal", mid, "", 15, 74, 75, 78, 70, 1.80f, 74f, PreferredFoot.Right);
+        Goalkeeper p25 = new Goalkeeper("Diogo Costa", LocalDate.of(1999, 9, 19), 25, "Portugal", gk, "", 99, 85, 72, 80, 76, 1.86f, 82f, PreferredFoot.Right, 90);
 
-        Cfcp.addPlayer(g2);
-        Cfcp.addPlayer(q1);
-        Cfcp.addPlayer(q2);
-        Cfcp.addPlayer(q3);
-        Cfcp.addPlayer(q4);
-        Cfcp.addPlayer(q5);
-        Cfcp.addPlayer(q6);
-        Cfcp.addPlayer(q7);
-        Cfcp.addPlayer(q8);
-        Cfcp.addPlayer(q9);
-        Cfcp.addPlayer(q10);
-        //Cfcp.addPlayer(q11);
+        Cfcp.addPlayer(p1);
+        Cfcp.addPlayer(p2);
+        Cfcp.addPlayer(p3);
+        Cfcp.addPlayer(p4);
+        Cfcp.addPlayer(p5);
+        Cfcp.addPlayer(p6);
+        Cfcp.addPlayer(p7);
+        Cfcp.addPlayer(p8);
+        Cfcp.addPlayer(p9);
+        Cfcp.addPlayer(p10);
+        Cfcp.addPlayer(p11);
+        Cfcp.addPlayer(p12);
+        Cfcp.addPlayer(p13);
+        Cfcp.addPlayer(p14);
+        Cfcp.addPlayer(p15);
+        Cfcp.addPlayer(p16);
+        Cfcp.addPlayer(p17);
+        Cfcp.addPlayer(p18);
+        Cfcp.addPlayer(p19);
+        Cfcp.addPlayer(p20);
+        Cfcp.addPlayer(p21);
+        Cfcp.addPlayer(p22);
+        Cfcp.addPlayer(p23);
+        Cfcp.addPlayer(p24);
+        Cfcp.addPlayer(p25);
 
-        Goalkeeper g3 = new Goalkeeper("J_Sporting_goalkeeper_84", LocalDate.of(1997, 4, 14), 27, "Portugal", gk, "", 84, 20, 69, 79, 64, 1.83f, 78f, PreferredFoot.Right, 100);
-        Player s1 = new Player("J_Sporting_forward_80", LocalDate.of(2000, 1, 11), 24, "Portugal", fwd, "", 80, 70, 65, 75, 60, 1.80f, 75f, PreferredFoot.Right);
-        Player s2 = new Player("J_Sporting_midfielder_82", LocalDate.of(1999, 2, 12), 25, "Portugal", mid, "", 82, 72, 67, 77, 62, 1.81f, 76f, PreferredFoot.Right);
-        Player s3 = new Player("J_Sporting_defender_83", LocalDate.of(1998, 3, 13), 26, "Portugal", def, "", 83, 73, 68, 78, 63, 1.82f, 77f, PreferredFoot.Right);
-        Player s4 = new Player("J_Sporting_midfielder_84", LocalDate.of(1997, 4, 14), 27, "Portugal", mid, "", 84, 74, 69, 79, 64, 1.83f, 78f, PreferredFoot.Right);
-        Player s5 = new Player("J_Sporting_forward_85", LocalDate.of(2001, 5, 15), 23, "Portugal", fwd, "", 85, 75, 70, 80, 65, 1.84f, 79f, PreferredFoot.Right);
-        Player s6 = new Player("J_Sporting_midfielder_86", LocalDate.of(2002, 6, 16), 22, "Portugal", mid, "", 86, 76, 71, 81, 66, 1.85f, 80f, PreferredFoot.Right);
-        Player s7 = new Player("J_Sporting_defender_87", LocalDate.of(2003, 7, 17), 21, "Portugal", def, "", 87, 77, 72, 82, 67, 1.86f, 81f, PreferredFoot.Right);
-        Player s8 = new Player("J_Sporting_midfielder_88", LocalDate.of(2000, 8, 18), 24, "Portugal", mid, "", 88, 78, 73, 83, 68, 1.87f, 82f, PreferredFoot.Right);
-        Player s9 = new Player("J_Sporting_forward_89", LocalDate.of(1999, 9, 19), 25, "Portugal", fwd, "", 89, 79, 74, 84, 69, 1.88f, 83f, PreferredFoot.Right);
-        Player s10 = new Player("J_Sporting_midfielder_90", LocalDate.of(1998, 10, 20), 26, "Portugal", mid, "", 90, 80, 75, 85, 70, 1.89f, 84f, PreferredFoot.Right);
+        Goalkeeper s1 = new Goalkeeper("Antonio Adán", LocalDate.of(1987, 5, 13), 37, "Espanha", gk, "", 1, 70, 69, 79, 64, 1.90f, 85f, PreferredFoot.Right, 70);
+        Goalkeeper s2 = new Goalkeeper("Franco Israel", LocalDate.of(2000, 4, 22), 25, "Uruguai", gk, "", 12, 68, 67, 76, 65, 1.88f, 81f, PreferredFoot.Right, 80);
+        Player s3 = new Player("Sebastián Coates", LocalDate.of(1990, 10, 7), 34, "Uruguai", def, "", 4, 78, 66, 75, 62, 1.96f, 89f, PreferredFoot.Right);
+        Player s4 = new Player("Gonçalo Inácio", LocalDate.of(2001, 8, 25), 23, "Portugal", def, "", 25, 80, 70, 77, 64, 1.85f, 77f, PreferredFoot.Left);
+        Player s5 = new Player("Matheus Reis", LocalDate.of(1995, 2, 18), 29, "Brasil", def, "", 2, 76, 68, 78, 66, 1.82f, 78f, PreferredFoot.Left);
+        Player s6 = new Player("Eduardo Quaresma", LocalDate.of(2002, 3, 2), 23, "Portugal", def, "", 13, 74, 69, 76, 65, 1.83f, 76f, PreferredFoot.Right);
+        Player s7 = new Player("Jerry St. Juste", LocalDate.of(1996, 10, 19), 28, "Países Baixos", def, "", 3, 79, 71, 80, 86, 1.84f, 75f, PreferredFoot.Right);
+        Player s8 = new Player("Nuno Santos", LocalDate.of(1995, 3, 13), 29, "Portugal", def, "", 11, 75, 74, 82, 84, 1.78f, 72f, PreferredFoot.Left);
+        Player s9 = new Player("Pedro Porro", LocalDate.of(1999, 9, 13), 25, "Espanha", def, "", 24, 78, 72, 83, 85, 1.77f, 71f, PreferredFoot.Right);
+        Player s10 = new Player("Hidemasa Morita", LocalDate.of(1995, 5, 10), 29, "Japão", mid, "", 5, 80, 78, 80, 73, 1.77f, 70f, PreferredFoot.Right);
+        Player s11 = new Player("Manuel Ugarte", LocalDate.of(2001, 4, 11), 23, "Uruguai", mid, "", 8, 82, 75, 83, 75, 1.83f, 76f, PreferredFoot.Right);
+        Player s12 = new Player("Morten Hjulmand", LocalDate.of(1999, 6, 25), 25, "Dinamarca", mid, "", 6, 78, 77, 81, 74, 1.85f, 77f, PreferredFoot.Right);
+        Player s13 = new Player("Daniel Bragança", LocalDate.of(1999, 5, 27), 25, "Portugal", mid, "", 23, 76, 74, 79, 70, 1.76f, 69f, PreferredFoot.Left);
+        Player s14 = new Player("Pedro Gonçalves", LocalDate.of(1998, 6, 28), 26, "Portugal", mid, "", 28, 83, 78, 84, 76, 1.75f, 67f, PreferredFoot.Right);
+        Player s15 = new Player("Francisco Trincão", LocalDate.of(1999, 12, 29), 25, "Portugal", fwd, "", 17, 84, 76, 85, 82, 1.83f, 74f, PreferredFoot.Left);
+        Player s16 = new Player("Marcus Edwards", LocalDate.of(1998, 12, 3), 26, "Inglaterra", fwd, "", 10, 85, 77, 86, 83, 1.68f, 66f, PreferredFoot.Left);
+        Player s17 = new Player("Paulinho", LocalDate.of(1992, 11, 9), 32, "Portugal", fwd, "", 20, 81, 74, 82, 78, 1.82f, 76f, PreferredFoot.Right);
+        Player s18 = new Player("Viktor Gyökeres", LocalDate.of(1998, 6, 4), 26, "Suécia", fwd, "", 9, 88, 76, 85, 85, 1.87f, 83f, PreferredFoot.Right);
+        Player s19 = new Player("Geny Catamo", LocalDate.of(2001, 1, 26), 24, "Moçambique", mid, "", 21, 77, 73, 81, 80, 1.78f, 70f, PreferredFoot.Right);
+        Player s20 = new Player("Ricardo Esgaio", LocalDate.of(1993, 5, 16), 31, "Portugal", def, "", 47, 74, 70, 78, 75, 1.74f, 68f, PreferredFoot.Right);
+        Player s21 = new Player("Mateo Tanlongo", LocalDate.of(2003, 8, 12), 21, "Argentina", mid, "", 32, 75, 72, 79, 74, 1.80f, 72f, PreferredFoot.Right);
+        Player s22 = new Player("Dário Essugo", LocalDate.of(2005, 3, 14), 20, "Portugal", mid, "", 80, 72, 70, 77, 73, 1.82f, 75f, PreferredFoot.Right);
+        Player s23 = new Player("Rafael Camacho", LocalDate.of(2000, 5, 22), 25, "Portugal", fwd, "", 77, 76, 74, 80, 81, 1.76f, 72f, PreferredFoot.Right);
+        Player s24 = new Player("Rodrigo Ribeiro", LocalDate.of(2005, 4, 28), 20, "Portugal", fwd, "", 90, 74, 72, 78, 79, 1.81f, 73f, PreferredFoot.Right);
+        Goalkeeper s25 = new Goalkeeper("Diego Callai", LocalDate.of(2004, 5, 2), 21, "Brasil", gk, "", 40, 73, 68, 78, 68, 1.87f, 82f, PreferredFoot.Right, 10);
 
-        Cscp.addPlayer(g3);
         Cscp.addPlayer(s1);
         Cscp.addPlayer(s2);
         Cscp.addPlayer(s3);
@@ -176,20 +216,49 @@ public class MainMenu {
         Cscp.addPlayer(s8);
         Cscp.addPlayer(s9);
         Cscp.addPlayer(s10);
+        Cscp.addPlayer(s11);
+        Cscp.addPlayer(s12);
+        Cscp.addPlayer(s13);
+        Cscp.addPlayer(s14);
+        Cscp.addPlayer(s15);
+        Cscp.addPlayer(s16);
+        Cscp.addPlayer(s17);
+        Cscp.addPlayer(s18);
+        Cscp.addPlayer(s19);
+        Cscp.addPlayer(s20);
+        Cscp.addPlayer(s21);
+        Cscp.addPlayer(s22);
+        Cscp.addPlayer(s23);
+        Cscp.addPlayer(s24);
+        Cscp.addPlayer(s25);
 
-        Goalkeeper g4 = new Goalkeeper("J_Braga_goalkeeper_10", LocalDate.of(1995, 1, 1), 29, "Portugal", gk, "", 10, 65, 60, 70, 60, 1.85f, 80f, PreferredFoot.Right, 20);
-        Player b2 = new Player("J_Braga_defender_11", LocalDate.of(1996, 2, 2), 28, "Portugal", def, "", 11, 67, 65, 72, 64, 1.83f, 78f, PreferredFoot.Right);
-        Player b3 = new Player("J_Braga_defender_12", LocalDate.of(1997, 3, 3), 27, "Portugal", def, "", 12, 68, 66, 73, 65, 1.84f, 79f, PreferredFoot.Left);
-        Player b4 = new Player("J_Braga_defender_13", LocalDate.of(1998, 4, 4), 26, "Portugal", def, "", 13, 69, 67, 74, 66, 1.85f, 80f, PreferredFoot.Right);
-        Player b5 = new Player("J_Braga_midfielder_14", LocalDate.of(1999, 5, 5), 25, "Portugal", mid, "", 14, 70, 70, 75, 67, 1.80f, 75f, PreferredFoot.Left);
-        Player b6 = new Player("J_Braga_midfielder_15", LocalDate.of(2000, 6, 6), 24, "Portugal", mid, "", 15, 72, 72, 76, 68, 1.81f, 76f, PreferredFoot.Right);
-        Player b7 = new Player("J_Braga_midfielder_16", LocalDate.of(2001, 7, 7), 23, "Portugal", mid, "", 16, 74, 73, 77, 69, 1.82f, 77f, PreferredFoot.Left);
-        Player b8 = new Player("J_Braga_midfielder_17", LocalDate.of(2002, 8, 8), 22, "Portugal", mid, "", 17, 76, 74, 78, 70, 1.83f, 78f, PreferredFoot.Right);
-        Player b9 = new Player("J_Braga_forward_18", LocalDate.of(2000, 9, 9), 24, "Portugal", fwd, "", 18, 78, 75, 79, 71, 1.84f, 79f, PreferredFoot.Left);
-        Player b10 = new Player("J_Braga_forward_19", LocalDate.of(2001, 10, 10), 23, "Portugal", fwd, "", 19, 80, 76, 80, 72, 1.85f, 80f, PreferredFoot.Right);
-        Player b11 = new Player("J_Braga_forward_20", LocalDate.of(2002, 11, 11), 22, "Portugal", fwd, "", 20, 82, 77, 81, 73, 1.86f, 81f, PreferredFoot.Left);
+        Goalkeeper b1 = new Goalkeeper("Matheus Magalhães", LocalDate.of(1992, 3, 29), 33, "Brasil", gk, "", 1, 72, 66, 75, 66, 1.87f, 81f, PreferredFoot.Right, 68);
+        Goalkeeper b2 = new Goalkeeper("Tiago Sá", LocalDate.of(1995, 1, 1), 30, "Portugal", gk, "", 10, 65, 60, 70, 60, 1.85f, 80f, PreferredFoot.Right, 60);
+        Player b3 = new Player("Vítor Tormena", LocalDate.of(1996, 1, 4), 29, "Brasil", def, "", 3, 74, 65, 76, 68, 1.91f, 82f, PreferredFoot.Right);
+        Player b4 = new Player("José Fonte", LocalDate.of(1983, 12, 22), 41, "Portugal", def, "", 6, 70, 63, 72, 60, 1.87f, 83f, PreferredFoot.Right);
+        Player b5 = new Player("Cristián Borja", LocalDate.of(1993, 2, 18), 32, "Colômbia", def, "", 25, 73, 68, 74, 72, 1.80f, 76f, PreferredFoot.Left);
+        Player b6 = new Player("Niakaté", LocalDate.of(1999, 1, 8), 26, "França", def, "", 13, 75, 70, 76, 70, 1.84f, 79f, PreferredFoot.Left);
+        Player b7 = new Player("Paulo Oliveira", LocalDate.of(1992, 1, 8), 33, "Portugal", def, "", 15, 72, 66, 74, 67, 1.87f, 81f, PreferredFoot.Right);
+        Player b8 = new Player("Sequeira", LocalDate.of(1990, 8, 17), 34, "Portugal", def, "", 21, 70, 65, 73, 65, 1.82f, 78f, PreferredFoot.Left);
+        Player b9 = new Player("Rodrigo Zalazar", LocalDate.of(1999, 8, 12), 25, "Uruguai", mid, "", 8, 76, 75, 79, 74, 1.77f, 70f, PreferredFoot.Right);
+        Player b10 = new Player("Vítor Carvalho", LocalDate.of(1996, 5, 27), 28, "Brasil", mid, "", 18, 74, 73, 78, 72, 1.83f, 75f, PreferredFoot.Right);
+        Player b11 = new Player("André Horta", LocalDate.of(1996, 11, 7), 28, "Portugal", mid, "", 10, 75, 74, 79, 73, 1.74f, 70f, PreferredFoot.Right);
+        Player b12 = new Player("Al Musrati", LocalDate.of(1996, 4, 6), 29, "Líbia", mid, "", 6, 77, 75, 80, 70, 1.85f, 78f, PreferredFoot.Right);
+        Player b13 = new Player("Castro", LocalDate.of(1993, 4, 11), 32, "Portugal", mid, "", 14, 73, 70, 77, 68, 1.76f, 72f, PreferredFoot.Right);
+        Player b14 = new Player("Jean-Baptiste Gorby", LocalDate.of(2002, 7, 10), 22, "França", mid, "", 28, 72, 69, 75, 70, 1.78f, 73f, PreferredFoot.Right);
+        Player b15 = new Player("Pizzi", LocalDate.of(1989, 10, 6), 35, "Portugal", mid, "", 7, 74, 78, 76, 68, 1.76f, 70f, PreferredFoot.Right);
+        Player b16 = new Player("Ricardo Horta", LocalDate.of(1994, 9, 15), 30, "Portugal", fwd, "", 21, 83, 77, 84, 78, 1.73f, 68f, PreferredFoot.Right);
+        Player b17 = new Player("Abel Ruiz", LocalDate.of(2000, 1, 28), 25, "Espanha", fwd, "", 9, 80, 75, 82, 76, 1.82f, 74f, PreferredFoot.Right);
+        Player b18 = new Player("Banza", LocalDate.of(1996, 9, 13), 28, "França", fwd, "", 17, 82, 76, 83, 79, 1.86f, 81f, PreferredFoot.Left);
+        Player b19 = new Player("Bruma", LocalDate.of(1994, 10, 24), 30, "Portugal", fwd, "", 7, 81, 74, 85, 85, 1.73f, 69f, PreferredFoot.Right);
+        Player b20 = new Player("Roger Fernandes", LocalDate.of(2005, 11, 21), 19, "Guiné-Bissau", fwd, "", 77, 75, 72, 80, 82, 1.74f, 68f, PreferredFoot.Right);
+        Player b21 = new Player("Djaló", LocalDate.of(1995, 10, 5), 29, "Portugal", def, "", 22, 72, 67, 75, 71, 1.83f, 76f, PreferredFoot.Right);
+        Player b22 = new Player("João Mendes", LocalDate.of(2000, 12, 12), 24, "Portugal", def, "", 19, 70, 66, 74, 69, 1.81f, 74f, PreferredFoot.Left);
+        Player b23 = new Player("Rony Lopes", LocalDate.of(1995, 12, 28), 29, "Portugal", mid, "", 20, 76, 74, 81, 76, 1.75f, 70f, PreferredFoot.Right);
+        Player b24 = new Player("Zé Carlos", LocalDate.of(1998, 8, 13), 26, "Portugal", def, "", 5, 73, 70, 78, 74, 1.80f, 73f, PreferredFoot.Right);
+        Player b25 = new Player("Adrián Marín", LocalDate.of(1997, 1, 9), 28, "Espanha", def, "", 16, 72, 71, 77, 73, 1.79f, 74f, PreferredFoot.Left);
 
-        Cscb.addPlayer(g4);
+        Cscb.addPlayer(b1);
         Cscb.addPlayer(b2);
         Cscb.addPlayer(b3);
         Cscb.addPlayer(b4);
@@ -200,6 +269,20 @@ public class MainMenu {
         Cscb.addPlayer(b9);
         Cscb.addPlayer(b10);
         Cscb.addPlayer(b11);
+        Cscb.addPlayer(b12);
+        Cscb.addPlayer(b13);
+        Cscb.addPlayer(b14);
+        Cscb.addPlayer(b15);
+        Cscb.addPlayer(b16);
+        Cscb.addPlayer(b17);
+        Cscb.addPlayer(b18);
+        Cscb.addPlayer(b19);
+        Cscb.addPlayer(b20);
+        Cscb.addPlayer(b21);
+        Cscb.addPlayer(b22);
+        Cscb.addPlayer(b23);
+        Cscb.addPlayer(b24);
+        Cscb.addPlayer(b25);
 
         Tslb.setFormation(new Formation("4-3-3"));
         Tfcp.setFormation(new Formation("4-3-3"));
@@ -220,21 +303,20 @@ public class MainMenu {
             Tslb.addPlayer(t10);
             Tslb.addPlayer(t23);
 
-            Tfcp.addPlayer(g2);
-            Tfcp.addPlayer(q1);
-            Tfcp.addPlayer(q2);
-            Tfcp.addPlayer(q3);
-            Tfcp.addPlayer(q4);
-            Tfcp.addPlayer(q5);
-            Tfcp.addPlayer(q6);
-            Tfcp.addPlayer(q7);
-            Tfcp.addPlayer(q8);
-            Tfcp.addPlayer(q9);
-            Tfcp.addPlayer(q10);
+            Tfcp.addPlayer(p1);
+            Tfcp.addPlayer(p2);
+            Tfcp.addPlayer(p3);
+            Tfcp.addPlayer(p4);
+            Tfcp.addPlayer(p5);
+            Tfcp.addPlayer(p6);
+            Tfcp.addPlayer(p7);
+            Tfcp.addPlayer(p8);
+            Tfcp.addPlayer(p9);
+            Tfcp.addPlayer(p10);
+            Tfcp.addPlayer(p11);
 
-            Tscp.addPlayer(g3);
             Tscp.addPlayer(s1);
-            Tscp.addPlayer(s2);
+            Tscp.addPlayer(s15);
             Tscp.addPlayer(s3);
             Tscp.addPlayer(s4);
             Tscp.addPlayer(s5);
@@ -243,9 +325,10 @@ public class MainMenu {
             Tscp.addPlayer(s8);
             Tscp.addPlayer(s9);
             Tscp.addPlayer(s10);
+            Tscp.addPlayer(s11);
 
-            Tscb.addPlayer(g4);
-            Tscb.addPlayer(b2);
+            Tscb.addPlayer(b1);
+            Tscb.addPlayer(b15);
             Tscb.addPlayer(b3);
             Tscb.addPlayer(b4);
             Tscb.addPlayer(b5);
@@ -290,7 +373,7 @@ public class MainMenu {
             }
         }
         scaleStartingEleven = new ScaleStartingEleven();
-        if (TestMainMenu.coach == null) {
+        if (Jogo.coach == null) {
             System.out.println("\nNao tem clube atribuido!");
             scaleStartingEleven.scaleStartingEleven(season);
         }
@@ -327,7 +410,7 @@ public class MainMenu {
                     IMatch[] jogos = season.getMatches();
                     int totalRondas = season.getMaxRounds();
 
-                    Match.printJogosPorRonda(jogos, totalRondas, TestMainMenu.coach);
+                    Match.printJogosPorRonda(jogos, totalRondas, Jogo.coach);
                     break;
 
                 case '3':
@@ -343,7 +426,7 @@ public class MainMenu {
 
                     IMatch[] jogos1 = season.getMatches();
 
-                    psm.updateStatistics(jogos1);
+//                    psm.updateStatistics(jogos1);
                     MenuStats ms = new MenuStats();
                     ms.MenuStats(psm.getStatistics());
                     break;
@@ -361,9 +444,19 @@ public class MainMenu {
                     break;
 
                 case '8':
-                    for (int i = 0; i < clubes.length; i++) {
-                        generate(clubes[i], "HTML/a.html");
-                    }
+                    String dirPath = "C:\\Users\\Utilizador\\Documents\\NetBeansProjects\\PP-TP\\API\\JSON Files\\HTML";
+                    new File(dirPath).mkdirs();
+                    
+                    String path4 = dirPath + "\\slb.html";
+                    String path = dirPath + "\\fcp.html";
+                    String path2 = dirPath + "\\scp.html";
+                    String path3 = dirPath + "\\scb.html";
+                    generate(Cfcp, path);
+                    generate(Cscp, path2);
+                    generate(Cscb, path3);
+                    generate(Cslb, path4);
+                    
+
                     break;
                 case '0':
                     System.out.println("A sair...");
