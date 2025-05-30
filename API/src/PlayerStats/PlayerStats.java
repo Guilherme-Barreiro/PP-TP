@@ -18,13 +18,11 @@ public class PlayerStats {
 
     private IPlayer player;
 
-    private int minutesPlayed;
+    private int matchesPlayed;
     private int goals;
-    private int assists;
-    private int fouls;
     private int redCards;
     private int yellowCards;
-    private int rating;
+    private int failedShots;
 
     /**
      * Constructs a new PlayerStats object for a given player.
@@ -37,13 +35,11 @@ public class PlayerStats {
             throw new IllegalArgumentException("Player cannot be null");
         }
         this.player = player;
-        this.minutesPlayed = 0;
+        this.matchesPlayed = 0;
         this.goals = 0;
-        this.assists = 0;
-        this.fouls = 0;
         this.redCards = 0;
         this.yellowCards = 0;
-        this.rating = 0;
+        this.failedShots = 0;
     }
 
     /**
@@ -54,10 +50,10 @@ public class PlayerStats {
     }
 
     /**
-     * @return the total minutes played by the player
+     * @return the total matches played by the player
      */
-    public int getMinutesPlayed() {
-        return minutesPlayed;
+    public int getMatchesPlayed() {
+        return matchesPlayed;
     }
 
     /**
@@ -65,20 +61,6 @@ public class PlayerStats {
      */
     public int getGoals() {
         return goals;
-    }
-
-    /**
-     * @return the number of assists made by the player
-     */
-    public int getAssists() {
-        return assists;
-    }
-
-    /**
-     * @return the number of fouls committed by the player
-     */
-    public int getFouls() {
-        return fouls;
     }
 
     /**
@@ -96,58 +78,33 @@ public class PlayerStats {
     }
 
     /**
-     * @return the rating of the player (custom logic can set this)
+     * @return the number of failed shots by the player
      */
-    public int getRating() {
-        return rating;
+    public int getFailedShots() {
+        return failedShots;
     }
 
     /**
-     * Sets the total minutes played by the player.
+     * Sets the total matches played by the player.
      *
-     * @param minutes the new minutes value
+     * @param matchesPlayed the new matchesPlayed value
      */
-    public void setMinutesPlayed(int minutes) {
-        this.minutesPlayed = minutes;
+    public void setMatchesPlayed(int matchesPlayed) {
+        this.matchesPlayed = matchesPlayed;
     }
-
+ 
     /**
-     * Sets the performance rating of the player.
-     *
-     * @param rating the new rating value
+     * Increments the matchesPlayed count by 1.
      */
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void addMatchesPlayed() {
+        this.matchesPlayed++;
     }
-
-    /**
-     * Increments the total minutes played by a given value.
-     *
-     * @param minutes number of minutes to add
-     */
-    public void addMinutes(int minutes) {
-        this.minutesPlayed += minutes;
-    }
-
+    
     /**
      * Increments the goal count by 1.
      */
     public void addGoal() {
         this.goals++;
-    }
-
-    /**
-     * Increments the assist count by 1.
-     */
-    public void addAssist() {
-        this.assists++;
-    }
-
-    /**
-     * Increments the foul count by 1.
-     */
-    public void addFoul() {
-        this.fouls++;
     }
 
     /**
@@ -163,6 +120,13 @@ public class PlayerStats {
     public void addRedCard() {
         this.redCards++;
     }
+    
+    /**
+     * Increments the failed shots count by 1.
+     */
+    public void addFailedShots() {
+        this.failedShots++;
+    }
 
     /**
      * @return a string representation of the player's statistics
@@ -171,13 +135,11 @@ public class PlayerStats {
     public String toString() {
         return "PlayerStats{"
                 + "player=" + this.getPlayer().getName()
-                + ", minutesPlayed=" + this.minutesPlayed
+                + ", matchesPlayed=" + this.matchesPlayed
                 + ", goals=" + this.getGoals()
-                + ", assists=" + this.getAssists()
-                + ", fouls=" + this.getFouls()
                 + ", redCards=" + this.getRedCards()
                 + ", yellowCards=" + this.getYellowCards()
-                + ", rating=" + this.rating
+                + ", failedShots=" + this.failedShots
                 + '}';
     }
 }

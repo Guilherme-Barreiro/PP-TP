@@ -43,34 +43,28 @@ public class PlayerStatsManager {
     public void updateStatistics(IMatch match) {
         IPlayer[] allPlayers = mergePlayers(match.getHomeTeam().getPlayers(), match.getAwayTeam().getPlayers());
 
-        // Add default minutes
         for (int i = 0; i < allPlayers.length; i++) {
             PlayerStats stats = getOrCreate(allPlayers[i]);
-            stats.addMinutes(90);
+            stats.addMatchesPlayed();
         }
 
-        // Process events
         IEvent[] events = match.getEvents();
         for (int i = 0; i < events.length; i++) {
             IPlayer player = extractPlayer(events[i]);
-            if (player == null) {
-                continue;
-            }
-
+            if (player == null) continue;
+            
             PlayerStats stats = getOrCreate(player);
 
             String eventType = events[i].getClass().getSimpleName();
 
             if (eventType.equals("GoalEvent")) {
                 stats.addGoal();
-            } else if (eventType.equals("FoulEvent")) {
-                stats.addFoul();
             } else if (eventType.equals("YellowCardEvent")) {
                 stats.addYellowCard();
             } else if (eventType.equals("RedCardEvent")) {
                 stats.addRedCard();
             } else if (eventType.equals("PassEvent")) {
-                stats.addAssist();
+                stats.addFailedShots();
             }
         }
     }
