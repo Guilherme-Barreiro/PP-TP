@@ -1,9 +1,13 @@
-package Exceptions;
+/*  
+* Nome: <Diogo Loureiro da Silva>  
+* Número: <8220238>  
+* Turma: <T2>  
+*  
+* Nome: <Guilherme Araujo Barreiro>  
+* Número: <8220849>  
+* Turma: <Turma do colega de grupo>  
+ */package Exceptions;
 
-/**
- *
- * @author guiba
- */
 public class TeamExceptions {
 
     /**

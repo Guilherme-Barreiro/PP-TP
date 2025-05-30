@@ -371,7 +371,7 @@ public class Match implements IMatch {
 
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileWriter writer = new FileWriter(fullPath)) {
+        try ( FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -503,7 +503,7 @@ public class Match implements IMatch {
         JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try (FileReader reader = new FileReader(fullPath)) {
+        try ( FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String homeClubName = (String) json.get("homeClub");
@@ -643,6 +643,15 @@ public class Match implements IMatch {
         return null;
     }
 
+    /**
+     * Cria e devolve uma cópia profunda (deep copy) do objeto Match.
+     *
+     * A cópia inclui os clubes, equipas e todos os eventos ocorridos no jogo.
+     * Apenas eventos do tipo GoalEvent, RedCardEvent, YellowCardEvent e
+     * FailedShotEvent são clonados.
+     *
+     * @return Um novo objeto Match com os mesmos dados do original.
+     */
     @Override
     public Match clone() {
         Match clonedMatch = new Match(
@@ -681,6 +690,11 @@ public class Match implements IMatch {
         return clonedMatch;
     }
 
+    /**
+     * Devolve uma representação textual do objeto {@code Match}.
+     *
+     * @return Uma string com os detalhes do jogo.
+     */
     @Override
     public String toString() {
         String str = "Match{";
@@ -704,6 +718,13 @@ public class Match implements IMatch {
         return str;
     }
 
+    /**
+     * Imprime no ecrã todos os jogos organizados por ronda.
+     *
+     * @param matches Array de jogos IMatch a imprimir.
+     * @param totalRounds Número total de rondas da época.
+     * @param coach Treinador atual cujo clube deve ser destacado.
+     */
     public static void printJogosPorRonda(IMatch[] matches, int totalRounds, Coach coach) {
         String verde = "\u001B[32m";
         String reset = "\u001B[0m";

@@ -92,14 +92,14 @@ public class PlayerStats {
     public void setMatchesPlayed(int matchesPlayed) {
         this.matchesPlayed = matchesPlayed;
     }
- 
+
     /**
      * Increments the matchesPlayed count by 1.
      */
     public void addMatchesPlayed() {
         this.matchesPlayed++;
     }
-    
+
     /**
      * Increments the goal count by 1.
      */
@@ -120,14 +120,21 @@ public class PlayerStats {
     public void addRedCard() {
         this.redCards++;
     }
-    
+
     /**
      * Increments the failed shots count by 1.
      */
     public void addFailedShots() {
         this.failedShots++;
     }
-    
+
+    /**
+     * Gera uma representação em texto das estatísticas principais de um
+     * jogador.
+     *
+     * @return uma `String` formatada com as estatísticas do jogador no seguinte
+     * formato: "Nome | Jogos | Golos | Vermelhos | Amarelos | Remates falhados"
+     */
     public String listAllStats() {
         System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         String nome = this.getPlayer().getName();

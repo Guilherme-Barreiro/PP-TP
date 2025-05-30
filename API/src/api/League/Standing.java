@@ -276,6 +276,13 @@ public class Standing implements IStanding {
                 + '}';
     }
 
+    /**
+     * Imprime na consola a tabela classificativa atual de uma época, ordenada
+     * por pontos.
+     *
+     * @param standings Array de objetos IStanding contendo os dados
+     * estatísticos de cada equipa.
+     */
     public static void printCurrentTable(IStanding[] standings) {
         System.out.println("\n");
         for (int i = 0; i < standings.length - 1; i++) {

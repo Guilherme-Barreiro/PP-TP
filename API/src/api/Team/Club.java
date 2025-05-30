@@ -466,6 +466,11 @@ public class Club implements IClub {
         }
     }
 
+    /**
+     * Devolve uma representação textual da lista de jogadores do clube.
+     *
+     * @return Uma string formatada com a lista de jogadores do clube.
+     */
     public String listPlayers() {
         String result = "";
 
@@ -478,6 +483,12 @@ public class Club implements IClub {
         return result;
     }
 
+    /**
+     * Cria e devolve uma cópia deste clube.
+     *
+     * @return Uma nova instância de {@code Club} com os mesmos dados que o
+     * clube original.
+     */
     @Override
     public Club clone() {
         Club clonedClub = new Club(

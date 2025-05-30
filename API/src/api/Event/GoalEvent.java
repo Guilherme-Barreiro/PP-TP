@@ -158,13 +158,35 @@ public class GoalEvent implements IGoalEvent, IPlayerEvent {
         }
     }
 
+    /**
+     * Devolve o valor da habilidade de remate (shooting) do jogador no momento
+     * do golo.
+     *
+     * @return Um valor inteiro que representa o nível de remate do jogador.
+     */
     public int getShooting() {
         return shooting;
     }
 
+    /**
+     * Devolve o valor dos reflexos do guarda-redes adversário no momento do
+     * golo.
+     *
+     * @return Um valor inteiro que representa o nível de reflexos do
+     * guarda-redes.
+     */
     public int getReflexes() {
         return reflexes;
     }
+
+    /**
+     * Cria uma cópia deste evento de golo ({@code GoalEvent}), replicando todos
+     * os dados envolvidos, como o jogador, o minuto do golo, o valor de remate
+     * e os reflexos do guarda-redes.
+     *
+     * @return Uma nova instância de {@code GoalEvent} com os mesmos dados do
+     * evento original.
+     */
 
     @Override
     public GoalEvent clone() {

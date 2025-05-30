@@ -134,14 +134,34 @@ public class FailedShotEvent implements IPlayerEvent {
         }
     }
 
+    /**
+     * Devolve o valor da habilidade de remate (shooting) do jogador no momento
+     * do evento.
+     *
+     * @return Um valor inteiro representando a estatística de remate do
+     * jogador.
+     */
     public int getShooting() {
         return shooting;
     }
 
+    /**
+     * Devolve o valor dos reflexos do guarda-redes (reflexes) no momento do
+     * evento.
+     *
+     * @return Um valor inteiro representando os reflexos do guarda-redes.
+     */
     public int getReflexes() {
         return reflexes;
     }
 
+    /**
+     * Cria uma cópia do evento de remate falhado code FailedShotEvent com
+     * os mesmos dados, incluindo jogador, minuto, remate e reflexos.
+     *
+     * @return Uma nova instância de FailedShotEvent com os mesmos
+     * atributos do evento atual.
+     */
     @Override
     public FailedShotEvent clone() {
         return new FailedShotEvent(this.player, this.minute, this.shooting, this.reflexes);

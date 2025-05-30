@@ -97,11 +97,26 @@ public class RedCardEvent implements IPlayerEvent {
         return this.player;
     }
 
+    /**
+     * Cria uma cópia deste evento de cartão vermelho RedCardEvent,
+     * preservando o jogador e o minuto em que o evento ocorreu.
+     *
+     * @return Uma nova instância de RedCardEvent com os mesmos dados do
+     * evento original.
+     */
     @Override
     public RedCardEvent clone() {
         return new RedCardEvent(this.player, this.minute);
     }
 
+    /**
+     * Importa um evento de cartão vermelho a partir de um ficheiro JSON.
+     *
+     * @param fileName O caminho para o ficheiro JSON a importar.
+     * @return Um objeto RedCardEvent construído com os dados lidos.
+     * @throws IOException Se ocorrer um erro de leitura do ficheiro ou parsing
+     * do JSON.
+     */
     public static RedCardEvent importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 

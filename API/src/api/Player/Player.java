@@ -278,23 +278,25 @@ public class Player implements IPlayer {
         String basePath = "API/JSON Files/Players/";
         String fileName = "player_" + this.name.replaceAll("\\s+", "_") + ".json";
 
-        try (FileWriter file = new FileWriter(basePath + fileName)) {
+        try ( FileWriter file = new FileWriter(basePath + fileName)) {
             file.write(playerJson.toJSONString());
             file.flush();
         }
     }
-public void exportarPlayer(Player[] players) {
-    for (int i = 0; i < players.length; i++) {
-        if (players[i] != null) {
-            try {
-                players[i].exportToJson();
-            } catch (IOException e) {
-                System.out.println("Erro ao exportar jogador: " + players[i].getName());
-                e.printStackTrace();
+
+    public void exportarPlayer(Player[] players) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null) {
+                try {
+                    players[i].exportToJson();
+                } catch (IOException e) {
+                    System.out.println("Erro ao exportar jogador: " + players[i].getName());
+                    e.printStackTrace();
+                }
             }
         }
     }
-}
+
     /**
      * Returns a string representation of the Player object.
      *
@@ -364,7 +366,7 @@ public void exportarPlayer(Player[] players) {
 
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader(filePath)) {
+        try ( FileReader reader = new FileReader(filePath)) {
             JSONObject obj = (JSONObject) parser.parse(reader);
 
             String name = (String) obj.get("name");
@@ -391,6 +393,12 @@ public void exportarPlayer(Player[] players) {
         }
     }
 
+    /**
+     * Cria e devolve uma cópia deste jogador.
+     * 
+     * @return Uma nova instância de Player com os mesmos dados que o
+     * objeto original.
+     */
     @Override
     public Player clone() {
         IPlayerPosition clonedPosition = null;

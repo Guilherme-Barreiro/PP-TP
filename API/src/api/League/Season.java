@@ -604,7 +604,7 @@ public class Season implements ISeason {
 
         // Escrever no ficheiro
         String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
-        try (FileWriter writer = new FileWriter(fileName)) {
+        try ( FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -637,7 +637,7 @@ public class Season implements ISeason {
     public static Season importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader(fileName)) {
+        try ( FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String name = (String) json.get("name");
@@ -702,6 +702,13 @@ public class Season implements ISeason {
         }
     }
 
+    /**
+     * Retorna uma representação textual da época (Season), incluindo o nome da
+     * época e a lista de clubes que participam.
+     *
+     * @return Uma string formatada no estilo: "Season{name=..., clubs=[Clube1,
+     * Clube2, ...]}"
+     */
     @Override
     public String toString() {
         String str = "Season{";
@@ -720,6 +727,13 @@ public class Season implements ISeason {
         return str;
     }
 
+    /**
+     * Cria e devolve uma cópia profunda (deep copy) da época atual (Season),
+     * incluindo os clubes, equipas e jogos.
+     *
+     * @return Uma nova instância de Season com os mesmos dados da
+     * atual.
+     */
     @Override
     public Season clone() {
         Season copy = new Season(this.name, this.year, this.maxTeams);

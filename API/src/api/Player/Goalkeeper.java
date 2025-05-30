@@ -83,6 +83,11 @@ public class Goalkeeper extends Player implements IGoalkeeper {
         return super.toString() + "\treflexes=" + reflexes;
     }
 
+    /**
+     * Cria e devolve uma cópia deste guarda-redes.
+     * @return Uma nova instância de Goalkeeper com os mesmos dados que
+     * o objeto original.
+     */
     @Override
     public Goalkeeper clone() {
         Player clonedBase = super.clone();

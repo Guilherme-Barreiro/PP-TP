@@ -96,11 +96,30 @@ public class YellowCardEvent implements IPlayerEvent {
         return this.player;
     }
 
+    /**
+     * Cria uma cópia deste evento de cartão amarelo YellowCardEvent,
+     * preservando o jogador e o minuto em que o evento ocorreu.
+     *
+     * @return Uma nova instância de YellowCardEvent com os mesmos dados do
+     * evento original.
+     */
     @Override
     public YellowCardEvent clone() {
         return new YellowCardEvent(this.player, this.minute);
     }
 
+    /**
+     * Importa um evento de cartão amarelo a partir de um ficheiro JSON.
+     *
+     * O ficheiro deve conter os campos "player" (nome do jogador) e "minute"
+     * (minuto do evento). O jogador será carregado a partir de um ficheiro JSON
+     * correspondente localizado na pasta "JSON Files/Players/".
+     *
+     * @param fileName O caminho para o ficheiro JSON a importar.
+     * @return Um objeto YellowCardEvent construído com os dados lidos.
+     * @throws IOException Se ocorrer um erro de leitura do ficheiro ou parsing
+     * do JSON.
+     */
     public static YellowCardEvent importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
