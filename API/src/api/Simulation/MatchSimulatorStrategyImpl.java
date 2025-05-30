@@ -9,6 +9,8 @@
  */
 package api.Simulation;
 
+import PlayerStats.PlayerStats;
+import PlayerStats.PlayerStatsManager;
 import api.Event.EventManager;
 import api.Event.GoalEvent;
 import api.Event.RedCardEvent;
@@ -49,7 +51,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
 
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
-        
+
         System.out.println("\n=== Partida entre " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " ===");
 
         IPlayer[] yellowedPlayers = new IPlayer[30];
@@ -64,7 +66,7 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         for (int minute = 1; minute <= 90; minute++) {
 
             int goloChance = 5 + redCardsAway - redCardsHome;
-            
+
             em.chanceForGoal(goloChance, minute, match);
 
             if (em.chanceRedCard(match.getHomeTeam(), minute, match, expelledPlayers, expelledCount)) {
@@ -93,6 +95,12 @@ public class MatchSimulatorStrategyImpl implements MatchSimulatorStrategy {
         ((Team) match.getHomeTeam()).activateAllPlayers();
         ((Team) match.getAwayTeam()).activateAllPlayers();
 
+        PlayerStatsManager psm = new PlayerStatsManager();
+        PlayerStats[] stats = psm.getStatistics();
+        for (int i = 0; i < stats.length; i++) {
+            System.out.println(stats[i]);
+        }
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n");
     }
 
 }
