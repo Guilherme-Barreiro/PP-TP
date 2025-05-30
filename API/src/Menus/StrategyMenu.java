@@ -20,15 +20,14 @@ public class StrategyMenu {
         Scanner scanner = new Scanner(System.in);
 
         int choice = -1;
-
+        int total = 0;
         do {
-            System.out.println("\n============== ESTRATÉGIA ==============");
-            System.out.println("Escolha a tática para este jogo: ");
-            System.out.println("1. Defensiva (5-3-2) - Foco em contencao");
-            System.out.println("2. Equilibrada (4-4-2) - Padrao");
-            System.out.println("3. Ofensiva (4-3-3) - Pressao alta");
+            System.out.println("\n============== ESTRATEGIA ==============");
+            System.out.println("Escolha a tatica para este jogo: ");
+            System.out.println("1. Defensiva (5-3-2)   -  Foco em contencao");
+            System.out.println("2. Equilibrada (4-4-2) -  Padrao");
+            System.out.println("3. Ofensiva (4-3-3)    -  Pressao alta");
             System.out.println("4. Personalizada...");
-            System.out.println("0. Exit");
             System.out.println("=========================================");
             System.out.print("Escolha uma opcao: ");
 
@@ -36,44 +35,40 @@ public class StrategyMenu {
 
             switch (choice) {
                 case 1:
-                    formation = new Formation("5-3-2");
-                    break;
+                    return formation = new Formation("5-3-2");
                 case 2:
-                    formation = new Formation("4-4-2");
-                    break;
+                    return formation = new Formation("4-4-2");
                 case 3:
-                    formation = new Formation("4-3-3");
-                    break;
+                    return formation = new Formation("4-3-3");
                 case 4:
                     int defesa = 0;
                     int medios = 0;
                     int atacantes = 0;
-                    try {
-                        System.out.println("Defesa: ");
-                        defesa = (int) System.in.read();
 
-                        System.out.println("Médios: ");
-                        medios = (int) System.in.read();
+                    System.out.println("N de defesas: ");
+                    defesa = scanner.nextInt();
+                    scanner.nextLine();
 
-                        System.out.println("Atacantes: ");
-                        atacantes = (int) System.in.read();
+                    System.out.println("N de medios: ");
+                    medios = scanner.nextInt();
+                    scanner.nextLine();
 
-                        formation = new Formation(defesa + "-" + medios + "-" + atacantes);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (IllegalArgumentException ia) {
-                        ia.getMessage();
+                    System.out.println("N de atacantes: ");
+                    atacantes = scanner.nextInt();
+                    scanner.nextLine();
+                    total = defesa + medios + atacantes;
+                    if (total != 10) {
+                        System.out.println("A soma dos jogadores tem de ser 10! (guarda-redes não conta)");
+                    } else {
+                        return formation = new Formation(defesa + "-" + medios + "-" + atacantes);
                     }
-                    break;
-                case 0:
-                    System.out.println("Leaving...");
-                    break;
+
                 default:
-                    System.out.println("Option invalid");
+                    System.out.println("Opcao invalida!");
                     break;
             }
-        } while (choice == 0);
-        return formation;
+
+        } while (choice < 1 || choice > 4 || total != 10);
+        return null;
     }
 }

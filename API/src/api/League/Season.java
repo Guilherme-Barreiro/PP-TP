@@ -128,32 +128,51 @@ public class Season implements ISeason {
      */
     @Override
     public void generateSchedule() {
+        if (clubCount % 2 != 0) {
+            throw new IllegalStateException("Número de clubes tem de ser par.");
+        }
+
         if (clubCount == 0) {
             throw new IllegalStateException("The league is empty");
         }
 
-        for (int i = 0; i < matchCount; i++) {
-            if (matches[i] != null && matches[i].isPlayed()) {
-                throw new IllegalStateException("A match has already been played");
-            }
+        matchCount = 0;
+        int rounds = clubCount - 1;
+        int totalRounds = rounds * 2;
+        int gamesPerRound = clubCount / 2;
+
+        IClub[] tempClubs = new IClub[clubCount];
+        for (int i = 0; i < clubCount; i++) {
+            tempClubs[i] = clubs[i];
         }
 
-        matchCount = 0;
-        int round = 0;
-        int maxRounds = getMaxRounds();
+        for (int round = 0; round < rounds; round++) {
+            for (int match = 0; match < gamesPerRound; match++) {
+                int homeIndex = match;
+                int awayIndex = clubCount - 1 - match;
 
-        for (int i = 0; i < clubCount - 1; i++) {
-            for (int j = i + 1; j < clubCount; j++) {
-                IClub home = clubs[i];
-                IClub away = clubs[j];
+                IClub home = tempClubs[homeIndex];
+                IClub away = tempClubs[awayIndex];
 
-                IMatch firstLeg = new Match(home, away, round);
-                matches[matchCount++] = firstLeg;
+                matches[matchCount++] = new Match(home, away, round);
+            }
 
-                IMatch secondLeg = new Match(away, home, round + 1);
-                matches[matchCount++] = secondLeg;
+            IClub last = tempClubs[clubCount - 1];
+            for (int i = clubCount - 1; i > 1; i--) {
+                tempClubs[i] = tempClubs[i - 1];
+            }
+            tempClubs[1] = last;
+        }
 
-                round = (round + 2) % maxRounds;
+        for (int round = rounds; round < totalRounds; round++) {
+            int baseRound = round - rounds;
+
+            for (int match = 0; match < gamesPerRound; match++) {
+                Match firstLeg = (Match) matches[baseRound * gamesPerRound + match];
+                IClub home = firstLeg.getAwayClub();
+                IClub away = firstLeg.getHomeClub();
+
+                matches[matchCount++] = new Match(home, away, round);
             }
         }
     }
@@ -589,7 +608,7 @@ public class Season implements ISeason {
 
         // Escrever no ficheiro
         String fileName = "season_" + this.name.replaceAll("\\s+", "_") + "_" + this.year + ".json";
-        try ( FileWriter writer = new FileWriter(fileName)) {
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -622,7 +641,7 @@ public class Season implements ISeason {
     public static Season importFromJson(String fileName) throws IOException {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(fileName)) {
+        try (FileReader reader = new FileReader(fileName)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String name = (String) json.get("name");

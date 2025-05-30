@@ -11,6 +11,7 @@ package api.Match;
 
 import api.Event.*;
 import api.League.Season;
+import api.Player.Coach;
 import api.Team.Club;
 import api.Team.Team;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
@@ -370,7 +371,7 @@ public class Match implements IMatch {
 
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try ( FileWriter writer = new FileWriter(fullPath)) {
+        try (FileWriter writer = new FileWriter(fullPath)) {
             writer.write(json.toJSONString());
             writer.flush();
         }
@@ -502,7 +503,7 @@ public class Match implements IMatch {
         JSONParser parser = new JSONParser();
         String fullPath = "JSON Files/Matches/" + fileName;
 
-        try ( FileReader reader = new FileReader(fullPath)) {
+        try (FileReader reader = new FileReader(fullPath)) {
             JSONObject json = (JSONObject) parser.parse(reader);
 
             String homeClubName = (String) json.get("homeClub");
@@ -678,6 +679,60 @@ public class Match implements IMatch {
         }
 
         return clonedMatch;
+    }
+
+    @Override
+    public String toString() {
+        String str = "Match{";
+
+        str += "homeClub=" + (homeClub != null ? homeClub.getName() : "null");
+        str += ", awayClub=" + (awayClub != null ? awayClub.getName() : "null");
+        str += ", round=" + round;
+        str += ", played=" + played;
+        str += ", eventCount=" + eventCount;
+
+        str += ", events=[";
+
+        for (int i = 0; i < eventCount; i++) {
+            str += events[i];
+            if (i < eventCount - 1) {
+                str += ", ";
+            }
+        }
+
+        str += "]}";
+        return str;
+    }
+
+    public static void printJogosPorRonda(IMatch[] matches, int totalRounds, Coach coach) {
+        String verde = "\u001B[32m";
+        String reset = "\u001B[0m";
+        String coachClubName = coach.getClub().getName();
+
+        for (int r = 0; r < totalRounds; r++) {
+            System.out.println("Ronda " + (r + 1) + ":");
+
+            for (int i = 0; i < matches.length; i++) {
+                if (matches[i].getRound() == r) {
+                    IClub home = matches[i].getHomeClub();
+                    IClub away = matches[i].getAwayClub();
+
+                    String homeName = (home != null) ? home.getName() : "null";
+                    String awayName = (away != null) ? away.getName() : "null";
+
+                    if (homeName.equalsIgnoreCase(coachClubName)) {
+                        homeName = verde + homeName + reset;
+                    }
+                    if (awayName.equalsIgnoreCase(coachClubName)) {
+                        awayName = verde + awayName + reset;
+                    }
+
+                    System.out.println(homeName + " vs " + awayName);
+                }
+            }
+
+            System.out.println();
+        }
     }
 
 }

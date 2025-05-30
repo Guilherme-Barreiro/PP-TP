@@ -13,11 +13,12 @@ package Menus;
  * Número:
  * Turma:
  */
-
 import api.League.Season;
 import api.Player.Player;
 import PlayerStats.PlayerStats;
 import PlayerStats.PlayerStatsManager;
+import api.League.Standing;
+import api.Match.Match;
 import api.Player.Goalkeeper;
 import api.Player.PlayerPosition;
 import api.Simulation.MatchSimulatorStrategyImpl;
@@ -25,6 +26,7 @@ import api.Team.Club;
 import api.Team.Formation;
 import api.Team.Team;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
+import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
@@ -33,6 +35,7 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import testebrabo.TestMainMenu;
 
 /**
  * The `Menus` class represents the menu system for the project management
@@ -200,7 +203,6 @@ public class MainMenu {
 
         try {
 
-
             Tfcp.addPlayer(g2);
             Tfcp.addPlayer(q1);
             Tfcp.addPlayer(q2);
@@ -270,9 +272,13 @@ public class MainMenu {
                 }
             }
         }
+        scaleStartingEleven = new ScaleStartingEleven();
+        if (TestMainMenu.coach == null) {
+            System.out.println("\nNao tem clube atribuido!");
+            scaleStartingEleven.scaleStartingEleven(season);
+        }
 
         char choice;
-
         do {
             System.out.println("\n\n=================================================");
             System.out.println("PPFootball Manager v1.0 - Temporada 24/25");
@@ -280,14 +286,14 @@ public class MainMenu {
             System.out.println();
             System.out.println("********** MENU PRINCIPAL **********");
             System.out.println("1. Gerir Plantel");
-            System.out.println("2. Ver Calendário e Classificação");
-            System.out.println("3. Preparar Próximo Jogo");
+            System.out.println("2. Ver Calendario");
+            System.out.println("3. Ver Classificacao");
             System.out.println("4. Simular Jornada");
             System.out.println("5. Estatisticas");
             System.out.println("6. Salvar e Sair");
             System.out.println("0. Exit");
             System.out.println("************************************");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
 
             choice = (char) System.in.read();
 
@@ -295,16 +301,17 @@ public class MainMenu {
 
             switch (choice) {
                 case '1':
-                    scaleStartingEleven = new ScaleStartingEleven();
                     scaleStartingEleven.scaleStartingEleven(season);
                     break;
                 case '2':
-                    season.getSchedule();
-                    season.getLeagueStandings();
+                    IMatch[] jogos = season.getMatches();
+                    int totalRondas = season.getMaxRounds();
+
+                    Match.printJogosPorRonda(jogos, totalRondas, TestMainMenu.coach);
                     break;
                 case '3':
-                    strategyMenu = new StrategyMenu();
-                    strategyMenu.MenuEstrategia();
+                    IStanding[] standings = season.getLeagueStandings();
+                    Standing.printCurrentTable(standings);
                     break;
                 case '4':
                     season.simulateRound();

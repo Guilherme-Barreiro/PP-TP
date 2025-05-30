@@ -275,4 +275,44 @@ public class Standing implements IStanding {
                 + ", totalMatches=" + this.getTotalMatches()
                 + '}';
     }
+
+    public static void printCurrentTable(IStanding[] standings) {
+        System.out.println("\n");
+        for (int i = 0; i < standings.length - 1; i++) {
+            for (int j = i + 1; j < standings.length; j++) {
+                if (standings[j].getPoints() > standings[i].getPoints()) {
+                    IStanding temp = standings[i];
+                    standings[i] = standings[j];
+                    standings[j] = temp;
+                }
+            }
+        }
+
+        System.out.printf("%-15s %2s %2s %2s %2s %3s %3s %3s %4s\n", "Equipa", "PD", "V", "E", "D", "GM", "GS", "DG", "Pts");
+
+        for (IStanding s : standings) {
+            String nome = s.getTeam().getClub().getName();
+            int pd = s.getTotalMatches();
+            int v = s.getWins();
+            int e = s.getDraws();
+            int d = s.getLosses();
+            int gm = s.getGoalScored();
+            int gs = s.getGoalsConceded();
+            int dg = s.getGoalDifference();
+            int pts = s.getPoints();
+
+            System.out.printf("%-15s %2d %2d %2d %2d %3d %3d %3d %4d\n", nome, pd, v, e, d, gm, gs, dg, pts);
+        }
+
+        System.out.println("\nLegenda:");
+        System.out.println("PD = Partidas Disputadas");
+        System.out.println("V  = Vitórias");
+        System.out.println("E  = Empates");
+        System.out.println("D  = Derrotas");
+        System.out.println("GM = Golos Marcados");
+        System.out.println("GS = Golos Sofridos");
+        System.out.println("DG = Diferença de Golos (GM - GS)");
+        System.out.println("Pts = Pontos Totais");
+    }
+
 }

@@ -26,7 +26,6 @@ public class Coach {
         this.club = club;
     }
 
-    // Podes adicionar métodos como:
     public void changeClub(IClub newClub) {
         this.club = newClub;
     }

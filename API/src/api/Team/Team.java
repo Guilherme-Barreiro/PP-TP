@@ -519,36 +519,31 @@ public class Team implements ITeam {
 
     @Override
     public Team clone() {
-        // Clonar o clube (supondo que club.clone() retorna um IClub corretamente clonado)
         IClub clonedClub = null;
         if (this.club != null && this.club instanceof Club) {
             clonedClub = ((Club) this.club).clone();
         } else {
-            clonedClub = this.club; // fallback se não for possível clonar
+            clonedClub = this.club;
         }
 
-        // Criar nova equipa com o clube clonado
         Team clonedTeam = new Team(clonedClub);
 
-        // Clonar jogadores
         for (int i = 0; i < this.playerCount; i++) {
             if (this.players[i] instanceof Goalkeeper) {
                 clonedTeam.players[i] = ((Goalkeeper) this.players[i]).clone();
             } else if (this.players[i] instanceof Player) {
                 clonedTeam.players[i] = ((Player) this.players[i]).clone();
             } else {
-                clonedTeam.players[i] = this.players[i]; // fallback para qualquer outro tipo
+                clonedTeam.players[i] = this.players[i];
             }
         }
 
-        // Copiar contagem de jogadores
         clonedTeam.playerCount = this.playerCount;
 
-        // Clonar a formação, se existir
         if (this.formation != null && this.formation instanceof Formation) {
             clonedTeam.formation = ((Formation) this.formation).clone();
         } else {
-            clonedTeam.formation = this.formation; // fallback
+            clonedTeam.formation = this.formation;
         }
 
         return clonedTeam;
